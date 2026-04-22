@@ -363,7 +363,7 @@ function createSection(sectionId) {
 
             <!-- 10. Procedural Terrain Generator -->
             <div class="project-item" onclick="toggleProjectDetails('p10')">
-                <img src="assets/images/projects/Project9/Mount.png" alt="Procedural Terrain">
+                <img src="assets/images/projects/Project9/mount.png" alt="Procedural Terrain">
                 <div><h2>Procedural Terrain Generator</h2><p>Real-time 3D terrain engine with infinite streaming and erosion simulation.</p></div>
                 <div class="project-details" id="p10">
                     <p><strong>Languages:</strong> TypeScript</p>
@@ -382,7 +382,7 @@ function createSection(sectionId) {
                         </ul>
                     </div>
                     <a href="javascript:void(0);" class="github-link">Not on GitHub yet</a>
-                    <div class="project-images-grid"><img src="assets/images/projects/Project9/Mount.png"><img src="assets/images/projects/Project9/island.png"><img src="assets/images/projects/Project9/desert.png"></div>
+                    <div class="project-images-grid"><img src="assets/images/projects/Project9/mount.png"><img src="assets/images/projects/Project9/island.png"><img src="assets/images/projects/Project9/desert.png"></div>
                 </div>
             </div>
 
