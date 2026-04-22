@@ -439,7 +439,6 @@ function createSection(sectionId) {
                         </div>
                     </div>
                 </div>
-            <p style="text-align:center;margin-top:60px;opacity:0.7;">All 11 projects now live • More coming soon!</p>
         </div>`;
     }
 
