@@ -1,0 +1,472 @@
+/* ====================== CORE ====================== */
+html {
+    min-height: 100%;
+    background: linear-gradient(135deg, #0d1b3a, #1e3a8a) fixed !important;
+}
+body {
+    font-family: 'Press Start 2P', cursive;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    background: transparent !important;
+    cursor: url('assets/cursor/NORMAL.cur'), auto;
+}
+/* BACKGROUND PARTICLES */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: url('assets/images/particle.png') repeat;
+    animation: moveParticles 25s linear infinite;
+    opacity: 0.75;
+    z-index: -2;
+    pointer-events: none;
+}
+@keyframes moveParticles {
+    from { transform: translateY(100%); }
+    to { transform: translateY(-100%); }
+}
+/* Loading */
+.loading {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,51,0.95);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    font-size: 28px;
+    color: #00ff00;
+}
+.loader { animation: blink 1s infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+/* Header, Button, Map */
+header { 
+    background: rgba(0, 0, 51, 0.95); 
+    color: #00ff00; 
+    text-shadow: 0 0 10px #00ff00; 
+    border-bottom: 3px solid #00ff00; 
+    padding: 20px; 
+    text-align: center; 
+    position: fixed; 
+    top: 0; 
+    width: 100%; 
+    z-index: 1000; 
+    transition: top 0.3s; 
+}
+.top-button { 
+    position: fixed; 
+    top: 20px; 
+    right: 20px; 
+    background: #0077be; 
+    color: white; 
+    border: 3px solid #00ff00; 
+    padding: 15px 25px; 
+    font-size: 14px; 
+    border-radius: 12px; 
+    text-decoration: none; 
+    box-shadow: 0 6px 15px rgba(0,0,0,0.5); 
+    z-index: 1000; 
+    transition: all 0.3s; 
+    cursor: url('assets/cursor/SELECT.cur'), pointer; 
+}
+.top-button:hover { 
+    background: #0099e6; 
+    transform: scale(1.1); 
+    box-shadow: 0 10px 20px rgba(0,255,0,0.3); 
+}
+.map { 
+    height: 100vh; 
+    background: url('assets/images/backgroundw.jpg') center/cover no-repeat; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    gap: 40px; 
+    flex-wrap: wrap; 
+    padding: 40px; 
+}
+.level { 
+    width: 140px; 
+    height: 140px; 
+    background: #000033; 
+    border: 4px solid #00ff00; 
+    color: #00ff00; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    text-align: center; 
+    font-size: 15px; 
+    border-radius: 12px; 
+    box-shadow: 0 8px 20px rgba(0,0,0,0.6); 
+    cursor: url('assets/cursor/SELECT.cur'), pointer; 
+    transition: all 0.3s; 
+}
+.level:hover { 
+    background: #000066; 
+    transform: translateY(-8px) scale(1.05); 
+    box-shadow: 0 15px 30px rgba(0,255,0,0.4); 
+}
+/* SECTIONS */
+section {
+    min-height: auto;
+    padding: 120px 20px 120px;
+    scroll-margin-top: 80px;
+}
+/* IMAGES */
+img {
+    border-radius: 12px;
+    max-width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+img:hover {
+    transform: scale(1.06);
+    box-shadow: 0 0 25px rgba(0, 255, 0, 0.5);
+}
+.project-images-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+    width: 100%;
+}
+.project-images-grid img {
+    width: 100%;
+    max-width: 700px;
+    height: auto;
+    object-fit: contain;
+    margin: 0 auto;
+}
+/* About + Tools */
+.about-section { 
+    max-width: 900px; 
+    margin: 0 auto; 
+    background: rgba(13,13,32,0.95); 
+    padding: 40px; 
+    border-radius: 15px; 
+    box-shadow: 0 0 30px rgba(0,255,0,0.2); 
+}
+.about-section h1 { color: #00acc1; text-shadow: 0 0 10px #00acc1; }
+.tools-container { 
+    max-width: 900px; 
+    margin: 0 auto; 
+    background: rgba(10,10,30,0.95); 
+    padding: 40px; 
+    border-radius: 15px; 
+    box-shadow: 0 0 30px rgba(255,255,255,0.15); 
+}
+
+/* TOOLS IMAGE SPACING */
+.tools-container img {
+    display: block;
+    margin: 0 auto 40px auto;
+}
+
+.tools-section { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+    gap: 25px; 
+}
+.tools-section > div { 
+    background: rgba(0, 0, 51, 0.85); 
+    border: 3px solid #00ff00; 
+    padding: 25px; 
+    border-radius: 12px; 
+    box-shadow: 0 0 20px rgba(0,255,0,0.3); 
+}
+.tools-section h2 { color: #00ff00; text-shadow: 0 0 8px #00ff00; }
+.tools-section ul { padding: 0; list-style: none; }
+.tools-section li {
+    position: relative;
+    padding-left: 36px;
+    margin-bottom: 14px;
+    line-height: 1.55;
+    font-size: 0.95em;
+}
+.tools-section li::before {
+    content: "▶";
+    position: absolute;
+    left: 8px;
+    color: #00ff41;
+    text-shadow: 0 0 8px #00ff41;
+    font-size: 1.1em;
+}
+/* Projects */
+.projects-container { max-width: 1200px; margin: 0 auto; }
+.project-item { 
+    display: grid; 
+    grid-template-columns: 2fr 3fr;
+    gap: 30px; 
+    background: rgba(255,255,255,0.08); 
+    padding: 25px; 
+    border-radius: 15px; 
+    margin-bottom: 40px; 
+    cursor: pointer; 
+    transition: all 0.3s; 
+}
+.project-item:hover { 
+    transform: translateY(-10px); 
+    box-shadow: 0 0 30px rgba(0,255,0,0.4); 
+}
+.project-details { 
+    grid-column: span 2; 
+    display: none; 
+    margin-top: 20px; 
+    padding: 25px; 
+    background: rgba(255,255,255,0.1); 
+    border-radius: 10px; 
+}
+.project-features { 
+    background: rgba(0, 0, 51, 0.75); 
+    border: 3px solid #00ff41; 
+    border-radius: 12px; 
+    padding: 24px; 
+    margin: 28px 0; 
+    box-shadow: 0 0 24px rgba(0, 255, 65, 0.35); 
+}
+.project-features h3 { 
+    color: #00ff41; 
+    text-shadow: 0 0 12px #00ff41; 
+    font-size: 1.15em; 
+    margin-bottom: 18px; 
+}
+.project-features ul { list-style: none; padding: 0; }
+.project-features li { 
+    position: relative; 
+    padding-left: 36px; 
+    margin-bottom: 16px; 
+    line-height: 1.55; 
+    font-size: 0.92em; 
+}
+.project-features li::before { 
+    content: "▶"; 
+    position: absolute; 
+    left: 8px; 
+    color: #00ff41; 
+    text-shadow: 0 0 8px #00ff41; 
+    font-size: 1.1em; 
+}
+.project-features li:hover { 
+    background: rgba(0, 255, 65, 0.08); 
+    border-radius: 6px; 
+    padding-left: 32px; 
+}
+
+/* ====================== GITHUB LINKS - NOW STYLIZED RETRO BUTTONS ====================== */
+.project-details a {
+    display: block;
+    background: rgba(0, 255, 65, 0.15);
+    color: #00ff00;
+    border: 3px solid #00ff41;
+    padding: 15px 30px;
+    text-align: center;
+    font-size: 1.05em;
+    text-decoration: none;
+    margin: 25px auto 15px;
+    max-width: 320px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0,255,65,0.3);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+.project-details a:hover {
+    background: rgba(0, 255, 65, 0.35);
+    transform: scale(1.05);
+    box-shadow: 0 0 35px rgba(0,255,65,0.7);
+    color: #fff;
+}
+
+/* "Not on GitHub yet" links - slightly softer look so they don't look broken */
+.project-details a[href="javascript:void(0)"] {
+    background: rgba(255,255,255,0.08);
+    color: #88ff88;
+    border-color: #00cc33;
+}
+.project-details a[href="javascript:void(0)"]:hover {
+    background: rgba(255,255,255,0.15);
+    color: #aaffaa;
+}
+
+/* Contact */
+.contact-section { 
+    max-width: 800px; 
+    margin: 0 auto; 
+    background: rgba(10,10,30,0.95); 
+    padding: 40px; 
+    border-radius: 15px; 
+    text-align: center; 
+}
+.collapsible { 
+    width: 100%; 
+    background: #3498db; 
+    color: white; 
+    padding: 15px; 
+    border: none; 
+    border-radius: 8px; 
+    font-size: 1.1em; 
+    cursor: pointer; 
+    margin: 10px 0; 
+}
+.collapsible:hover { background: #2980b9; }
+.content { 
+    display: none; 
+    padding: 20px; 
+    background: rgba(40,40,40,0.9); 
+    border-radius: 8px; 
+    margin-top: 5px; 
+}
+/* Pixel font + Progress + Typewriter */
+h1, h2, h3, p, ul, li, a, button { 
+    font-family: 'Press Start 2P', cursive !important; 
+}
+.progress-circle { 
+    position: fixed; 
+    bottom: 25px; 
+    right: 25px; 
+    z-index: 1000; 
+}
+.progress-ring__circle { 
+    stroke: #00ff00; 
+    stroke-dasharray: 175; 
+    stroke-dashoffset: 175; 
+    transition: stroke-dashoffset 0.3s; 
+}
+.typewriter { 
+    font-size: 28px; 
+    white-space: nowrap; 
+    overflow: hidden; 
+    border-right: 4px solid #00ff00; 
+    animation: typing 3s steps(30, end) forwards, blink-caret 0.75s step-end infinite; 
+}
+@keyframes typing { from { width: 0 } to { width: 100% } }
+@keyframes blink-caret { 50% { border-color: transparent } }
+.particle { 
+    position: absolute; 
+    border-radius: 50%; 
+    opacity: 1; 
+    pointer-events: none; 
+    animation: fadeOut 0.8s forwards; 
+}
+@keyframes fadeOut { 
+    0% { opacity: 1; transform: translateY(0); } 
+    100% { opacity: 0; transform: translateY(-25px); } 
+}
+
+/* ====================== MOBILE RESPONSIVE ====================== */
+@media (max-width: 768px) {
+    .level {
+        width: 110px;
+        height: 110px;
+        font-size: 13px;
+    }
+    .map {
+        gap: 20px;
+        padding: 20px;
+        height: auto;
+        min-height: 100vh;
+    }
+    .project-item {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        padding: 18px;
+    }
+    .project-item img {
+        max-height: 180px;
+        object-fit: cover;
+    }
+    .project-images-grid img {
+        max-width: 100%;
+    }
+    section {
+        padding: 80px 15px 80px;
+    }
+    .about-section, 
+    .tools-container, 
+    .contact-section {
+        padding: 25px;
+        max-width: 95%;
+    }
+    .tools-section {
+        grid-template-columns: 1fr;
+    }
+    .top-button {
+        padding: 12px 18px;
+        font-size: 12px;
+        top: 15px;
+        right: 15px;
+    }
+    header {
+        padding: 15px;
+    }
+    .typewriter {
+        font-size: 22px;
+    }
+    .progress-circle {
+        width: 50px;
+        height: 50px;
+    }
+    .progress-ring {
+        width: 50px !important;
+        height: 50px !important;
+    }
+    /* GitHub button mobile fix */
+    .project-details a {
+        max-width: 100%;
+        padding: 14px 20px;
+        font-size: 1em;
+    }
+}
+
+/* ====================== ENHANCED PROJECT SECTION STYLING ====================== */
+/* Makes Core Features and Tech Stack very easy to tell apart */
+
+.project-features {
+    background: rgba(0, 0, 51, 0.75);
+    border: 3px solid #00ff41;
+    border-radius: 12px;
+    padding: 24px;
+    margin: 28px 0;
+    box-shadow: 0 0 24px rgba(0, 255, 65, 0.35);
+}
+
+.project-features h3 {
+    font-size: 1.2em;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    border-bottom: 3px solid;
+    letter-spacing: 1px;
+}
+
+/* Core Features = neon green */
+.project-features h3:first-of-type {
+    color: #00ff41;
+    border-bottom-color: #00ff41;
+    text-shadow: 0 0 12px #00ff41;
+}
+
+/* Tech Stack = bright cyan/blue neon */
+.project-features h3:last-of-type {
+    color: #00ddff;
+    border-bottom-color: #00ddff;
+    text-shadow: 0 0 12px #00ddff;
+}
+
+.project-features ul:first-of-type li::before {
+    color: #00ff41;
+}
+
+.project-features ul:last-of-type li::before {
+    content: "◆";
+    color: #00ddff;
+}
+
+/* Extra spacing and visual separation */
+.project-features ul {
+    margin-bottom: 25px;
+}
+
+.project-features ul:last-of-type {
+    margin-bottom: 0;
+}

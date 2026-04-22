@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wei Rong | Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <div id="loading-screen" class="loading">
+        <div class="loader">LOADING...</div>
+    </div>
+
+    <header>
+        <h1 id="typed-header" class="typewriter"></h1>
+        <p id="typed-subheader"></p>
+    </header>
+
+    <div class="top-buttons">
+        <a href="https://github.com/chilly-nap/" target="_blank" class="button top-button">GITHUB</a>
+    </div>
+
+    <div class="map">
+        <div class="level" onclick="jumpToSection('about')">ABOUT ME</div>
+        <div class="level" onclick="jumpToSection('tools')">TOOLS & SKILLS</div>
+        <div class="level" onclick="jumpToSection('projects')">PROJECTS</div>
+        <div class="level" onclick="jumpToSection('contact')">CONTACT</div>
+    </div>
+
+    <div class="progress-circle">
+        <svg class="progress-ring" width="60" height="60">
+            <circle class="progress-ring__circle" stroke-width="4" fill="transparent" r="28" cx="30" cy="30" />
+        </svg>
+    </div>
+</body>
+</html>
