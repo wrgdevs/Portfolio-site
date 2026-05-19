@@ -289,13 +289,14 @@ function createSection(sectionId) {
             <!-- 7. EcoSim -->
             <div class="project-item" onclick="toggleProjectDetails('p7')">
                 <img src="assets/images/projects/Project6/Sim1.png" alt="EcoSim">
-                <div><h2>EcoSim — Ecosystem Simulation</h2><p>Real-time 2D ecosystem with plants, prey and predators showing emergent behaviors.</p></div>
+                <div><h2>Ecosystem Simulation</h2><p>Real-time 2D ecosystem with plants, prey and predators showing emergent behaviors.</p></div>
                 <div class="project-details" id="p7">
                     <p><strong>Languages:</strong> C++</p>
                     <div class="project-features">
                         <h3>Core Features</h3>
                         <ul>
                             <li>Developed interactive SDL2 visualization with dynamic HUD and mouse-over info</li>
+                            <li>Developed a multithreaded simulation architecture using a custom thread pool and job system to parallelize large-scale entity updates</li>
                             <li>Built species entities with energy, metabolism, vision, speed and reproduction traits</li>
                             <li>Implemented emergent flocking and clustering behaviors</li>
                             <li>Added heatmaps and density overlays for population analysis</li>
