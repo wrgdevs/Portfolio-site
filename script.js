@@ -449,7 +449,7 @@ function createSection(sectionId) {
                 <h1>CONTACT</h1>
                 <p>Want to chat or collaborate?</p>
                 <img src="assets/images/robot.png" alt="Robot">
-                <p style="font-size:1.3em;margin-top:20px;">wrgao5@gmail.com</p>
+                <p style="font-size:1.3em;margin-top:20px;">wrgao@uwaterloo.ca</p>
             </div>`;
     }
 
