@@ -154,7 +154,7 @@ function createSection(sectionId) {
                             <li>C++ • SDL2 • ImGui • Lua • JSON</li>
                         </ul>
                     </div>
-                    <a href="https://github.com/chilly-nap/Hooked-on-Speed" target="_blank" class="github-link">View on GitHub (Not Completely Updated)</a>
+                    <a href="https://github.com/chilly-nap/Hooked-on-Speed" target="_blank" class="github-link">View on GitHub (Not Completely Updated, Old Version)</a>
                     <div class="project-images-grid"><img src="assets/images/projects/Project1/Menu.png"><img src="assets/images/projects/Project1/Game.png"></div>
                 </div>
             </div>
@@ -181,7 +181,7 @@ function createSection(sectionId) {
                             <li>C++ • SDL2 • ImGui • TGAImage • Catch2</li>
                         </ul>
                     </div>
-                    <a href="https://github.com/chilly-nap/Rasterizer" target="_blank" class="github-link">View on GitHub (Not Completely Updated)</a>
+                    <a href="https://github.com/wrgdevs/software-rasterizer" target="_blank" class="github-link">View on GitHub</a>
                     <div class="project-images-grid"><img src="assets/images/projects/Project2/Standard.png"><img src="assets/images/projects/Project2/Custom.png"><img src="assets/images/projects/Project2/Wireframe.png"></div>
                 </div>
             </div>
@@ -332,7 +332,7 @@ function createSection(sectionId) {
                             <li>Python • NumPy • pandas • yfinance • Matplotlib • Streamlit</li>
                         </ul>
                     </div>
-                    <a href="javascript:void(0);" class="github-link">Not on GitHub yet</a>
+                    <a href="https://github.com/wrgdevs/monte-carlo-portfolio-simulator" class="github-link">View on GitHub</a>
                     <div class="project-images-grid"><img src="assets/images/projects/Project8/Monte1.png"><img src="assets/images/projects/Project8/Monte2.png"><img src="assets/images/projects/Project8/Monte3.png"></div>
                 </div>
             </div>
@@ -382,7 +382,7 @@ function createSection(sectionId) {
                             <li>TypeScript • React • Three.js • WebGL • Vite</li>
                         </ul>
                     </div>
-                    <a href="https://github.com/wrgdevs/procedural-terrain-generator" class="github-link">Github Link</a>
+                    <a href="https://github.com/wrgdevs/procedural-terrain-generator" class="github-link">View on GitHub</a>
                     <div class="project-images-grid"><img src="assets/images/projects/Project9/mount.png"><img src="assets/images/projects/Project9/island.png"><img src="assets/images/projects/Project9/desert.png"></div>
                 </div>
             </div>
@@ -407,7 +407,7 @@ function createSection(sectionId) {
                             <li>TypeScript • React • Chart.js</li>
                         </ul>
                     </div>
-                    <a href="https://github.com/wrgdevs/world-economy-simulator">Github Link</a>
+                    <a href="https://github.com/wrgdevs/world-economy-simulator">View on GitHub</a>
                     <div class="project-images-grid"><img src="assets/images/projects/Project10/eco1.png"><img src="assets/images/projects/Project10/eco2.png"><img src="assets/images/projects/Project10/eco3.png"><img src="assets/images/projects/Project10/eco4.png"></div>
                 </div>
             </div>
@@ -433,7 +433,7 @@ function createSection(sectionId) {
                             <li>Python • NumPy • Matplotlib • Streamlit</li>
                         </ul>
                     </div>
-                    <a href="javascript:void(0);" class="github-link">Not on GitHub yet</a>
+                    <a href="https://github.com/wrgdevs/nn-from-scratch-cli" class="github-link">View on GitHub</a>
                         <div class="project-images-grid">
                             <img src="assets/images/projects/Project12/learn1.png">
                             <img src="assets/images/projects/Project12/learn2.png">
