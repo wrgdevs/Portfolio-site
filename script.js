@@ -407,7 +407,7 @@ function createSection(sectionId) {
                             <li>TypeScript • React • Chart.js</li>
                         </ul>
                     </div>
-                    <a href="javascript:void(0);" class="github-link">Not on GitHub yet</a>
+                    <a href="https://github.com/wrgdevs/world-economy-simulator">Github Link</a>
                     <div class="project-images-grid"><img src="assets/images/projects/Project10/eco1.png"><img src="assets/images/projects/Project10/eco2.png"><img src="assets/images/projects/Project10/eco3.png"><img src="assets/images/projects/Project10/eco4.png"></div>
                 </div>
             </div>
