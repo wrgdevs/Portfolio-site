@@ -382,7 +382,7 @@ function createSection(sectionId) {
                             <li>TypeScript • React • Three.js • WebGL • Vite</li>
                         </ul>
                     </div>
-                    <a href="javascript:void(0);" class="github-link">Not on GitHub yet</a>
+                    <a href="https://github.com/wrgdevs/procedural-terrain-generator" class="github-link">Github Link</a>
                     <div class="project-images-grid"><img src="assets/images/projects/Project9/mount.png"><img src="assets/images/projects/Project9/island.png"><img src="assets/images/projects/Project9/desert.png"></div>
                 </div>
             </div>
