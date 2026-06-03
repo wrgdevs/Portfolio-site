@@ -131,6 +131,245 @@ function createSection(sectionId) {
     html = `
         <div class="projects-container">
             <h1 style="text-align:center;color:#00acc1;">PROJECTS</h1>
+            <!-- 2. 3D Graphics Rasterizer -->
+            <div class="project-item" onclick="toggleProjectDetails('p2')">
+                <img src="assets/images/projects/Project2/textured.png" alt="Rasterizer">
+                <div><h2>3D Graphics Rasterizer</h2><p>From-scratch software 3D renderer with full pipeline and live GUI.</p></div>
+                <div class="project-details" id="p2">
+                    <p><strong>Languages:</strong> C++</p>
+                    <div class="project-features">
+                        <h3>Core Features</h3>
+                        <ul>
+                            <li>Built a complete rasterization pipeline from vertex processing to fragment shading</li>
+                            <li>Implemented accurate triangle rasterization with barycentric interpolation</li>
+                            <li>Developed a custom shader pipeline supporting diffuse, normal, and specular mapping</li>
+                            <li>Added Phong lighting model for realistic shading and highlights</li>
+                            <li>Integrated ImGui for real-time parameter tweaking without recompilation</li>
+                            <li>Used TGAImage library for texture loading</li>
+                            <li>Optimized performance with backface culling</li>
+                        </ul>
+                        <h3>Tech Stack</h3>
+                        <ul>
+                            <li>C++ • SDL2 • ImGui • TGAImage • Catch2</li>
+                        </ul>
+                    </div>
+                    <a href="https://github.com/wrgdevs/software-rasterizer" target="_blank" class="github-link">View on GitHub</a>
+                    <div class="project-images-grid"><img src="assets/images/projects/Project2/textured.png"><img src="assets/images/projects/Project2/normal_map.png"><img src="assets/images/projects/Project2/Wireframe.png"><img src="assets/images/projects/Project2/specular.png"></div>
+                </div>
+            </div>
+
+            <!-- 10. Procedural Terrain Generator -->
+            <div class="project-item" onclick="toggleProjectDetails('p10')">
+                <img src="assets/images/projects/Project9/mount.png" alt="Procedural Terrain">
+                <div><h2>Procedural Terrain Generator</h2><p>Real-time 3D terrain engine with infinite streaming and erosion simulation.</p></div>
+                <div class="project-details" id="p10">
+                    <p><strong>Languages:</strong> TypeScript</p>
+                    <div class="project-features">
+                        <h3>Core Features</h3>
+                        <ul>
+                            <li>Built multi-layer noise generation with domain warping for natural landforms</li>
+                            <li>Implemented level-of-detail system for performance at large scales</li>
+                            <li>Added hydraulic erosion simulation for realistic terrain shaping</li>
+                            <li>Developed infinite terrain streaming with dynamic chunk loading</li>
+                            <li>Created biome blending using temperature and moisture maps</li>
+                        </ul>
+                        <h3>Tech Stack</h3>
+                        <ul>
+                            <li>TypeScript • React • Three.js • WebGL • Vite</li>
+                        </ul>
+                    </div>
+                    <a href="https://github.com/wrgdevs/procedural-terrain-generator" target="_blank" class="github-link">View on GitHub</a>
+                    <div class="project-images-grid"><img src="assets/images/projects/Project9/mount.png"><img src="assets/images/projects/Project9/island.png"><img src="assets/images/projects/Project9/desert.png"></div>
+                </div>
+            </div>
+            
+            <!-- 11. World Economy Simulator -->
+            <div class="project-item" onclick="toggleProjectDetails('p11')">
+                <img src="assets/images/projects/Project10/eco1.png" alt="World Economy">
+                <div><h2>World Economy Simulator</h2><p>Interactive multi-country economic simulation with trade networks and AI policies.</p></div>
+                <div class="project-details" id="p11">
+                    <p><strong>Languages:</strong> TypeScript</p>
+                    <div class="project-features">
+                        <h3>Core Features</h3>
+                        <ul>
+                            <li>Designed multi-country economic modeling including production, trade, inflation and migration</li>
+                            <li>Implemented bilateral trade networks with dynamic dependencies</li>
+                            <li>Built AI policy system that adjusts taxes, subsidies and investments in real time</li>
+                            <li>Added stochastic event engine with seeded randomness for crises and booms</li>
+                            <li>Created real-time data visualization and automated economic insights</li>
+                        </ul>
+                        <h3>Tech Stack</h3>
+                        <ul>
+                            <li>TypeScript • React • Chart.js</li>
+                        </ul>
+                    </div>
+                    <a href="https://github.com/wrgdevs/world-economy-simulator" target="_blank" class="github-link">View on GitHub</a>
+                    <div class="project-images-grid"><img src="assets/images/projects/Project10/eco1.png"><img src="assets/images/projects/Project10/eco2.png"><img src="assets/images/projects/Project10/eco3.png"><img src="assets/images/projects/Project10/eco4.png"></div>
+                </div>
+            </div>
+
+            <!-- 13. Algorithmic Trading Backtester -->
+            <div class="project-item" onclick="toggleProjectDetails('p13')">
+                <img src="assets/images/projects/Project13/charts.png" alt="Algorithmic Trading Backtester">
+                <div><h2>Algorithmic Trading Backtester</h2><p>Interactive trading strategy backtester with portfolio analytics, custom rule building and risk reporting.</p></div>
+                <div class="project-details" id="p13">
+                    <p><strong>Languages:</strong> Python</p>
+                    <div class="project-features">
+                        <h3>Core Features</h3>
+                        <ul>
+                            <li>Developed modular backtesting engine supporting equities, multi-asset portfolios, transaction costs and benchmark comparison</li>
+                            <li>Implemented technical strategies including RSI, MACD, Bollinger Bands, momentum, mean reversion and pairs trading</li>
+                            <li>Built custom no-code strategy builder with rule validation, signal diagnostics and preset templates</li>
+                            <li>Added portfolio analytics including Sharpe ratio, Sortino ratio, beta, VaR, CVaR, max drawdown and win-rate metrics</li>
+                            <li>Created interactive Streamlit dashboard for strategy comparison, parameter optimization, trade visualization and automated reporting</li>
+                        </ul>
+                        <h3>Tech Stack</h3>
+                        <ul>
+                            <li>Python • Pandas • NumPy • Plotly • Streamlit • Pytest</li>
+                        </ul>
+                    </div>
+                    <a href="https://github.com/wrgdevs/algorithmic-trading-backtester" target="_blank" class="github-link">View on GitHub</a>
+                    <div class="project-images-grid">
+                        <img src="assets/images/projects/Project13/charts.png">
+                        <img src="assets/images/projects/Project13/charts-more.png">
+                        <img src="assets/images/projects/Project13/custom.png">
+                        <img src="assets/images/projects/Project13/signal.png">
+                        <img src="assets/images/projects/Project13/weights.png">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 12. Neural Network from Scratch -->
+            <div class="project-item" onclick="toggleProjectDetails('p12')">
+                <img src="assets/images/projects/Project12/learn1.png" alt="NN from Scratch">
+                <div><h2>Neural Network from Scratch</h2><p>Complete neural network built from scratch in NumPy that evolves into a full MNIST classifier with training visualizations, experiments, and a polished installable CLI tool.</p></div>
+                <div class="project-details" id="p12">
+                    <p><strong>Languages:</strong> Python</p>
+                    <div class="project-features">
+                        <h3>Core Features</h3>
+                        <ul>
+                            <li>Implemented a fully modular neural network from scratch using pure NumPy, including dense layers, activations, loss, and backpropagation</li>
+                            <li>Built a reusable NeuralNetwork class that supports any architecture defined via CLI flags</li>
+                            <li>Added full MNIST loading, preprocessing, and training pipeline with automatic data download</li>
+                            <li>Integrated Matplotlib visualizations that automatically generate loss and accuracy plots after training</li>
+                            <li>Developed a complete CLI interface using argparse so the tool can be installed and run with simple commands like nn-scratch train</li>
+                            <li>Added experiment mode for comparing activations, learning rates, and other hyperparameters directly from the terminal</li>
+                        </ul>
+                        <h3>Tech Stack</h3>
+                        <ul>
+                            <li>Python • NumPy • Matplotlib • Streamlit</li>
+                        </ul>
+                    </div>
+                    <a href="https://github.com/wrgdevs/nn-from-scratch-cli" target="_blank" class="github-link">View on GitHub</a>
+                        <div class="project-images-grid">
+                            <img src="assets/images/projects/Project12/learn1.png">
+                            <img src="assets/images/projects/Project12/learn2.png">
+                            <img src="assets/images/projects/Project12/learn3.png">
+                        </div>
+                    </div>
+                </div>
+
+            
+            <!-- 6. Procedural Dungeon Map Generator -->
+            <div class="project-item" onclick="toggleProjectDetails('p6')">
+                <img src="assets/images/projects/Project5/dun1.png" alt="Dungeon Gen">
+                <div><h2>Procedural Dungeon Map Generator</h2><p>Real-time procedural dungeon system with multiple algorithms and live analytics.</p></div>
+                <div class="project-details" id="p6">
+                    <p><strong>Languages:</strong> C++</p>
+                    <div class="project-features">
+                        <h3>Core Features</h3>
+                        <ul>
+                            <li>Implemented five generation algorithms including BSP, Cellular Automata, Drunkard’s Walk, Recursive Backtracker and Random Rooms</li>
+                            <li>Built live SDL2 renderer with pan, zoom and overlay analytics</li>
+                            <li>Added real-time map statistics for floor coverage, connectivity and largest region</li>
+                            <li>Enabled keyboard-controlled parameter tweaking and instant algorithm switching</li>
+                            <li>Created JSON export system using nlohmann::json for map persistence</li>
+                        </ul>
+                        <h3>Tech Stack</h3>
+                        <ul>
+                            <li>C++17/20 • SDL2 • SDL2_ttf • nlohmann::json • Multithreading</li>
+                        </ul>
+                    </div>
+                     <a href="https://github.com/wrgdevs/dungeonMapGen" target="_blank" class="github-link">View on GitHub</a>
+                    <div class="project-images-grid"><img src="assets/images/projects/Project5/dun1.png"><img src="assets/images/projects/Project5/dun2.png"><img src="assets/images/projects/Project5/dun3.png"></div>
+                </div>
+            </div>
+
+            <!-- 7. EcoSim -->
+            <div class="project-item" onclick="toggleProjectDetails('p7')">
+                <img src="assets/images/projects/Project6/eco1.png" alt="EcoSim">
+                <div><h2>Ecosystem Simulation</h2><p>Real-time 2D ecosystem with plants, prey and predators showing emergent behaviors.</p></div>
+                <div class="project-details" id="p7">
+                    <p><strong>Languages:</strong> C++</p>
+                    <div class="project-features">
+                        <h3>Core Features</h3>
+                        <ul>
+                            <li>Developed interactive SDL2 visualization with dynamic HUD and mouse-over info</li>
+                            <li>Developed a multithreaded simulation architecture using a custom thread pool and job system to parallelize large-scale entity updates</li>
+                            <li>Built species entities with energy, metabolism, vision, speed and reproduction traits</li>
+                            <li>Implemented emergent flocking and clustering behaviors</li>
+                            <li>Added heatmaps and density overlays for population analysis</li>
+                            <li>Created trail rendering and dynamic camera system using SDL2</li>
+                        </ul>
+                        <h3>Tech Stack</h3>
+                        <ul>
+                            <li>C++17 • SDL2 • SDL2_ttf • Custom ECS • Multithreading</li>
+                        </ul>
+                    </div>
+                    <a href="https://github.com/wrgdevs/EcoSim" target="_blank" class="github-link">View on GitHub</a>
+                    <div class="project-images-grid"><img src="assets/images/projects/Project6/eco1.png"><img src="assets/images/projects/Project6/eco2.png"><img src="assets/images/projects/Project6/eco3.png"></div>
+                </div>
+            </div>
+
+            <!-- 8. Monte Carlo Portfolio Simulator -->
+            <div class="project-item" onclick="toggleProjectDetails('p8')">
+                <img src="assets/images/projects/Project8/Monte1.png" alt="Monte Carlo">
+                <div><h2>Monte Carlo Portfolio Simulator</h2><p>Advanced risk analysis engine with historical data and interactive UI.</p></div>
+                <div class="project-details" id="p8">
+                    <p><strong>Languages:</strong> Python</p>
+                    <div class="project-features">
+                        <h3>Core Features</h3>
+                        <ul>
+                            <li>Built vectorized Geometric Brownian Motion simulation supporting millions of paths</li>
+                            <li>Implemented automated historical data retrieval using yfinance</li>
+                            <li>Calculated full risk metrics including VaR, CVaR, Sharpe Ratio and Max Drawdown</li>
+                            <li>Created three synchronized charts with confidence bands and histograms</li>
+                            <li>Developed web UI with live parameter sliders</li>
+                        </ul>
+                        <h3>Tech Stack</h3>
+                        <ul>
+                            <li>Python • NumPy • pandas • yfinance • Matplotlib • Streamlit</li>
+                        </ul>
+                    </div>
+                    <a href="https://github.com/wrgdevs/monte-carlo-portfolio-simulator" class="github-link">View on GitHub</a>
+                    <div class="project-images-grid"><img src="assets/images/projects/Project8/Monte1.png"><img src="assets/images/projects/Project8/Monte2.png"><img src="assets/images/projects/Project8/Monte3.png"><img src="assets/images/projects/Project8/Monte4.png"></div>
+                </div>
+            </div>
+
+            <!-- 9. Steam Game Analytics -->
+            <div class="project-item" onclick="toggleProjectDetails('p9')">
+                <img src="assets/images/projects/Project7/Ana1.png" alt="Steam Analytics">
+                <div><h2>Steam Game Analytics</h2><p>Offline analytics platform for 42k+ Steam games with CLI and Streamlit dashboard.</p></div>
+                <div class="project-details" id="p9">
+                    <p><strong>Languages:</strong> Python</p>
+                    <div class="project-features">
+                        <h3>Core Features</h3>
+                        <ul>
+                            <li>Developed robust data cleaning pipeline for messy Steam data</li>
+                            <li>Built 14+ CLI commands for deep market analysis</li>
+                            <li>Implemented content-based recommendation engine using TF-IDF and cosine similarity</li>
+                            <li>Added fuzzy title search across 42k games</li>
+                            <li>Produced high-quality Matplotlib visualizations and Streamlit dashboard</li>
+                        </ul>
+                        <h3>Tech Stack</h3>
+                        <ul>
+                            <li>Python • Pandas • NumPy • scikit-learn • rapidfuzz • Click • Streamlit • Matplotlib</li>
+                        </ul>
+                    </div>
+                    <a href="javascript:void(0);" class="github-link">Not on GitHub yet</a>
+                    <div class="project-images-grid"><img src="assets/images/projects/Project7/Ana1.png"><img src="assets/images/projects/Project7/Ana2.png"><img src="assets/images/projects/Project7/Ana3.png"></div>
+                </div>
+            </div>
 
             <!-- 1. 2D Game Editor -->
             <div class="project-item" onclick="toggleProjectDetails('p1')">
@@ -159,33 +398,6 @@ function createSection(sectionId) {
                 </div>
             </div>
 
-            <!-- 2. 3D Graphics Rasterizer -->
-            <div class="project-item" onclick="toggleProjectDetails('p2')">
-                <img src="assets/images/projects/Project2/Standard.png" alt="Rasterizer">
-                <div><h2>3D Graphics Rasterizer</h2><p>From-scratch software 3D renderer with full pipeline and live GUI.</p></div>
-                <div class="project-details" id="p2">
-                    <p><strong>Languages:</strong> C++</p>
-                    <div class="project-features">
-                        <h3>Core Features</h3>
-                        <ul>
-                            <li>Built a complete rasterization pipeline from vertex processing to fragment shading</li>
-                            <li>Implemented accurate triangle rasterization with barycentric interpolation</li>
-                            <li>Developed a custom shader pipeline supporting diffuse, normal, and specular mapping</li>
-                            <li>Added Phong lighting model for realistic shading and highlights</li>
-                            <li>Integrated ImGui for real-time parameter tweaking without recompilation</li>
-                            <li>Used TGAImage library for texture loading</li>
-                            <li>Optimized performance with backface culling</li>
-                        </ul>
-                        <h3>Tech Stack</h3>
-                        <ul>
-                            <li>C++ • SDL2 • ImGui • TGAImage • Catch2</li>
-                        </ul>
-                    </div>
-                    <a href="https://github.com/wrgdevs/software-rasterizer" target="_blank" class="github-link">View on GitHub</a>
-                    <div class="project-images-grid"><img src="assets/images/projects/Project2/Standard.png"><img src="assets/images/projects/Project2/Custom.png"><img src="assets/images/projects/Project2/Wireframe.png"></div>
-                </div>
-            </div>
-
             <!-- 3. Tactical RPG -->
             <div class="project-item" onclick="toggleProjectDetails('p3')">
                 <img src="assets/images/projects/Project3/Chess.png" alt="Tactical RPG">
@@ -211,7 +423,7 @@ function createSection(sectionId) {
                 </div>
             </div>
 
-            <!-- 4. Shogi Learning App -->
+             <!-- 4. Shogi Learning App -->
             <div class="project-item" onclick="toggleProjectDetails('p4')">
                 <img src="assets/images/projects/Project4/Tutorial.png" alt="Shogi">
                 <div><h2>Shogi Learning App</h2><p>Interactive Shogi tutor with tutorials, puzzles and progress tracking.</p></div>
@@ -260,186 +472,6 @@ function createSection(sectionId) {
                     <div class="project-images-grid"><img src="assets/images/projects/Project11/game1.png"></div>
                 </div>
             </div>
-
-            <!-- 6. Procedural Dungeon Map Generator -->
-            <div class="project-item" onclick="toggleProjectDetails('p6')">
-                <img src="assets/images/projects/Project5/DungeonMap1.png" alt="Dungeon Gen">
-                <div><h2>Procedural Dungeon Map Generator</h2><p>Real-time procedural dungeon system with multiple algorithms and live analytics.</p></div>
-                <div class="project-details" id="p6">
-                    <p><strong>Languages:</strong> C++</p>
-                    <div class="project-features">
-                        <h3>Core Features</h3>
-                        <ul>
-                            <li>Implemented five generation algorithms including BSP, Cellular Automata, Drunkard’s Walk, Recursive Backtracker and Random Rooms</li>
-                            <li>Built live SDL2 renderer with pan, zoom and overlay analytics</li>
-                            <li>Added real-time map statistics for floor coverage, connectivity and largest region</li>
-                            <li>Enabled keyboard-controlled parameter tweaking and instant algorithm switching</li>
-                            <li>Created JSON export system using nlohmann::json for map persistence</li>
-                        </ul>
-                        <h3>Tech Stack</h3>
-                        <ul>
-                            <li>C++17/20 • SDL2 • SDL2_ttf • nlohmann::json • Multithreading</li>
-                        </ul>
-                    </div>
-                    <a href="javascript:void(0);" class="github-link">Not on GitHub yet</a>
-                    <div class="project-images-grid"><img src="assets/images/projects/Project5/DungeonMap1.png"><img src="assets/images/projects/Project5/DungeonMap2.png"><img src="assets/images/projects/Project5/DungeonMap3.png"></div>
-                </div>
-            </div>
-
-            <!-- 7. EcoSim -->
-            <div class="project-item" onclick="toggleProjectDetails('p7')">
-                <img src="assets/images/projects/Project6/Sim1.png" alt="EcoSim">
-                <div><h2>Ecosystem Simulation</h2><p>Real-time 2D ecosystem with plants, prey and predators showing emergent behaviors.</p></div>
-                <div class="project-details" id="p7">
-                    <p><strong>Languages:</strong> C++</p>
-                    <div class="project-features">
-                        <h3>Core Features</h3>
-                        <ul>
-                            <li>Developed interactive SDL2 visualization with dynamic HUD and mouse-over info</li>
-                            <li>Developed a multithreaded simulation architecture using a custom thread pool and job system to parallelize large-scale entity updates</li>
-                            <li>Built species entities with energy, metabolism, vision, speed and reproduction traits</li>
-                            <li>Implemented emergent flocking and clustering behaviors</li>
-                            <li>Added heatmaps and density overlays for population analysis</li>
-                            <li>Created trail rendering and dynamic camera system using SDL2</li>
-                        </ul>
-                        <h3>Tech Stack</h3>
-                        <ul>
-                            <li>C++17 • SDL2 • SDL2_ttf • Custom ECS • Multithreading</li>
-                        </ul>
-                    </div>
-                    <a href="javascript:void(0);" class="github-link">Not on GitHub yet</a>
-                    <div class="project-images-grid"><img src="assets/images/projects/Project6/Sim1.png"><img src="assets/images/projects/Project6/Sim2.png"></div>
-                </div>
-            </div>
-
-            <!-- 8. Monte Carlo Portfolio Simulator -->
-            <div class="project-item" onclick="toggleProjectDetails('p8')">
-                <img src="assets/images/projects/Project8/Monte1.png" alt="Monte Carlo">
-                <div><h2>Monte Carlo Portfolio Simulator</h2><p>Advanced risk analysis engine with historical data and interactive UI.</p></div>
-                <div class="project-details" id="p8">
-                    <p><strong>Languages:</strong> Python</p>
-                    <div class="project-features">
-                        <h3>Core Features</h3>
-                        <ul>
-                            <li>Built vectorized Geometric Brownian Motion simulation supporting millions of paths</li>
-                            <li>Implemented automated historical data retrieval using yfinance</li>
-                            <li>Calculated full risk metrics including VaR, CVaR, Sharpe Ratio and Max Drawdown</li>
-                            <li>Created three synchronized charts with confidence bands and histograms</li>
-                            <li>Developed web UI with live parameter sliders</li>
-                        </ul>
-                        <h3>Tech Stack</h3>
-                        <ul>
-                            <li>Python • NumPy • pandas • yfinance • Matplotlib • Streamlit</li>
-                        </ul>
-                    </div>
-                    <a href="https://github.com/wrgdevs/monte-carlo-portfolio-simulator" class="github-link">View on GitHub</a>
-                    <div class="project-images-grid"><img src="assets/images/projects/Project8/Monte1.png"><img src="assets/images/projects/Project8/Monte2.png"><img src="assets/images/projects/Project8/Monte3.png"></div>
-                </div>
-            </div>
-
-            <!-- 9. Steam Game Analytics -->
-            <div class="project-item" onclick="toggleProjectDetails('p9')">
-                <img src="assets/images/projects/Project7/Ana1.png" alt="Steam Analytics">
-                <div><h2>Steam Game Analytics</h2><p>Offline analytics platform for 42k+ Steam games with CLI and Streamlit dashboard.</p></div>
-                <div class="project-details" id="p9">
-                    <p><strong>Languages:</strong> Python</p>
-                    <div class="project-features">
-                        <h3>Core Features</h3>
-                        <ul>
-                            <li>Developed robust data cleaning pipeline for messy Steam data</li>
-                            <li>Built 14+ CLI commands for deep market analysis</li>
-                            <li>Implemented content-based recommendation engine using TF-IDF and cosine similarity</li>
-                            <li>Added fuzzy title search across 42k games</li>
-                            <li>Produced high-quality Matplotlib visualizations and Streamlit dashboard</li>
-                        </ul>
-                        <h3>Tech Stack</h3>
-                        <ul>
-                            <li>Python • Pandas • NumPy • scikit-learn • rapidfuzz • Click • Streamlit • Matplotlib</li>
-                        </ul>
-                    </div>
-                    <a href="javascript:void(0);" class="github-link">Not on GitHub yet</a>
-                    <div class="project-images-grid"><img src="assets/images/projects/Project7/Ana1.png"><img src="assets/images/projects/Project7/Ana2.png"><img src="assets/images/projects/Project7/Ana3.png"></div>
-                </div>
-            </div>
-
-            <!-- 10. Procedural Terrain Generator -->
-            <div class="project-item" onclick="toggleProjectDetails('p10')">
-                <img src="assets/images/projects/Project9/mount.png" alt="Procedural Terrain">
-                <div><h2>Procedural Terrain Generator</h2><p>Real-time 3D terrain engine with infinite streaming and erosion simulation.</p></div>
-                <div class="project-details" id="p10">
-                    <p><strong>Languages:</strong> TypeScript</p>
-                    <div class="project-features">
-                        <h3>Core Features</h3>
-                        <ul>
-                            <li>Built multi-layer noise generation with domain warping for natural landforms</li>
-                            <li>Implemented level-of-detail system for performance at large scales</li>
-                            <li>Added hydraulic erosion simulation for realistic terrain shaping</li>
-                            <li>Developed infinite terrain streaming with dynamic chunk loading</li>
-                            <li>Created biome blending using temperature and moisture maps</li>
-                        </ul>
-                        <h3>Tech Stack</h3>
-                        <ul>
-                            <li>TypeScript • React • Three.js • WebGL • Vite</li>
-                        </ul>
-                    </div>
-                    <a href="https://github.com/wrgdevs/procedural-terrain-generator" class="github-link">View on GitHub</a>
-                    <div class="project-images-grid"><img src="assets/images/projects/Project9/mount.png"><img src="assets/images/projects/Project9/island.png"><img src="assets/images/projects/Project9/desert.png"></div>
-                </div>
-            </div>
-
-            <!-- 11. World Economy Simulator -->
-            <div class="project-item" onclick="toggleProjectDetails('p11')">
-                <img src="assets/images/projects/Project10/eco1.png" alt="World Economy">
-                <div><h2>World Economy Simulator</h2><p>Interactive multi-country economic simulation with trade networks and AI policies.</p></div>
-                <div class="project-details" id="p11">
-                    <p><strong>Languages:</strong> TypeScript</p>
-                    <div class="project-features">
-                        <h3>Core Features</h3>
-                        <ul>
-                            <li>Designed multi-country economic modeling including production, trade, inflation and migration</li>
-                            <li>Implemented bilateral trade networks with dynamic dependencies</li>
-                            <li>Built AI policy system that adjusts taxes, subsidies and investments in real time</li>
-                            <li>Added stochastic event engine with seeded randomness for crises and booms</li>
-                            <li>Created real-time data visualization and automated economic insights</li>
-                        </ul>
-                        <h3>Tech Stack</h3>
-                        <ul>
-                            <li>TypeScript • React • Chart.js</li>
-                        </ul>
-                    </div>
-                    <a href="https://github.com/wrgdevs/world-economy-simulator">View on GitHub</a>
-                    <div class="project-images-grid"><img src="assets/images/projects/Project10/eco1.png"><img src="assets/images/projects/Project10/eco2.png"><img src="assets/images/projects/Project10/eco3.png"><img src="assets/images/projects/Project10/eco4.png"></div>
-                </div>
-            </div>
-
-            <!-- 12. Neural Network from Scratch -->
-            <div class="project-item" onclick="toggleProjectDetails('p12')">
-                <img src="assets/images/projects/Project12/learn1.png" alt="NN from Scratch">
-                <div><h2>Neural Network from Scratch</h2><p>Complete neural network built from scratch in NumPy that evolves into a full MNIST classifier with training visualizations, experiments, and a polished installable CLI tool.</p></div>
-                <div class="project-details" id="p12">
-                    <p><strong>Languages:</strong> Python</p>
-                    <div class="project-features">
-                        <h3>Core Features</h3>
-                        <ul>
-                            <li>Implemented a fully modular neural network from scratch using pure NumPy, including dense layers, activations, loss, and backpropagation</li>
-                            <li>Built a reusable NeuralNetwork class that supports any architecture defined via CLI flags</li>
-                            <li>Added full MNIST loading, preprocessing, and training pipeline with automatic data download</li>
-                            <li>Integrated Matplotlib visualizations that automatically generate loss and accuracy plots after training</li>
-                            <li>Developed a complete CLI interface using argparse so the tool can be installed and run with simple commands like nn-scratch train</li>
-                            <li>Added experiment mode for comparing activations, learning rates, and other hyperparameters directly from the terminal</li>
-                        </ul>
-                        <h3>Tech Stack</h3>
-                        <ul>
-                            <li>Python • NumPy • Matplotlib • Streamlit</li>
-                        </ul>
-                    </div>
-                    <a href="https://github.com/wrgdevs/nn-from-scratch-cli" class="github-link">View on GitHub</a>
-                        <div class="project-images-grid">
-                            <img src="assets/images/projects/Project12/learn1.png">
-                            <img src="assets/images/projects/Project12/learn2.png">
-                        </div>
-                    </div>
-                </div>
         </div>`;
     }
 
