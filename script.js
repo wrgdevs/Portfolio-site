@@ -33,26 +33,26 @@ function createSection(sectionId) {
     let html = '';
 
     if (sectionId === 'about') {
-        html = `
-            <div class="about-section">
-                <h1>ABOUT ME</h1>
-                <p>Hi, I’m Wei Rong. I am an aspiring software developer with an interest in building interactive experiences, 
-        from games to practical tools. I enjoy turning ideas into real, working systems and continuously improving my skills along the way.</p>
-                <img src="assets/images/sky.jpg" alt="Me">
-                <h1>My Journey</h1>
-                <p>I started by creating simple games and experimenting with different technologies. Over time, this grew into a deeper 
-        passion for software development, where I now focus on writing code and exploring new tools.</p>
+    html = `
+        <div class="about-section">
+            <h1>ABOUT ME</h1>
+            <p>Hi, I'm Wei Rong. I'm a Mathematics student who enjoys building software systems that model, visualize, or interact with complex ideas. My projects often sit between technical tools and interactive experiences, whether that means simulating economies and ecosystems, building game engines and editors, or creating finance and data-driven applications.</p>
+            
+            <img src="assets/images/sky.jpg" alt="Me">
 
-                <button class="collapsible">🎓 Education</button>
-                <div class="content">
-                    <p><strong>Bachelor of Honours Mathematics, Co-operative Program</strong><br>University of Waterloo</p>
-                </div>
+            <h1>What I Like Building</h1>
+            <p>I like projects where the logic underneath matters just as much as what appears on screen. I'm drawn to systems with moving parts: simulations with emergent behavior, tools that turn data into decisions, and interactive applications where design choices affect how users understand the system. Across game development, data, and finance-related work, I enjoy taking abstract rules and turning them into something usable, visual, and testable.</p>
 
-                <button class="collapsible">🎨 Hobbies</button>
-                <div class="content">
-                    <p>In my free time, I enjoy reading, playing games, and watching shows. These interests often inspire ideas for new projects and help me think about user experience from different perspectives.</p>
-                </div>
-            </div>`;
+            <button class="collapsible">🎓 Education</button>
+            <div class="content">
+                <p><strong>Bachelor of Honours Mathematics, Co-operative Program</strong><br>University of Waterloo</p>
+            </div>
+
+            <button class="collapsible">🎨 Hobbies</button>
+            <div class="content">
+                <p>Outside of programming, I enjoy reading, gaming, and watching shows. I'm often interested in how worlds, systems, and stories are structured, which also influences the way I think about projects, interfaces, and user experience.</p>
+            </div>
+        </div>`;
     }
 
     else if (sectionId === 'current') {
