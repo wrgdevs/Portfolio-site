@@ -1,4 +1,18 @@
+const ASSET_VERSION = "20260604";
+
+function versionedAsset(path) {
+    if (!path || !path.startsWith('assets/')) return path;
+    return path.includes('?') ? path : `${path}?v=${ASSET_VERSION}`;
+}
+
+function versionProjectImageSrcs(root = document) {
+    root.querySelectorAll('img[src^="assets/"]').forEach(img => {
+        img.src = versionedAsset(img.getAttribute('src'));
+    });
+}
+
 // ====================== LOADING ======================
+
 function showLoadingAnimation() {
     const loading = document.getElementById('loading-screen');
     loading.style.display = 'flex';
@@ -529,6 +543,7 @@ function createSection(sectionId) {
     }
 
     section.innerHTML = html;
+    versionProjectImageSrcs(section);
     document.body.appendChild(section);
 }
 
@@ -538,6 +553,90 @@ function toggleProjectDetails(id) {
     if (!el) return;
     const isOpen = el.classList.toggle('is-open');
     el.style.display = isOpen ? 'block' : 'none';
+}
+
+
+// ====================== PROJECT IMAGE CAROUSEL ======================
+let carouselImages = [];
+let carouselIndex = 0;
+
+function ensureImageCarousel() {
+    let modal = document.getElementById('image-carousel-modal');
+    if (modal) return modal;
+
+    modal = document.createElement('div');
+    modal.id = 'image-carousel-modal';
+    modal.className = 'image-carousel-modal';
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-hidden', 'true');
+    modal.innerHTML = `
+        <div class="image-carousel-card">
+            <button class="image-carousel-close" type="button" aria-label="Close image carousel">×</button>
+            <button class="image-carousel-nav image-carousel-prev" type="button" aria-label="Previous image">‹</button>
+            <img class="image-carousel-image" src="" alt="Project screenshot preview">
+            <button class="image-carousel-nav image-carousel-next" type="button" aria-label="Next image">›</button>
+            <p class="image-carousel-counter"></p>
+        </div>
+    `;
+    document.body.appendChild(modal);
+
+    modal.querySelector('.image-carousel-close').addEventListener('click', closeImageCarousel);
+    modal.querySelector('.image-carousel-prev').addEventListener('click', () => moveImageCarousel(-1));
+    modal.querySelector('.image-carousel-next').addEventListener('click', () => moveImageCarousel(1));
+    modal.addEventListener('click', event => {
+        if (event.target === modal) closeImageCarousel();
+    });
+
+    return modal;
+}
+
+function getProjectImages(projectItem) {
+    const detailImages = Array.from(projectItem.querySelectorAll('.project-images-grid img'));
+    const mainImage = projectItem.querySelector(':scope > img');
+    const images = detailImages.length ? detailImages : (mainImage ? [mainImage] : []);
+
+    return images.map(img => ({
+        src: versionedAsset(img.getAttribute('src')),
+        alt: img.getAttribute('alt') || projectItem.querySelector('h2')?.textContent || 'Project screenshot'
+    }));
+}
+
+function openImageCarousel(projectItem, clickedSrc) {
+    carouselImages = getProjectImages(projectItem);
+    if (!carouselImages.length) return;
+
+    const normalizedClickedSrc = (clickedSrc || '').split('?')[0];
+    carouselIndex = Math.max(0, carouselImages.findIndex(image => image.src.split('?')[0] === normalizedClickedSrc));
+
+    const modal = ensureImageCarousel();
+    modal.classList.add('is-open');
+    modal.setAttribute('aria-hidden', 'false');
+    renderImageCarousel();
+}
+
+function renderImageCarousel() {
+    const modal = ensureImageCarousel();
+    const image = modal.querySelector('.image-carousel-image');
+    const counter = modal.querySelector('.image-carousel-counter');
+    const current = carouselImages[carouselIndex];
+
+    image.src = current.src;
+    image.alt = current.alt;
+    counter.textContent = `${carouselIndex + 1} / ${carouselImages.length}`;
+}
+
+function moveImageCarousel(direction) {
+    if (!carouselImages.length) return;
+    carouselIndex = (carouselIndex + direction + carouselImages.length) % carouselImages.length;
+    renderImageCarousel();
+}
+
+function closeImageCarousel() {
+    const modal = document.getElementById('image-carousel-modal');
+    if (!modal) return;
+    modal.classList.remove('is-open');
+    modal.setAttribute('aria-hidden', 'true');
 }
 
 // ====================== MOUSE PARTICLES + PROGRESS + INIT ======================
@@ -601,6 +700,19 @@ function closeGithubModal() {
     modal.setAttribute('aria-hidden', 'true');
 }
 
+
+document.addEventListener('click', event => {
+    const clickedImage = event.target.closest?.('.project-item > img, .project-images-grid img');
+    if (!clickedImage) return;
+
+    const projectItem = clickedImage.closest('.project-item');
+    if (!projectItem) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+    openImageCarousel(projectItem, clickedImage.getAttribute('src'));
+}, true);
+
 document.addEventListener('click', e => {
     if (e.target.id === 'github-modal') {
         closeGithubModal();
@@ -619,5 +731,13 @@ document.addEventListener('click', e => {
 
 
 document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closeGithubModal();
+    if (e.key === 'Escape') {
+        closeGithubModal();
+        closeImageCarousel();
+    }
+
+    if (document.getElementById('image-carousel-modal')?.classList.contains('is-open')) {
+        if (e.key === 'ArrowLeft') moveImageCarousel(-1);
+        if (e.key === 'ArrowRight') moveImageCarousel(1);
+    }
 });

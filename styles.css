@@ -32,7 +32,7 @@ body {
     overflow-x: hidden;
     font-family: 'Press Start 2P', system-ui, sans-serif;
     background: transparent;
-    cursor: url('assets/cursor/NORMAL.cur'), auto;
+    cursor: url('assets/cursor/NORMAL.cur?v=20260604'), auto;
 }
 
 body::before {
@@ -42,7 +42,7 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background: url('assets/images/particle.png') repeat;
+    background: url('assets/images/particle.png?v=20260604') repeat;
     animation: moveParticles 25s linear infinite;
     opacity: 0.78;
     z-index: -1;
@@ -121,7 +121,7 @@ header p {
     gap: 24px;
     place-content: center;
     background: linear-gradient(rgba(3, 6, 20, 0.16), rgba(3, 6, 20, 0.34)),
-                url('assets/images/backgroundw.jpg') center/cover no-repeat;
+                url('assets/images/backgroundw.jpg?v=20260604') center/cover no-repeat;
 }
 
 .level {
@@ -139,7 +139,7 @@ header p {
     font: inherit;
     font-size: clamp(0.75rem, 1.3vw, 0.95rem);
     line-height: 1.65;
-    cursor: url('assets/cursor/SELECT.cur'), pointer;
+    cursor: url('assets/cursor/SELECT.cur?v=20260604'), pointer;
     transition: all 0.3s ease;
 }
 
@@ -287,7 +287,7 @@ img:hover {
     border: 1px solid rgba(255,255,255,0.16);
     border-radius: var(--radius);
     box-shadow: 0 14px 34px rgba(0,0,0,0.28);
-    cursor: url('assets/cursor/SELECT.cur'), pointer;
+    cursor: url('assets/cursor/SELECT.cur?v=20260604'), pointer;
     transition: all 0.3s ease;
 }
 
@@ -359,8 +359,11 @@ img:hover {
 
 
 .project-details > .github-link {
+    display: flex;
     width: fit-content;
     min-width: min(220px, 100%);
+    margin-left: auto;
+    margin-right: auto;
     text-align: center;
 }
 
@@ -432,7 +435,7 @@ img:hover {
     border-radius: 12px;
     font: inherit;
     text-align: left;
-    cursor: url('assets/cursor/SELECT.cur'), pointer;
+    cursor: url('assets/cursor/SELECT.cur?v=20260604'), pointer;
 }
 
 .content {
@@ -479,6 +482,122 @@ img:hover {
     0% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
     100% { opacity: 0; transform: translate3d(0, -25px, 0) scale(0.35); }
 }
+
+
+.project-item > img,
+.project-images-grid img {
+    cursor: zoom-in;
+}
+
+.image-carousel-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 10001;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(1, 4, 20, 0.86);
+    backdrop-filter: blur(8px);
+}
+
+.image-carousel-modal.is-open {
+    display: flex;
+}
+
+.image-carousel-card {
+    position: relative;
+    width: min(1100px, 100%);
+    max-height: 90vh;
+    padding: clamp(42px, 5vw, 58px) clamp(16px, 4vw, 72px) 42px;
+    background: linear-gradient(145deg, rgba(7, 12, 30, 0.96), rgba(0, 18, 68, 0.94));
+    border: 4px solid var(--green);
+    border-radius: var(--radius);
+    box-shadow: 0 0 40px rgba(0, 255, 102, 0.32), 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.image-carousel-image {
+    width: 100%;
+    max-height: 72vh;
+    object-fit: contain;
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255,255,255,0.16);
+}
+
+.image-carousel-image:hover {
+    transform: none;
+}
+
+.image-carousel-close,
+.image-carousel-nav {
+    position: absolute;
+    color: var(--green);
+    background: rgba(0, 8, 30, 0.86);
+    border: 2px solid var(--green);
+    cursor: url('assets/cursor/SELECT.cur?v=20260604'), pointer;
+    font: inherit;
+    box-shadow: var(--shadow-green);
+}
+
+.image-carousel-close {
+    top: 12px;
+    right: 14px;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    line-height: 1;
+}
+
+.image-carousel-nav {
+    top: 50%;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 56px;
+    border-radius: 14px;
+    font-size: 1.35rem;
+}
+
+.image-carousel-prev {
+    left: 14px;
+}
+
+.image-carousel-next {
+    right: 14px;
+}
+
+.image-carousel-counter {
+    margin: 18px 0 0;
+    text-align: center;
+    color: var(--cyan);
+    font-size: 0.72rem;
+}
+
+@media (max-width: 640px) {
+    .image-carousel-card {
+        padding: 50px 12px 34px;
+    }
+
+    .image-carousel-nav {
+        top: auto;
+        bottom: 10px;
+        transform: none;
+        width: 42px;
+        height: 42px;
+    }
+
+    .image-carousel-prev {
+        left: 16px;
+    }
+
+    .image-carousel-next {
+        right: 16px;
+    }
+
+    .image-carousel-counter {
+        margin-bottom: 36px;
+    }
+}
+
 
 /* ====================== RESPONSIVE / ACCESSIBILITY ====================== */
 @media (max-width: 900px) {
@@ -585,7 +704,7 @@ img:hover {
     font: inherit;
     font-size: 0.68rem;
     line-height: 1.5;
-    cursor: url('assets/cursor/SELECT.cur'), pointer;
+    cursor: url('assets/cursor/SELECT.cur?v=20260604'), pointer;
     transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -706,7 +825,7 @@ img:hover {
     border: 3px solid var(--green);
     border-radius: 999px;
     box-shadow: 0 0 18px rgba(0, 255, 102, 0.22);
-    cursor: url('assets/cursor/SELECT.cur'), pointer;
+    cursor: url('assets/cursor/SELECT.cur?v=20260604'), pointer;
     font: inherit;
     text-decoration: none;
     transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
@@ -768,7 +887,7 @@ img:hover {
     background: transparent;
     border: 2px solid var(--green);
     border-radius: 50%;
-    cursor: url('assets/cursor/SELECT.cur'), pointer;
+    cursor: url('assets/cursor/SELECT.cur?v=20260604'), pointer;
     font: inherit;
     line-height: 1;
 }
