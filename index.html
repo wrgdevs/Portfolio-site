@@ -3,29 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Wei Rong Gao's software development portfolio featuring game development, graphics, simulation, data, and finance projects.">
     <title>Wei Rong | Portfolio</title>
+    <preconnect href="https://fonts.googleapis.com">
+    <preconnect href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="image" href="assets/images/backgroundw.jpg">
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <script src="script.js" defer></script>
 </head>
 <body>
-    <div id="loading-screen" class="loading">
+    <div id="loading-screen" class="loading" aria-live="polite" aria-hidden="true">
         <div class="loader">LOADING...</div>
     </div>
 
-    <header>
-        <h1 id="typed-header" class="typewriter"></h1>
-        <p id="typed-subheader"></p>
+    <header class="site-header">
+        <div class="header-content">
+            <div class="header-copy">
+                <h1 id="typed-header" class="typewriter"></h1>
+                <p id="typed-subheader"></p>
+            </div>
+            <button class="header-github-button" type="button" onclick="openGithubModal()" aria-haspopup="dialog">GitHub</button>
+        </div>
     </header>
-    
-    <div class="map">
-        <div class="level" onclick="jumpToSection('about')">ABOUT ME</div>
-        <div class="level" onclick="jumpToSection('tools')">TOOLS & SKILLS</div>
-        <div class="level" onclick="jumpToSection('projects')">PROJECTS</div>
-        <div class="level" onclick="jumpToSection('contact')">CONTACT</div>
+
+    <main>
+        <nav class="map" aria-label="Portfolio sections">
+            <button class="level" type="button" onclick="jumpToSection('about')">ABOUT ME</button>
+            <button class="level" type="button" onclick="jumpToSection('current')">CURRENTLY WORKING ON</button>
+            <button class="level" type="button" onclick="jumpToSection('projects')">PROJECTS</button>
+            <button class="level" type="button" onclick="jumpToSection('contact')">CONTACT</button>
+        </nav>
+    </main>
+
+    <div class="github-modal" id="github-modal" role="dialog" aria-modal="true" aria-labelledby="github-modal-title" aria-hidden="true">
+        <div class="github-modal-card">
+            <button class="github-modal-close" type="button" onclick="closeGithubModal()" aria-label="Close GitHub popup">×</button>
+            <p class="github-modal-label">GitHub Profile</p>
+            <h2 id="github-modal-title">Wei Rong Gao</h2>
+            <p class="github-modal-handle">@wrgdevs</p>
+            <p class="github-modal-text">View my repositories, project source code, and current development work.</p>
+            <a class="github-modal-link" href="https://github.com/wrgdevs" target="_blank" rel="noopener noreferrer">Open GitHub Profile</a>
+        </div>
     </div>
 
-    <div class="progress-circle">
+    <footer class="site-footer">
+        <button class="footer-github-button" type="button" onclick="openGithubModal()">GitHub Profile</button>
+    </footer>
+
+    <div class="progress-circle" aria-hidden="true">
         <svg class="progress-ring" width="60" height="60">
             <circle class="progress-ring__circle" stroke-width="4" fill="transparent" r="28" cx="30" cy="30" />
         </svg>

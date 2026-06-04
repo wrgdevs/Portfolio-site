@@ -1,9 +1,13 @@
 // ====================== LOADING ======================
 function showLoadingAnimation() {
-    document.getElementById('loading-screen').style.display = 'flex';
+    const loading = document.getElementById('loading-screen');
+    loading.style.display = 'flex';
+    loading.setAttribute('aria-hidden', 'false');
 }
 function hideLoadingAnimation() {
-    document.getElementById('loading-screen').style.display = 'none';
+    const loading = document.getElementById('loading-screen');
+    loading.style.display = 'none';
+    loading.setAttribute('aria-hidden', 'true');
 }
 
 // ====================== JUMP TO SECTION ======================
@@ -18,7 +22,7 @@ function jumpToSection(sectionId) {
             document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
         }, 400);
     } else {
-        document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+        document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
     }
 }
 
@@ -51,91 +55,101 @@ function createSection(sectionId) {
             </div>`;
     }
 
-    else if (sectionId === 'tools') {
-    html = `
-    <div class="tools-container">
-        <h1>TOOLS & SKILLS</h1>
-        <img src="assets/images/jg.jpg" alt="Tools">
+    else if (sectionId === 'current') {
+        html = `
+            <div class="current-container">
+                <h1>CURRENTLY WORKING ON</h1>
+                <p class="current-intro">A small look at the larger projects I am building next.</p>
 
-        <div class="tools-section">
-            <!-- Languages -->
-            <div>
-                <h2>Languages</h2>
-                <ul>
-                    <li>C</li>
-                    <li>C++</li>
-                    <li>C#</li>
-                    <li>Java</li>
-                    <li>JavaScript</li>
-                    <li>TypeScript</li>
-                    <li>Python</li>
-                    <li>Lua</li>
-                    <li>SQL</li>
-                </ul>
-            </div>
+                <div class="current-grid">
+                    <article class="current-card current-card-world">
+                        <div class="current-card-header">
+                            <span class="current-tag">C++ • Simulation • Procedural Generation</span>
+                            <h2>Procedural World Generation System</h2>
+                            <p>A large-scale simulation project focused on generating living worlds with terrain, settlements, resources, cultures, factions, and long-term world history. The goal is to create a world where geography, population growth, conflict, trade, and decision-making interact over time to produce emergent outcomes.</p>
+                        </div>
 
-            <!-- Technologies -->
-            <div>
-                <h2>Technology</h2>
-                <ul>
-                    <li>Qt</li>
-                    <li>SDL2</li>
-                    <li>ImGUI</li>
-                    <li>OpenGL</li>
-                    <li>WebGL</li> <!-- NEW -->
-                    <li>Three.js</li> <!-- NEW -->
-                    <li>.NET</li>
-                    <li>React</li>
-                    <li>Node.js</li>
-                    <li>Streamlit</li> <!-- NEW -->
-                    <li>Chart.js</li> <!-- NEW -->
-                </ul>
-            </div>
+                        <div class="current-feature-grid">
+                            <div class="current-feature-group">
+                                <h3>World Generation</h3>
+                                <ul>
+                                    <li>Procedural terrain, biomes, rivers, resources, and settlement placement</li>
+                                    <li>Region-based map systems for inspecting land, borders, and generated history</li>
+                                </ul>
+                            </div>
 
-            <!-- Tools -->
-            <div>
-                <h2>Tools</h2>
-                <ul>
-                    <li>Git</li>
-                    <li>Docker</li>
-                    <li>Visual Studio</li>
-                    <li>VS Code</li>
-                    <li>Unity</li>
-                    <li>Unreal Engine</li>
-                    <li>Blender</li>
-                    <li>Vite</li> <!-- NEW -->
-                    <li>Command-Line Tools</li> <!-- NEW -->
-                </ul>
-            </div>
+                            <div class="current-feature-group">
+                                <h3>Simulation Systems</h3>
+                                <ul>
+                                    <li>Population, factions, economy, expansion, and conflict systems</li>
+                                    <li>Long-term historical events shaped by resources, geography, and faction behavior</li>
+                                </ul>
+                            </div>
 
-            <!-- Concepts -->
-            <div>
-                <h2>Concepts</h2>
-                <ul>
-                    <li>Object-Oriented Programming</li>
-                    <li>Multithreading</li>
-                    <li>Computer Graphics</li>
-                    <li>Entity Component Systems</li>
-                    <li>Networking</li>
-                    <li>CI/CD</li>
-                    <li>Procedural Generation</li>
-                    <li>Data Structures & Algorithms</li> 
-                    <li>Machine Learning Fundamentals</li>
-                </ul>
-            </div>
-        </div>
-    </div>`;
+                            <div class="current-feature-group">
+                                <h3>Technical Focus</h3>
+                                <ul>
+                                    <li>Data-driven rules for tuning world behavior without rewriting core logic</li>
+                                    <li>Visualization tools for debugging and understanding generated worlds</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="current-card current-card-stock">
+                        <div class="current-card-header">
+                            <span class="current-tag">Web App • Finance • Data</span>
+                            <h2>Stock Research Platform</h2>
+                            <p>A web application for researching companies, organizing investment notes, comparing businesses, and building simple valuation assumptions. The project is designed around making company research easier to track over time instead of keeping analysis scattered across spreadsheets and notes.</p>
+                        </div>
+
+                        <div class="current-feature-grid">
+                            <div class="current-feature-group">
+                                <h3>Frontend</h3>
+                                <ul>
+                                    <li>Company search, financial statement pages, ratio dashboard, and watchlist</li>
+                                    <li>Notes system, comparison view, and valuation model page</li>
+                                </ul>
+                            </div>
+
+                            <div class="current-feature-group">
+                                <h3>Backend</h3>
+                                <ul>
+                                    <li>Company database, financial statement storage, and search indexing</li>
+                                    <li>Notes/watchlist system and scheduled data fetch jobs</li>
+                                </ul>
+                            </div>
+
+                            <div class="current-feature-group">
+                                <h3>Research Features</h3>
+                                <ul>
+                                    <li>Compare companies side-by-side and auto-calculate financial ratios</li>
+                                    <li>Save investment thesis notes, build simple DCF assumptions, and track thesis changes over time</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>`;
     }
 
     else if (sectionId === 'projects') {
     html = `
         <div class="projects-container">
             <h1 style="text-align:center;color:#00acc1;">PROJECTS</h1>
-            <!-- 2. 3D Graphics Rasterizer -->
-            <div class="project-item" onclick="toggleProjectDetails('p2')">
-                <img src="assets/images/projects/Project2/textured.png" alt="Rasterizer">
+            <p class="projects-intro">Browse projects by area instead of scanning one long list.</p>
+            <div class="project-filter-bar" aria-label="Project filters">
+                <button type="button" class="project-filter active" data-filter="all">All</button>
+                <button type="button" class="project-filter" data-filter="game-graphics">Game & Graphics</button>
+                <button type="button" class="project-filter" data-filter="finance-data">Finance & Data</button>
+                <button type="button" class="project-filter" data-filter="simulation">Simulation</button>
+                <button type="button" class="project-filter" data-filter="tools-systems">Tools & Systems</button>
+            </div>
+            <!-- 3D Graphics Rasterizer -->
+            <div class="project-item" data-category="game-graphics tools-systems" onclick="toggleProjectDetails('graphics-rasterizer')">
+                <img loading="lazy" decoding="async" src="assets/images/projects/3d-graphics-rasterizer/textured.png" alt="Rasterizer">
                 <div><h2>3D Graphics Rasterizer</h2><p>From-scratch software 3D renderer with full pipeline and live GUI.</p></div>
-                <div class="project-details" id="p2">
+                <div class="project-details" id="graphics-rasterizer">
                     <p><strong>Languages:</strong> C++</p>
                     <div class="project-features">
                         <h3>Core Features</h3>
@@ -153,16 +167,44 @@ function createSection(sectionId) {
                             <li>C++ • SDL2 • ImGui • TGAImage • Catch2</li>
                         </ul>
                     </div>
-                    <a href="https://github.com/wrgdevs/software-rasterizer" target="_blank" class="github-link">View on GitHub</a>
-                    <div class="project-images-grid"><img src="assets/images/projects/Project2/textured.png"><img src="assets/images/projects/Project2/normal_map.png"><img src="assets/images/projects/Project2/Wireframe.png"><img src="assets/images/projects/Project2/specular.png"></div>
+                    <a href="https://github.com/wrgdevs/software-rasterizer" target="_blank" rel="noopener noreferrer" class="github-link">View on GitHub</a>
+                    <div class="project-images-grid"><img loading="lazy" decoding="async" src="assets/images/projects/3d-graphics-rasterizer/textured.png"><img loading="lazy" decoding="async" src="assets/images/projects/3d-graphics-rasterizer/normal_map.png"><img loading="lazy" decoding="async" src="assets/images/projects/3d-graphics-rasterizer/Wireframe.png"><img loading="lazy" decoding="async" src="assets/images/projects/3d-graphics-rasterizer/specular.png"></div>
                 </div>
             </div>
 
-            <!-- 10. Procedural Terrain Generator -->
-            <div class="project-item" onclick="toggleProjectDetails('p10')">
-                <img src="assets/images/projects/Project9/mount.png" alt="Procedural Terrain">
+            <!-- Custom ECS Game Engine -->
+            <div class="project-item" data-category="game-graphics tools-systems" onclick="toggleProjectDetails('custom-ecs-game-engine')">
+                <img loading="lazy" decoding="async" src="assets/images/projects/custom-ecs-game-engine/editor.png" alt="Custom ECS Game Engine">
+                <div>
+                    <h2>Custom ECS Game Engine</h2>
+                    <p>Lightweight C++ game engine with ECS architecture, editor tooling, Lua scripting, scene serialization, and runtime export.</p>
+                </div>
+                <div class="project-details" id="custom-ecs-game-engine">
+                    <p><strong>Languages:</strong> C++, Lua</p>
+                    <div class="project-features">
+                        <h3>Core Features</h3>
+                        <ul>
+                            <li>Built modular C++20 engine architecture with ECS-based scene, entity, and component management</li>
+                            <li>Created ImGui editor with scene hierarchy, inspector, viewport, asset browser, prefab browser, and runtime preview</li>
+                            <li>Implemented JSON scene/prefab serialization with save/load workflows and reusable entity prefabs</li>
+                            <li>Added Lua scripting, animation, audio playback, physics/collision, undo/redo, and event systems</li>
+                            <li>Developed resource manager with texture/audio caching and PNG/JPG/BMP asset loading</li>
+                            <li>Built standalone runtime/export pipeline to separate editor tooling from playable game builds</li>
+                        </ul>
+                        <h3>Tech Stack</h3>
+                        <ul>
+                            <li>C++20, CMake, SDL2, OpenGL, ImGui, Lua, EnTT, GLM, JSON, stb_image</li>
+                        </ul>
+                    </div>
+                    <a href="https://github.com/wrgdevs/CustomECSEngine" target="_blank" rel="noopener noreferrer" class="github-link">View on GitHub</a>
+                    <div class="project-images-grid"><img loading="lazy" decoding="async" src="assets/images/projects/custom-ecs-game-engine/editor.png"><img loading="lazy" decoding="async" src="assets/images/projects/custom-ecs-game-engine/prefab.png"><img loading="lazy" decoding="async" src="assets/images/projects/custom-ecs-game-engine/transform.png"><img loading="lazy" decoding="async" src="assets/images/projects/custom-ecs-game-engine/animation.png"></div>
+                </div>
+            </div>
+            <!-- Procedural Terrain Generator -->
+            <div class="project-item" data-category="game-graphics simulation" onclick="toggleProjectDetails('procedural-terrain-generator')">
+                <img loading="lazy" decoding="async" src="assets/images/projects/procedural-terrain-generator/mount.png" alt="Procedural Terrain">
                 <div><h2>Procedural Terrain Generator</h2><p>Real-time 3D terrain engine with infinite streaming and erosion simulation.</p></div>
-                <div class="project-details" id="p10">
+                <div class="project-details" id="procedural-terrain-generator">
                     <p><strong>Languages:</strong> TypeScript</p>
                     <div class="project-features">
                         <h3>Core Features</h3>
@@ -178,16 +220,16 @@ function createSection(sectionId) {
                             <li>TypeScript • React • Three.js • WebGL • Vite</li>
                         </ul>
                     </div>
-                    <a href="https://github.com/wrgdevs/procedural-terrain-generator" target="_blank" class="github-link">View on GitHub</a>
-                    <div class="project-images-grid"><img src="assets/images/projects/Project9/mount.png"><img src="assets/images/projects/Project9/island.png"><img src="assets/images/projects/Project9/desert.png"></div>
+                    <a href="https://github.com/wrgdevs/procedural-terrain-generator" target="_blank" rel="noopener noreferrer" class="github-link">View on GitHub</a>
+                    <div class="project-images-grid"><img loading="lazy" decoding="async" src="assets/images/projects/procedural-terrain-generator/mount.png"><img loading="lazy" decoding="async" src="assets/images/projects/procedural-terrain-generator/island.png"><img loading="lazy" decoding="async" src="assets/images/projects/procedural-terrain-generator/desert.png"></div>
                 </div>
             </div>
             
-            <!-- 11. World Economy Simulator -->
-            <div class="project-item" onclick="toggleProjectDetails('p11')">
-                <img src="assets/images/projects/Project10/eco1.png" alt="World Economy">
+            <!-- World Economy Simulator -->
+            <div class="project-item" data-category="simulation finance-data" onclick="toggleProjectDetails('world-economy-simulator')">
+                <img loading="lazy" decoding="async" src="assets/images/projects/world-economy-simulator/eco1.png" alt="World Economy">
                 <div><h2>World Economy Simulator</h2><p>Interactive multi-country economic simulation with trade networks and AI policies.</p></div>
-                <div class="project-details" id="p11">
+                <div class="project-details" id="world-economy-simulator">
                     <p><strong>Languages:</strong> TypeScript</p>
                     <div class="project-features">
                         <h3>Core Features</h3>
@@ -203,16 +245,16 @@ function createSection(sectionId) {
                             <li>TypeScript • React • Chart.js</li>
                         </ul>
                     </div>
-                    <a href="https://github.com/wrgdevs/world-economy-simulator" target="_blank" class="github-link">View on GitHub</a>
-                    <div class="project-images-grid"><img src="assets/images/projects/Project10/eco1.png"><img src="assets/images/projects/Project10/eco2.png"><img src="assets/images/projects/Project10/eco3.png"><img src="assets/images/projects/Project10/eco4.png"></div>
+                    <a href="https://github.com/wrgdevs/world-economy-simulator" target="_blank" rel="noopener noreferrer" class="github-link">View on GitHub</a>
+                    <div class="project-images-grid"><img loading="lazy" decoding="async" src="assets/images/projects/world-economy-simulator/eco1.png"><img loading="lazy" decoding="async" src="assets/images/projects/world-economy-simulator/eco2.png"><img loading="lazy" decoding="async" src="assets/images/projects/world-economy-simulator/eco3.png"><img loading="lazy" decoding="async" src="assets/images/projects/world-economy-simulator/eco4.png"></div>
                 </div>
             </div>
 
-            <!-- 13. Algorithmic Trading Backtester -->
-            <div class="project-item" onclick="toggleProjectDetails('p13')">
-                <img src="assets/images/projects/Project13/charts.png" alt="Algorithmic Trading Backtester">
+            <!-- Algorithmic Trading Backtester -->
+            <div class="project-item" data-category="finance-data" onclick="toggleProjectDetails('algorithmic-trading-backtester')">
+                <img loading="lazy" decoding="async" src="assets/images/projects/algorithmic-trading-backtester/charts.png" alt="Algorithmic Trading Backtester">
                 <div><h2>Algorithmic Trading Backtester</h2><p>Interactive trading strategy backtester with portfolio analytics, custom rule building and risk reporting.</p></div>
-                <div class="project-details" id="p13">
+                <div class="project-details" id="algorithmic-trading-backtester">
                     <p><strong>Languages:</strong> Python</p>
                     <div class="project-features">
                         <h3>Core Features</h3>
@@ -228,22 +270,22 @@ function createSection(sectionId) {
                             <li>Python • Pandas • NumPy • Plotly • Streamlit • Pytest</li>
                         </ul>
                     </div>
-                    <a href="https://github.com/wrgdevs/algorithmic-trading-backtester" target="_blank" class="github-link">View on GitHub</a>
+                    <a href="https://github.com/wrgdevs/algorithmic-trading-backtester" target="_blank" rel="noopener noreferrer" class="github-link">View on GitHub</a>
                     <div class="project-images-grid">
-                        <img src="assets/images/projects/Project13/charts.png">
-                        <img src="assets/images/projects/Project13/charts-more.png">
-                        <img src="assets/images/projects/Project13/custom.png">
-                        <img src="assets/images/projects/Project13/signal.png">
-                        <img src="assets/images/projects/Project13/weights.png">
+                        <img loading="lazy" decoding="async" src="assets/images/projects/algorithmic-trading-backtester/charts.png">
+                        <img loading="lazy" decoding="async" src="assets/images/projects/algorithmic-trading-backtester/charts-more.png">
+                        <img loading="lazy" decoding="async" src="assets/images/projects/algorithmic-trading-backtester/custom.png">
+                        <img loading="lazy" decoding="async" src="assets/images/projects/algorithmic-trading-backtester/signal.png">
+                        <img loading="lazy" decoding="async" src="assets/images/projects/algorithmic-trading-backtester/weights.png">
                     </div>
                 </div>
             </div>
 
-            <!-- 12. Neural Network from Scratch -->
-            <div class="project-item" onclick="toggleProjectDetails('p12')">
-                <img src="assets/images/projects/Project12/learn1.png" alt="NN from Scratch">
+            <!-- Neural Network from Scratch -->
+            <div class="project-item" data-category="finance-data tools-systems" onclick="toggleProjectDetails('neural-network-from-scratch')">
+                <img loading="lazy" decoding="async" src="assets/images/projects/neural-network-from-scratch/learn1.png" alt="NN from Scratch">
                 <div><h2>Neural Network from Scratch</h2><p>Complete neural network built from scratch in NumPy that evolves into a full MNIST classifier with training visualizations, experiments, and a polished installable CLI tool.</p></div>
-                <div class="project-details" id="p12">
+                <div class="project-details" id="neural-network-from-scratch">
                     <p><strong>Languages:</strong> Python</p>
                     <div class="project-features">
                         <h3>Core Features</h3>
@@ -260,21 +302,21 @@ function createSection(sectionId) {
                             <li>Python • NumPy • Matplotlib • Streamlit</li>
                         </ul>
                     </div>
-                    <a href="https://github.com/wrgdevs/nn-from-scratch-cli" target="_blank" class="github-link">View on GitHub</a>
+                    <a href="https://github.com/wrgdevs/nn-from-scratch-cli" target="_blank" rel="noopener noreferrer" class="github-link">View on GitHub</a>
                         <div class="project-images-grid">
-                            <img src="assets/images/projects/Project12/learn1.png">
-                            <img src="assets/images/projects/Project12/learn2.png">
-                            <img src="assets/images/projects/Project12/learn3.png">
+                            <img loading="lazy" decoding="async" src="assets/images/projects/neural-network-from-scratch/learn1.png">
+                            <img loading="lazy" decoding="async" src="assets/images/projects/neural-network-from-scratch/learn2.png">
+                            <img loading="lazy" decoding="async" src="assets/images/projects/neural-network-from-scratch/learn3.png">
                         </div>
                     </div>
                 </div>
 
             
-            <!-- 6. Procedural Dungeon Map Generator -->
-            <div class="project-item" onclick="toggleProjectDetails('p6')">
-                <img src="assets/images/projects/Project5/dun1.png" alt="Dungeon Gen">
+            <!-- Procedural Dungeon Map Generator -->
+            <div class="project-item" data-category="game-graphics simulation" onclick="toggleProjectDetails('procedural-dungeon-map-generator')">
+                <img loading="lazy" decoding="async" src="assets/images/projects/procedural-dungeon-map-generator/dun1.png" alt="Dungeon Gen">
                 <div><h2>Procedural Dungeon Map Generator</h2><p>Real-time procedural dungeon system with multiple algorithms and live analytics.</p></div>
-                <div class="project-details" id="p6">
+                <div class="project-details" id="procedural-dungeon-map-generator">
                     <p><strong>Languages:</strong> C++</p>
                     <div class="project-features">
                         <h3>Core Features</h3>
@@ -290,16 +332,16 @@ function createSection(sectionId) {
                             <li>C++17/20 • SDL2 • SDL2_ttf • nlohmann::json • Multithreading</li>
                         </ul>
                     </div>
-                     <a href="https://github.com/wrgdevs/dungeonMapGen" target="_blank" class="github-link">View on GitHub</a>
-                    <div class="project-images-grid"><img src="assets/images/projects/Project5/dun1.png"><img src="assets/images/projects/Project5/dun2.png"><img src="assets/images/projects/Project5/dun3.png"></div>
+                     <a href="https://github.com/wrgdevs/dungeonMapGen" target="_blank" rel="noopener noreferrer" class="github-link">View on GitHub</a>
+                    <div class="project-images-grid"><img loading="lazy" decoding="async" src="assets/images/projects/procedural-dungeon-map-generator/dun1.png"><img loading="lazy" decoding="async" src="assets/images/projects/procedural-dungeon-map-generator/dun2.png"><img loading="lazy" decoding="async" src="assets/images/projects/procedural-dungeon-map-generator/dun3.png"></div>
                 </div>
             </div>
 
-            <!-- 7. EcoSim -->
-            <div class="project-item" onclick="toggleProjectDetails('p7')">
-                <img src="assets/images/projects/Project6/eco1.png" alt="EcoSim">
+            <!-- Ecosystem Simulation -->
+            <div class="project-item" data-category="simulation" onclick="toggleProjectDetails('ecosystem-simulation')">
+                <img loading="lazy" decoding="async" src="assets/images/projects/ecosystem-simulation/eco1.png" alt="EcoSim">
                 <div><h2>Ecosystem Simulation</h2><p>Real-time 2D ecosystem with plants, prey and predators showing emergent behaviors.</p></div>
-                <div class="project-details" id="p7">
+                <div class="project-details" id="ecosystem-simulation">
                     <p><strong>Languages:</strong> C++</p>
                     <div class="project-features">
                         <h3>Core Features</h3>
@@ -316,16 +358,16 @@ function createSection(sectionId) {
                             <li>C++17 • SDL2 • SDL2_ttf • Custom ECS • Multithreading</li>
                         </ul>
                     </div>
-                    <a href="https://github.com/wrgdevs/EcoSim" target="_blank" class="github-link">View on GitHub</a>
-                    <div class="project-images-grid"><img src="assets/images/projects/Project6/eco1.png"><img src="assets/images/projects/Project6/eco2.png"><img src="assets/images/projects/Project6/eco3.png"></div>
+                    <a href="https://github.com/wrgdevs/EcoSim" target="_blank" rel="noopener noreferrer" class="github-link">View on GitHub</a>
+                    <div class="project-images-grid"><img loading="lazy" decoding="async" src="assets/images/projects/ecosystem-simulation/eco1.png"><img loading="lazy" decoding="async" src="assets/images/projects/ecosystem-simulation/eco2.png"><img loading="lazy" decoding="async" src="assets/images/projects/ecosystem-simulation/eco3.png"></div>
                 </div>
             </div>
 
-            <!-- 8. Monte Carlo Portfolio Simulator -->
-            <div class="project-item" onclick="toggleProjectDetails('p8')">
-                <img src="assets/images/projects/Project8/Monte1.png" alt="Monte Carlo">
+            <!-- Monte Carlo Portfolio Simulator -->
+            <div class="project-item" data-category="finance-data simulation" onclick="toggleProjectDetails('monte-carlo-portfolio-simulator')">
+                <img loading="lazy" decoding="async" src="assets/images/projects/monte-carlo-portfolio-simulator/Monte1.png" alt="Monte Carlo">
                 <div><h2>Monte Carlo Portfolio Simulator</h2><p>Advanced risk analysis engine with historical data and interactive UI.</p></div>
-                <div class="project-details" id="p8">
+                <div class="project-details" id="monte-carlo-portfolio-simulator">
                     <p><strong>Languages:</strong> Python</p>
                     <div class="project-features">
                         <h3>Core Features</h3>
@@ -341,16 +383,16 @@ function createSection(sectionId) {
                             <li>Python • NumPy • pandas • yfinance • Matplotlib • Streamlit</li>
                         </ul>
                     </div>
-                    <a href="https://github.com/wrgdevs/monte-carlo-portfolio-simulator" class="github-link">View on GitHub</a>
-                    <div class="project-images-grid"><img src="assets/images/projects/Project8/Monte1.png"><img src="assets/images/projects/Project8/Monte2.png"><img src="assets/images/projects/Project8/Monte3.png"><img src="assets/images/projects/Project8/Monte4.png"></div>
+                    <a href="https://github.com/wrgdevs/monte-carlo-portfolio-simulator" target="_blank" rel="noopener noreferrer" class="github-link">View on GitHub</a>
+                    <div class="project-images-grid"><img loading="lazy" decoding="async" src="assets/images/projects/monte-carlo-portfolio-simulator/Monte1.png"><img loading="lazy" decoding="async" src="assets/images/projects/monte-carlo-portfolio-simulator/Monte2.png"><img loading="lazy" decoding="async" src="assets/images/projects/monte-carlo-portfolio-simulator/Monte3.png"><img loading="lazy" decoding="async" src="assets/images/projects/monte-carlo-portfolio-simulator/Monte4.png"></div>
                 </div>
             </div>
 
-            <!-- 9. Steam Game Analytics -->
-            <div class="project-item" onclick="toggleProjectDetails('p9')">
-                <img src="assets/images/projects/Project7/Ana1.png" alt="Steam Analytics">
+            <!-- Steam Game Analytics -->
+            <div class="project-item" data-category="finance-data" onclick="toggleProjectDetails('steam-game-analytics')">
+                <img loading="lazy" decoding="async" src="assets/images/projects/steam-game-analytics/Ana1.png" alt="Steam Analytics">
                 <div><h2>Steam Game Analytics</h2><p>Offline analytics platform for 42k+ Steam games with CLI and Streamlit dashboard.</p></div>
-                <div class="project-details" id="p9">
+                <div class="project-details" id="steam-game-analytics">
                     <p><strong>Languages:</strong> Python</p>
                     <div class="project-features">
                         <h3>Core Features</h3>
@@ -367,15 +409,15 @@ function createSection(sectionId) {
                         </ul>
                     </div>
                     <a href="javascript:void(0);" class="github-link">Not on GitHub yet</a>
-                    <div class="project-images-grid"><img src="assets/images/projects/Project7/Ana1.png"><img src="assets/images/projects/Project7/Ana2.png"><img src="assets/images/projects/Project7/Ana3.png"></div>
+                    <div class="project-images-grid"><img loading="lazy" decoding="async" src="assets/images/projects/steam-game-analytics/Ana1.png"><img loading="lazy" decoding="async" src="assets/images/projects/steam-game-analytics/Ana2.png"><img loading="lazy" decoding="async" src="assets/images/projects/steam-game-analytics/Ana3.png"></div>
                 </div>
             </div>
 
-            <!-- 1. 2D Game Editor -->
-            <div class="project-item" onclick="toggleProjectDetails('p1')">
-                <img src="assets/images/projects/Project1/Menu.png" alt="Editor">
+            <!-- 2D Game Editor -->
+            <div class="project-item" data-category="game-graphics tools-systems" onclick="toggleProjectDetails('two-d-game-editor')">
+                <img loading="lazy" decoding="async" src="assets/images/projects/2d-game-editor/Menu.png" alt="Editor">
                 <div><h2>2D Game Editor</h2><p>Custom 2D level editor with real-time feedback and structured data handling.</p></div>
-                <div class="project-details" id="p1">
+                <div class="project-details" id="two-d-game-editor">
                     <p><strong>Languages:</strong> C++</p>
                     <div class="project-features">
                         <h3>Core Features</h3>
@@ -393,16 +435,16 @@ function createSection(sectionId) {
                             <li>C++ • SDL2 • ImGui • Lua • JSON</li>
                         </ul>
                     </div>
-                    <a href="https://github.com/chilly-nap/Hooked-on-Speed" target="_blank" class="github-link">View on GitHub (Not Completely Updated, Old Version)</a>
-                    <div class="project-images-grid"><img src="assets/images/projects/Project1/Menu.png"><img src="assets/images/projects/Project1/Game.png"></div>
+                    <a href="https://github.com/chilly-nap/Hooked-on-Speed" target="_blank" rel="noopener noreferrer" class="github-link">View on GitHub (Not Completely Updated, Old Version)</a>
+                    <div class="project-images-grid"><img loading="lazy" decoding="async" src="assets/images/projects/2d-game-editor/Menu.png"><img loading="lazy" decoding="async" src="assets/images/projects/2d-game-editor/Game.png"></div>
                 </div>
             </div>
 
-            <!-- 3. Tactical RPG -->
-            <div class="project-item" onclick="toggleProjectDetails('p3')">
-                <img src="assets/images/projects/Project3/Chess.png" alt="Tactical RPG">
+            <!-- Tactical RPG -->
+            <div class="project-item" data-category="game-graphics" onclick="toggleProjectDetails('tactical-rpg')">
+                <img loading="lazy" decoding="async" src="assets/images/projects/tactical-rpg/Chess.png" alt="Tactical RPG">
                 <div><h2>Tactical RPG</h2><p>Chess-inspired grid-based tactical RPG with modular classes.</p></div>
-                <div class="project-details" id="p3">
+                <div class="project-details" id="tactical-rpg">
                     <p><strong>Languages:</strong> C#</p>
                     <div class="project-features">
                         <h3>Core Features</h3>
@@ -419,15 +461,15 @@ function createSection(sectionId) {
                         </ul>
                     </div>
                     <a href="javascript:void(0);" class="github-link">Not on GitHub yet</a>
-                    <div class="project-images-grid"><img src="assets/images/projects/Project3/Chess.png"></div>
+                    <div class="project-images-grid"><img loading="lazy" decoding="async" src="assets/images/projects/tactical-rpg/Chess.png"></div>
                 </div>
             </div>
 
-             <!-- 4. Shogi Learning App -->
-            <div class="project-item" onclick="toggleProjectDetails('p4')">
-                <img src="assets/images/projects/Project4/Tutorial.png" alt="Shogi">
+             <!-- Shogi Learning App -->
+            <div class="project-item" data-category="tools-systems" onclick="toggleProjectDetails('shogi-learning-app')">
+                <img loading="lazy" decoding="async" src="assets/images/projects/shogi-learning-app/Tutorial.png" alt="Shogi">
                 <div><h2>Shogi Learning App</h2><p>Interactive Shogi tutor with tutorials, puzzles and progress tracking.</p></div>
-                <div class="project-details" id="p4">
+                <div class="project-details" id="shogi-learning-app">
                     <p><strong>Languages:</strong> Java</p>
                     <div class="project-features">
                         <h3>Core Features</h3>
@@ -444,15 +486,15 @@ function createSection(sectionId) {
                         </ul>
                     </div>
                     <a href="javascript:void(0);" class="github-link">Not on GitHub yet</a>
-                    <div class="project-images-grid"><img src="assets/images/projects/Project4/Teach.png"><img src="assets/images/projects/Project4/Tutorial.png"></div>
+                    <div class="project-images-grid"><img loading="lazy" decoding="async" src="assets/images/projects/shogi-learning-app/Teach.png"><img loading="lazy" decoding="async" src="assets/images/projects/shogi-learning-app/Tutorial.png"></div>
                 </div>
             </div>
 
-            <!-- 5. CHIP-8 Emulator -->
-            <div class="project-item" onclick="toggleProjectDetails('p5')">
-                <img src="assets/images/projects/Project11/game1.png" alt="CHIP-8 Emulator">
+            <!-- CHIP-8 Emulator -->
+            <div class="project-item" data-category="tools-systems game-graphics" onclick="toggleProjectDetails('chip8-emulator')">
+                <img loading="lazy" decoding="async" src="assets/images/projects/chip8-emulator/game1.png" alt="CHIP-8 Emulator">
                 <div><h2>CHIP-8 Emulator</h2><p>Low-level CHIP-8 emulator with accurate instruction handling and custom graphics.</p></div>
-                <div class="project-details" id="p5">
+                <div class="project-details" id="chip8-emulator">
                     <p><strong>Languages:</strong> C++</p>
                     <div class="project-features">
                         <h3>Core Features</h3>
@@ -469,7 +511,7 @@ function createSection(sectionId) {
                         </ul>
                     </div>
                     <a href="javascript:void(0);" class="github-link">Not on GitHub yet</a>
-                    <div class="project-images-grid"><img src="assets/images/projects/Project11/game1.png"></div>
+                    <div class="project-images-grid"><img loading="lazy" decoding="async" src="assets/images/projects/chip8-emulator/game1.png"></div>
                 </div>
             </div>
         </div>`;
@@ -482,6 +524,7 @@ function createSection(sectionId) {
                 <p>Want to chat or collaborate?</p>
                 <img src="assets/images/robot.png" alt="Robot">
                 <p style="font-size:1.3em;margin-top:20px;">wrgao@uwaterloo.ca</p>
+                <button type="button" onclick="openGithubModal()" class="github-link profile-github-link">View GitHub Profile</button>
             </div>`;
     }
 
@@ -492,11 +535,16 @@ function createSection(sectionId) {
 // ====================== PROJECT TOGGLE ======================
 function toggleProjectDetails(id) {
     const el = document.getElementById(id);
-    el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+    if (!el) return;
+    const isOpen = el.classList.toggle('is-open');
+    el.style.display = isOpen ? 'block' : 'none';
 }
 
 // ====================== MOUSE PARTICLES + PROGRESS + INIT ======================
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 document.addEventListener("mousemove", e => {
+    if (reduceMotion.matches) return;
+
     const p = document.createElement("div");
     p.className = "particle";
     p.style.left = e.pageX + "px";
@@ -504,7 +552,7 @@ document.addEventListener("mousemove", e => {
     p.style.width = p.style.height = Math.random() * 6 + 3 + "px";
     document.body.appendChild(p);
     setTimeout(() => p.remove(), 800);
-});
+}, { passive: true });
 
 const circle = document.querySelector('.progress-ring__circle');
 const circumference = 175;
@@ -512,10 +560,11 @@ circle.style.strokeDasharray = circumference;
 circle.style.strokeDashoffset = circumference;
 
 function updateProgress() {
-    const scrollPercent = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+    const scrollPercent = maxScroll > 0 ? window.scrollY / maxScroll : 0;
     circle.style.strokeDashoffset = circumference * (1 - scrollPercent);
 }
-window.addEventListener('scroll', updateProgress);
+window.addEventListener('scroll', updateProgress, { passive: true });
 
 document.addEventListener("DOMContentLoaded", () => {
     hideLoadingAnimation();
@@ -523,10 +572,52 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById('typed-subheader').textContent = "DIVE INTO MY WORK!";
 });
 
+
+function filterProjects(filter) {
+    document.querySelectorAll('.project-filter').forEach(button => {
+        button.classList.toggle('active', button.dataset.filter === filter);
+    });
+
+    document.querySelectorAll('.project-item').forEach(item => {
+        const categories = item.dataset.category || '';
+        const show = filter === 'all' || categories.split(' ').includes(filter);
+        item.classList.toggle('is-hidden', !show);
+    });
+}
+
+
+// ====================== GITHUB MODAL ======================
+function openGithubModal() {
+    const modal = document.getElementById('github-modal');
+    if (!modal) return;
+    modal.classList.add('is-open');
+    modal.setAttribute('aria-hidden', 'false');
+}
+
+function closeGithubModal() {
+    const modal = document.getElementById('github-modal');
+    if (!modal) return;
+    modal.classList.remove('is-open');
+    modal.setAttribute('aria-hidden', 'true');
+}
+
 document.addEventListener('click', e => {
+    if (e.target.id === 'github-modal') {
+        closeGithubModal();
+    }
+
+    if (e.target.classList.contains('project-filter')) {
+        filterProjects(e.target.dataset.filter);
+    }
+
     if (e.target.classList.contains('collapsible')) {
         e.target.classList.toggle('active');
         const content = e.target.nextElementSibling;
         content.style.display = (content.style.display === 'block') ? 'none' : 'block';
     }
+});
+
+
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeGithubModal();
 });
