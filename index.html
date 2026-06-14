@@ -10,23 +10,25 @@
     <title>Wei Rong | Portfolio</title>
     <preconnect href="https://fonts.googleapis.com">
     <preconnect href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" as="image" href="assets/images/backgroundw.jpg?v=20260604">
-    <link rel="stylesheet" href="styles.css?v=20260604">
+    <link rel="preload" as="image" href="assets/images/backgroundw.jpg?v=20260614b">
+    <link rel="stylesheet" href="styles.css?v=20260614b">
+    <link rel="stylesheet" href="projects.css?v=20260614b">
+    <link rel="stylesheet" href="effects.css?v=20260614b">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-    <script src="script.js?v=20260604" defer></script>
+    <script src="portfolio-data.js?v=20260614b" defer></script>
+    <script src="script.js?v=20260614b" defer></script>
 </head>
 <body>
-    <div id="loading-screen" class="loading" aria-live="polite" aria-hidden="true">
-        <div class="loader">LOADING...</div>
-    </div>
-
     <header class="site-header">
         <div class="header-content">
             <div class="header-copy">
                 <h1 id="typed-header" class="typewriter"></h1>
                 <p id="typed-subheader"></p>
             </div>
-            <button class="header-github-button" type="button" onclick="openGithubModal()" aria-haspopup="dialog">GitHub</button>
+            <div class="header-actions">
+                <button class="sound-toggle" id="sound-toggle" type="button" aria-pressed="false">AUDIO OFF</button>
+                <button class="header-github-button" type="button" onclick="openGithubModal()" aria-haspopup="dialog">GitHub</button>
+            </div>
         </div>
     </header>
 
@@ -41,7 +43,7 @@
 
     <div class="github-modal" id="github-modal" role="dialog" aria-modal="true" aria-labelledby="github-modal-title" aria-hidden="true">
         <div class="github-modal-card">
-            <button class="github-modal-close" type="button" onclick="closeGithubModal()" aria-label="Close GitHub popup">×</button>
+            <button class="github-modal-close" type="button" onclick="closeGithubModal()" aria-label="Close GitHub popup">x</button>
             <p class="github-modal-label">GitHub Profile</p>
             <h2 id="github-modal-title">Wei Rong Gao</h2>
             <p class="github-modal-handle">@wrgdevs</p>
@@ -50,9 +52,13 @@
         </div>
     </div>
 
-    <footer class="site-footer">
-        <button class="footer-github-button" type="button" onclick="openGithubModal()">GitHub Profile</button>
-    </footer>
+
+    <nav class="section-radar" aria-label="Section radar">
+        <button type="button" data-section="about" aria-label="Jump to About"></button>
+        <button type="button" data-section="current" aria-label="Jump to Current Work"></button>
+        <button type="button" data-section="projects" aria-label="Jump to Projects"></button>
+        <button type="button" data-section="contact" aria-label="Jump to Contact"></button>
+    </nav>
 
     <div class="progress-circle" aria-hidden="true">
         <svg class="progress-ring" width="60" height="60">
