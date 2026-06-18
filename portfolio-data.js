@@ -1,4 +1,4 @@
-const ASSET_VERSION = "20260614b";
+const ASSET_VERSION = "20260618a";
 
 const PROJECT_FILTERS = [
     { id: "all", label: "All" },
@@ -137,6 +137,32 @@ const PROJECTS = [
             "assets/images/projects/algorithmic-trading-backtester/custom.png",
             "assets/images/projects/algorithmic-trading-backtester/signal.png",
             "assets/images/projects/algorithmic-trading-backtester/weights.png"
+        ]
+    },
+    {
+        id: "banking-transaction-ledger",
+        title: "Banking Transaction Ledger",
+        summary: "Full-stack banking ledger with double-entry accounting, JWT role policies, reconciliation, and concurrency-safe transactions.",
+        categories: ["finance-data", "tools-systems"],
+        image: "assets/images/projects/bank-ledger/overview.png",
+        imageAlt: "Banking transaction ledger account overview dashboard",
+        languages: ["C#", "TypeScript", "SQL"],
+        techStack: ["ASP.NET Core 9", "React", "TypeScript", "PostgreSQL", "Entity Framework Core", "Docker Compose", "xUnit", "GitHub Actions"],
+        features: [
+            "Built a full-stack banking ledger with ASP.NET Core API, React/TypeScript client, PostgreSQL storage, and Docker Compose local setup",
+            "Implemented double-entry ledger operations for deposits, withdrawals, and transfers using immutable debit and credit entries",
+            "Added idempotency-key handling so exact retries return the original result while conflicting reused keys are rejected",
+            "Protected customer, admin, and auditor workflows with signed JWT authentication, ownership checks, and role-based policies",
+            "Created reconciliation tools to detect unbalanced transactions, missing entries, cached balance mismatches, and invalid negative balances",
+            "Used PostgreSQL xmin concurrency tokens and integration tests to prevent concurrent double-spend scenarios",
+            "Added audit logs, transaction reversals, account limits, monthly JSON/CSV statements, health checks, Swagger, CI, and production-style Docker/Nginx artifacts"
+        ],
+        github: { label: "Repository coming soon" },
+        images: [
+            "assets/images/projects/bank-ledger/overview.png",
+            "assets/images/projects/bank-ledger/transactions.png",
+            "assets/images/projects/bank-ledger/statements.png",
+            "assets/images/projects/bank-ledger/login.png"
         ]
     },
 
