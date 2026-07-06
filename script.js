@@ -1,3 +1,30 @@
+let lastActiveElement = null;
+
+function handleModalTab(event, modalEl) {
+    if (event.key !== "Tab") return;
+    
+    const focusableSelectors = 'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, [tabindex="0"]';
+    const focusableElements = Array.from(modalEl.querySelectorAll(focusableSelectors)).filter(el => {
+        return el.tabIndex >= 0 && el.getBoundingClientRect().width > 0 && !el.disabled;
+    });
+    if (focusableElements.length === 0) return;
+    
+    const firstEl = focusableElements[0];
+    const lastEl = focusableElements[focusableElements.length - 1];
+    
+    if (event.shiftKey) {
+        if (document.activeElement === firstEl) {
+            lastEl.focus();
+            event.preventDefault();
+        }
+    } else {
+        if (document.activeElement === lastEl) {
+            firstEl.focus();
+            event.preventDefault();
+        }
+    }
+}
+
 function versionedAsset(path) {
     if (!path || !path.startsWith("assets/")) return path;
     return path.includes("?") ? path : `${path}?v=${ASSET_VERSION}`;
@@ -112,7 +139,7 @@ function createSection(sectionId) {
             <div class="about-section reveal-on-scroll">
                 <h1>ABOUT ME</h1>
                 <p>Hi, I'm Wei Rong. I'm a Mathematics student who enjoys building software systems that model, visualize, or interact with complex ideas. My projects often sit between technical tools and interactive experiences, whether that means simulating economies and ecosystems, building game engines and editors, or creating finance and data-driven applications.</p>
-                <img src="assets/images/sky.jpg" alt="Wei Rong Gao">
+                <img src="assets/images/sky.webp" alt="Wei Rong Gao">
                 <h1>What I Like Building</h1>
                 <p>I like projects where the logic underneath matters just as much as what appears on screen. I'm drawn to systems with moving parts: simulations with emergent behavior, tools that turn data into decisions, and interactive applications where design choices affect how users understand the system.</p>
                 <button class="collapsible" type="button" aria-expanded="false">Education</button>
@@ -206,7 +233,7 @@ function createSection(sectionId) {
             <div class="contact-section reveal-on-scroll">
                 <h1>CONTACT</h1>
                 <p>Want to chat or collaborate?</p>
-                <img src="assets/images/robot.png" alt="Robot illustration">
+                <img src="assets/images/robot.webp" alt="Robot illustration">
                 <a class="contact-email" href="mailto:wrgao@uwaterloo.ca">wrgao@uwaterloo.ca</a>
                 <button type="button" onclick="openGithubModal()" class="github-link profile-github-link">View GitHub Profile</button>
             </div>`;
@@ -218,6 +245,9 @@ function createSection(sectionId) {
     document.body.appendChild(section);
     observeRevealElements(section);
     setupProjectInteractions(section);
+    if (radarObserver) {
+        radarObserver.observe(section);
+    }
     requestAnimationFrame(() => section.classList.add("is-booted"));
 }
 
@@ -305,6 +335,24 @@ function ensureImageCarousel() {
         if (event.target === modal) closeImageCarousel();
     });
 
+    let touchStartX = 0;
+    let touchStartY = 0;
+    modal.addEventListener("touchstart", event => {
+        touchStartX = event.changedTouches[0].screenX;
+        touchStartY = event.changedTouches[0].screenY;
+    }, { passive: true });
+    
+    modal.addEventListener("touchend", event => {
+        const touchEndX = event.changedTouches[0].screenX;
+        const touchEndY = event.changedTouches[0].screenY;
+        const diffX = touchEndX - touchStartX;
+        const diffY = touchEndY - touchStartY;
+        
+        if (Math.abs(diffX) > 50 && Math.abs(diffY) < 60) {
+            moveImageCarousel(diffX > 0 ? -1 : 1);
+        }
+    }, { passive: true });
+
     return modal;
 }
 
@@ -323,6 +371,7 @@ function openImageCarousel(projectItem, clickedSrc) {
     carouselImages = getProjectImages(projectItem);
     if (!carouselImages.length) return;
     playSfx("open");
+    lastActiveElement = document.activeElement;
 
     const normalizedClickedSrc = (clickedSrc || "").split("?")[0];
     carouselIndex = Math.max(0, carouselImages.findIndex(image => image.src.split("?")[0] === normalizedClickedSrc));
@@ -332,6 +381,9 @@ function openImageCarousel(projectItem, clickedSrc) {
     modal.classList.add("is-open");
     modal.setAttribute("aria-hidden", "false");
     renderImageCarousel();
+    
+    const closeBtn = modal.querySelector(".image-carousel-close");
+    closeBtn?.focus();
 }
 
 function renderImageCarousel() {
@@ -370,6 +422,11 @@ function closeImageCarousel() {
     playSfx("close");
     modal.classList.remove("is-open");
     modal.setAttribute("aria-hidden", "true");
+    
+    if (lastActiveElement) {
+        lastActiveElement.focus();
+        lastActiveElement = null;
+    }
 }
 
 // ====================== VISUAL EFFECTS + PROGRESS + INIT ======================
@@ -570,18 +627,33 @@ function updateProjectCount(nextCount) {
     requestAnimationFrame(tick);
 }
 
-function updateRadar() {
+let radarObserver = null;
+function initRadarObserver() {
+    if (!("IntersectionObserver" in window)) return;
+    
     const buttons = document.querySelectorAll(".section-radar button");
-    let activeId = "";
-    buttons.forEach(button => {
-        const section = document.getElementById(button.dataset.section);
-        if (!section) return;
-        const rect = section.getBoundingClientRect();
-        if (rect.top < window.innerHeight * 0.45 && rect.bottom > window.innerHeight * 0.25) {
-            activeId = button.dataset.section;
-        }
-    });
-    buttons.forEach(button => button.classList.toggle("active", button.dataset.section === activeId));
+    const observerOptions = {
+        root: null,
+        rootMargin: "-45% 0px -45% 0px",
+        threshold: 0
+    };
+    
+    radarObserver = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            const sectionId = entry.target.id;
+            if (entry.isIntersecting) {
+                buttons.forEach(button => {
+                    button.classList.toggle("active", button.dataset.section === sectionId);
+                });
+            } else {
+                buttons.forEach(button => {
+                    if (button.dataset.section === sectionId) {
+                        button.classList.remove("active");
+                    }
+                });
+            }
+        });
+    }, observerOptions);
 }
 
 function focusProject(direction) {
@@ -642,18 +714,22 @@ function observeRevealElements(root = document) {
     elements.forEach(element => revealObserver.observe(element));
 }
 
-function typeText(element, text, speed = 32) {
+function typeText(element, text, speed = 32, callback) {
     if (!element) return;
     element.textContent = "";
 
     if (reduceMotion.matches) {
         element.textContent = text;
+        if (callback) callback();
         return;
     }
 
     [...text].forEach((character, index) => {
         const timer = setTimeout(() => {
             element.textContent += character;
+            if (index === text.length - 1 && callback) {
+                callback();
+            }
         }, index * speed);
         typewriterTimers.push(timer);
     });
@@ -662,18 +738,31 @@ function typeText(element, text, speed = 32) {
 function startHeaderTypewriter() {
     typewriterTimers.forEach(clearTimeout);
     typewriterTimers = [];
-    typeText(document.getElementById("typed-header"), HEADER_TITLE, 42);
-    typeText(document.getElementById("typed-subheader"), HEADER_SUBTITLE, 34);
+    
+    const headerEl = document.getElementById("typed-header");
+    const subheaderEl = document.getElementById("typed-subheader");
+    
+    if (headerEl) headerEl.classList.add("typing");
+    if (subheaderEl) subheaderEl.classList.remove("typing");
+    
+    typeText(headerEl, HEADER_TITLE, 42, () => {
+        if (headerEl) headerEl.classList.remove("typing");
+        if (subheaderEl) subheaderEl.classList.add("typing");
+        
+        const subTimer = setTimeout(() => {
+            typeText(subheaderEl, HEADER_SUBTITLE, 34);
+        }, 200);
+        typewriterTimers.push(subTimer);
+    });
 }
 
 document.addEventListener("mousemove", createMouseParticle, { passive: true });
 document.addEventListener("mousemove", updateMapParallax, { passive: true });
 window.addEventListener("scroll", updateProgress, { passive: true });
-window.addEventListener("scroll", updateRadar, { passive: true });
 
 document.addEventListener("DOMContentLoaded", () => {
     updateProgress();
-    updateRadar();
+    initRadarObserver();
     decorateHeadings();
     startHeaderTypewriter();
     observeRevealElements();
@@ -682,6 +771,14 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".section-radar button").forEach(button => {
         button.addEventListener("click", () => jumpToSection(button.dataset.section));
     });
+
+    if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+            navigator.serviceWorker.register("./sw.js")
+                .then(reg => console.log("SW Registered:", reg.scope))
+                .catch(err => console.error("SW Registration failed:", err));
+        });
+    }
 });
 
 
@@ -721,8 +818,11 @@ function openGithubModal() {
     const modal = document.getElementById("github-modal");
     if (!modal) return;
     playSfx("open");
+    lastActiveElement = document.activeElement;
     modal.classList.add("is-open");
     modal.setAttribute("aria-hidden", "false");
+    const closeBtn = modal.querySelector(".github-modal-close");
+    closeBtn?.focus();
 }
 
 function closeGithubModal() {
@@ -731,6 +831,10 @@ function closeGithubModal() {
     playSfx("close");
     modal.classList.remove("is-open");
     modal.setAttribute("aria-hidden", "true");
+    if (lastActiveElement) {
+        lastActiveElement.focus();
+        lastActiveElement = null;
+    }
 }
 
 document.addEventListener("click", event => {
@@ -783,6 +887,19 @@ document.addEventListener("mouseover", event => {
 }, { passive: true });
 
 document.addEventListener("keydown", event => {
+    const githubModal = document.getElementById("github-modal");
+    const carouselModal = document.getElementById("image-carousel-modal");
+    
+    if (githubModal && githubModal.classList.contains("is-open")) {
+        if (event.key === "Tab") {
+            handleModalTab(event, githubModal);
+        }
+    } else if (carouselModal && carouselModal.classList.contains("is-open")) {
+        if (event.key === "Tab") {
+            handleModalTab(event, carouselModal);
+        }
+    }
+
     if (event.key === "Escape") {
         closeGithubModal();
         closeImageCarousel();
@@ -799,13 +916,16 @@ document.addEventListener("keydown", event => {
         return;
     }
 
-    if (event.key === "ArrowDown") {
+    const activeEl = document.activeElement;
+    const insideProject = activeEl && (activeEl.classList.contains("project-item") || activeEl.closest(".project-item"));
+
+    if (insideProject && event.key === "ArrowDown") {
         event.preventDefault();
         focusProject(1);
         return;
     }
 
-    if (event.key === "ArrowUp") {
+    if (insideProject && event.key === "ArrowUp") {
         event.preventDefault();
         focusProject(-1);
         return;

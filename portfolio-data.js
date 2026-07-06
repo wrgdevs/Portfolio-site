@@ -1,4 +1,4 @@
-const ASSET_VERSION = "20260618a";
+const ASSET_VERSION = "20260706a";
 
 const PROJECT_FILTERS = [
     { id: "all", label: "All" },
@@ -21,7 +21,7 @@ const PROJECTS = [
         title: "3D Graphics Rasterizer",
         summary: "From-scratch software 3D renderer with a full rasterization pipeline and live GUI.",
         categories: ["game-graphics", "tools-systems"],
-        image: "assets/images/projects/3d-graphics-rasterizer/textured.png",
+        image: "assets/images/projects/3d-graphics-rasterizer/textured.webp",
         imageAlt: "Textured model rendered in the software rasterizer",
         languages: ["C++"],
         techStack: ["C++", "SDL2", "ImGui", "TGAImage", "Catch2"],
@@ -36,10 +36,10 @@ const PROJECTS = [
         ],
         github: { url: "https://github.com/wrgdevs/software-rasterizer", label: "View on GitHub" },
         images: [
-            "assets/images/projects/3d-graphics-rasterizer/textured.png",
-            "assets/images/projects/3d-graphics-rasterizer/normal_map.png",
-            "assets/images/projects/3d-graphics-rasterizer/Wireframe.png",
-            "assets/images/projects/3d-graphics-rasterizer/specular.png"
+            "assets/images/projects/3d-graphics-rasterizer/textured.webp",
+            "assets/images/projects/3d-graphics-rasterizer/normal_map.webp",
+            "assets/images/projects/3d-graphics-rasterizer/Wireframe.webp",
+            "assets/images/projects/3d-graphics-rasterizer/specular.webp"
         ]
     },
     {
@@ -47,7 +47,7 @@ const PROJECTS = [
         title: "Custom ECS Game Engine",
         summary: "Lightweight C++ game engine with ECS architecture, editor tooling, Lua scripting, scene serialization, and runtime export.",
         categories: ["game-graphics", "tools-systems"],
-        image: "assets/images/projects/custom-ecs-game-engine/editor.png",
+        image: "assets/images/projects/custom-ecs-game-engine/editor.webp",
         imageAlt: "Custom ECS game engine editor interface",
         languages: ["C++", "Lua"],
         techStack: ["C++20", "CMake", "SDL2", "OpenGL", "ImGui", "Lua", "EnTT", "GLM", "JSON", "stb_image"],
@@ -61,10 +61,10 @@ const PROJECTS = [
         ],
         github: { url: "https://github.com/wrgdevs/CustomECSEngine", label: "View on GitHub" },
         images: [
-            "assets/images/projects/custom-ecs-game-engine/editor.png",
-            "assets/images/projects/custom-ecs-game-engine/prefab.png",
-            "assets/images/projects/custom-ecs-game-engine/transform.png",
-            "assets/images/projects/custom-ecs-game-engine/animation.png"
+            "assets/images/projects/custom-ecs-game-engine/editor.webp",
+            "assets/images/projects/custom-ecs-game-engine/prefab.webp",
+            "assets/images/projects/custom-ecs-game-engine/transform.webp",
+            "assets/images/projects/custom-ecs-game-engine/animation.webp"
         ]
     },
     {
@@ -72,7 +72,7 @@ const PROJECTS = [
         title: "Procedural Terrain Generator",
         summary: "Real-time 3D terrain engine with infinite streaming and erosion simulation.",
         categories: ["game-graphics", "simulation"],
-        image: "assets/images/projects/procedural-terrain-generator/mount.png",
+        image: "assets/images/projects/procedural-terrain-generator/mount.webp",
         imageAlt: "Generated mountain terrain",
         languages: ["TypeScript"],
         techStack: ["TypeScript", "React", "Three.js", "WebGL", "Vite"],
@@ -85,9 +85,9 @@ const PROJECTS = [
         ],
         github: { url: "https://github.com/wrgdevs/procedural-terrain-generator", label: "View on GitHub" },
         images: [
-            "assets/images/projects/procedural-terrain-generator/mount.png",
-            "assets/images/projects/procedural-terrain-generator/island.png",
-            "assets/images/projects/procedural-terrain-generator/desert.png"
+            "assets/images/projects/procedural-terrain-generator/mount.webp",
+            "assets/images/projects/procedural-terrain-generator/island.webp",
+            "assets/images/projects/procedural-terrain-generator/desert.webp"
         ]
     },
     {
@@ -95,7 +95,7 @@ const PROJECTS = [
         title: "World Economy Simulator",
         summary: "Interactive multi-country economic simulation with trade networks and AI policies.",
         categories: ["simulation", "finance-data"],
-        image: "assets/images/projects/world-economy-simulator/eco1.png",
+        image: "assets/images/projects/world-economy-simulator/eco1.webp",
         imageAlt: "World economy simulator dashboard",
         languages: ["TypeScript"],
         techStack: ["TypeScript", "React", "Chart.js"],
@@ -108,10 +108,10 @@ const PROJECTS = [
         ],
         github: { url: "https://github.com/wrgdevs/world-economy-simulator", label: "View on GitHub" },
         images: [
-            "assets/images/projects/world-economy-simulator/eco1.png",
-            "assets/images/projects/world-economy-simulator/eco2.png",
-            "assets/images/projects/world-economy-simulator/eco3.png",
-            "assets/images/projects/world-economy-simulator/eco4.png"
+            "assets/images/projects/world-economy-simulator/eco1.webp",
+            "assets/images/projects/world-economy-simulator/eco2.webp",
+            "assets/images/projects/world-economy-simulator/eco3.webp",
+            "assets/images/projects/world-economy-simulator/eco4.webp"
         ]
     },
     {
@@ -119,7 +119,7 @@ const PROJECTS = [
         title: "Algorithmic Trading Backtester",
         summary: "Interactive trading strategy backtester with portfolio analytics, custom rule building, and risk reporting.",
         categories: ["finance-data"],
-        image: "assets/images/projects/algorithmic-trading-backtester/charts.png",
+        image: "assets/images/projects/algorithmic-trading-backtester/charts.webp",
         imageAlt: "Algorithmic trading backtester charts",
         languages: ["Python"],
         techStack: ["Python", "Pandas", "NumPy", "Plotly", "Streamlit", "Pytest"],
@@ -132,11 +132,11 @@ const PROJECTS = [
         ],
         github: { url: "https://github.com/wrgdevs/algorithmic-trading-backtester", label: "View on GitHub" },
         images: [
-            "assets/images/projects/algorithmic-trading-backtester/charts.png",
-            "assets/images/projects/algorithmic-trading-backtester/charts-more.png",
-            "assets/images/projects/algorithmic-trading-backtester/custom.png",
-            "assets/images/projects/algorithmic-trading-backtester/signal.png",
-            "assets/images/projects/algorithmic-trading-backtester/weights.png"
+            "assets/images/projects/algorithmic-trading-backtester/charts.webp",
+            "assets/images/projects/algorithmic-trading-backtester/charts-more.webp",
+            "assets/images/projects/algorithmic-trading-backtester/custom.webp",
+            "assets/images/projects/algorithmic-trading-backtester/signal.webp",
+            "assets/images/projects/algorithmic-trading-backtester/weights.webp"
         ]
     },
     {
@@ -144,7 +144,7 @@ const PROJECTS = [
         title: "Banking Transaction Ledger",
         summary: "Full-stack banking ledger with double-entry accounting, JWT role policies, reconciliation, and concurrency-safe transactions.",
         categories: ["finance-data", "tools-systems"],
-        image: "assets/images/projects/bank-ledger/overview.png",
+        image: "assets/images/projects/bank-ledger/overview.webp",
         imageAlt: "Banking transaction ledger account overview dashboard",
         languages: ["C#", "TypeScript", "SQL"],
         techStack: ["ASP.NET Core 9", "React", "TypeScript", "PostgreSQL", "Entity Framework Core", "Docker Compose", "xUnit", "GitHub Actions"],
@@ -159,10 +159,10 @@ const PROJECTS = [
         ],
         github: { label: "Repository coming soon" },
         images: [
-            "assets/images/projects/bank-ledger/overview.png",
-            "assets/images/projects/bank-ledger/transactions.png",
-            "assets/images/projects/bank-ledger/statements.png",
-            "assets/images/projects/bank-ledger/login.png"
+            "assets/images/projects/bank-ledger/overview.webp",
+            "assets/images/projects/bank-ledger/transactions.webp",
+            "assets/images/projects/bank-ledger/statements.webp",
+            "assets/images/projects/bank-ledger/login.webp"
         ]
     },
 
@@ -171,7 +171,7 @@ const PROJECTS = [
         title: "Market Replay Lab",
         summary: "Stock replay workstation for practicing paper trades, alerts, strategy ideas, and post-session review against cached OHLCV data.",
         categories: ["finance-data", "tools-systems"],
-        image: "assets/images/projects/market-replay-terminal/replay.png",
+        image: "assets/images/projects/market-replay-terminal/replay.webp",
         imageAlt: "Market Replay Lab replay terminal interface",
         languages: ["TypeScript", "Python"],
         techStack: ["React", "TypeScript", "FastAPI", "SQLite", "yfinance", "Vite"],
@@ -185,10 +185,10 @@ const PROJECTS = [
         ],
         github: { label: "Repository coming soon" },
         images: [
-            "assets/images/projects/market-replay-terminal/replay.png",
-            "assets/images/projects/market-replay-terminal/portfolio.png",
-            "assets/images/projects/market-replay-terminal/stratlab.png",
-            "assets/images/projects/market-replay-terminal/data.png"
+            "assets/images/projects/market-replay-terminal/replay.webp",
+            "assets/images/projects/market-replay-terminal/portfolio.webp",
+            "assets/images/projects/market-replay-terminal/stratlab.webp",
+            "assets/images/projects/market-replay-terminal/data.webp"
         ]
     },
     {
@@ -196,7 +196,7 @@ const PROJECTS = [
         title: "Neural Network from Scratch",
         summary: "NumPy neural network that grows into an MNIST classifier with training visualizations, experiments, and an installable CLI.",
         categories: ["finance-data", "tools-systems"],
-        image: "assets/images/projects/neural-network-from-scratch/learn1.png",
+        image: "assets/images/projects/neural-network-from-scratch/learn1.webp",
         imageAlt: "Neural network training visualization",
         languages: ["Python"],
         techStack: ["Python", "NumPy", "Matplotlib", "Streamlit"],
@@ -210,9 +210,9 @@ const PROJECTS = [
         ],
         github: { url: "https://github.com/wrgdevs/nn-from-scratch-cli", label: "View on GitHub" },
         images: [
-            "assets/images/projects/neural-network-from-scratch/learn1.png",
-            "assets/images/projects/neural-network-from-scratch/learn2.png",
-            "assets/images/projects/neural-network-from-scratch/learn3.png"
+            "assets/images/projects/neural-network-from-scratch/learn1.webp",
+            "assets/images/projects/neural-network-from-scratch/learn2.webp",
+            "assets/images/projects/neural-network-from-scratch/learn3.webp"
         ]
     },
     {
@@ -220,7 +220,7 @@ const PROJECTS = [
         title: "Procedural Dungeon Map Generator",
         summary: "Real-time procedural dungeon system with multiple algorithms and live analytics.",
         categories: ["game-graphics", "simulation"],
-        image: "assets/images/projects/procedural-dungeon-map-generator/dun1.png",
+        image: "assets/images/projects/procedural-dungeon-map-generator/dun1.webp",
         imageAlt: "Procedural dungeon map visualization",
         languages: ["C++"],
         techStack: ["C++17/20", "SDL2", "SDL2_ttf", "nlohmann::json", "Multithreading"],
@@ -233,9 +233,9 @@ const PROJECTS = [
         ],
         github: { url: "https://github.com/wrgdevs/dungeonMapGen", label: "View on GitHub" },
         images: [
-            "assets/images/projects/procedural-dungeon-map-generator/dun1.png",
-            "assets/images/projects/procedural-dungeon-map-generator/dun2.png",
-            "assets/images/projects/procedural-dungeon-map-generator/dun3.png"
+            "assets/images/projects/procedural-dungeon-map-generator/dun1.webp",
+            "assets/images/projects/procedural-dungeon-map-generator/dun2.webp",
+            "assets/images/projects/procedural-dungeon-map-generator/dun3.webp"
         ]
     },
     {
@@ -243,7 +243,7 @@ const PROJECTS = [
         title: "Ecosystem Simulation",
         summary: "Real-time 2D ecosystem with plants, prey, and predators showing emergent behavior.",
         categories: ["simulation"],
-        image: "assets/images/projects/ecosystem-simulation/eco1.png",
+        image: "assets/images/projects/ecosystem-simulation/eco1.webp",
         imageAlt: "Ecosystem simulation screen",
         languages: ["C++"],
         techStack: ["C++17", "SDL2", "SDL2_ttf", "Custom ECS", "Multithreading"],
@@ -257,9 +257,9 @@ const PROJECTS = [
         ],
         github: { url: "https://github.com/wrgdevs/EcoSim", label: "View on GitHub" },
         images: [
-            "assets/images/projects/ecosystem-simulation/eco1.png",
-            "assets/images/projects/ecosystem-simulation/eco2.png",
-            "assets/images/projects/ecosystem-simulation/eco3.png"
+            "assets/images/projects/ecosystem-simulation/eco1.webp",
+            "assets/images/projects/ecosystem-simulation/eco2.webp",
+            "assets/images/projects/ecosystem-simulation/eco3.webp"
         ]
     },
     {
@@ -267,7 +267,7 @@ const PROJECTS = [
         title: "Monte Carlo Portfolio Simulator",
         summary: "Advanced risk analysis engine with historical data and an interactive UI.",
         categories: ["finance-data", "simulation"],
-        image: "assets/images/projects/monte-carlo-portfolio-simulator/Monte1.png",
+        image: "assets/images/projects/monte-carlo-portfolio-simulator/Monte1.webp",
         imageAlt: "Monte Carlo portfolio simulator dashboard",
         languages: ["Python"],
         techStack: ["Python", "NumPy", "pandas", "yfinance", "Matplotlib", "Streamlit"],
@@ -280,10 +280,10 @@ const PROJECTS = [
         ],
         github: { url: "https://github.com/wrgdevs/monte-carlo-portfolio-simulator", label: "View on GitHub" },
         images: [
-            "assets/images/projects/monte-carlo-portfolio-simulator/Monte1.png",
-            "assets/images/projects/monte-carlo-portfolio-simulator/Monte2.png",
-            "assets/images/projects/monte-carlo-portfolio-simulator/Monte3.png",
-            "assets/images/projects/monte-carlo-portfolio-simulator/Monte4.png"
+            "assets/images/projects/monte-carlo-portfolio-simulator/Monte1.webp",
+            "assets/images/projects/monte-carlo-portfolio-simulator/Monte2.webp",
+            "assets/images/projects/monte-carlo-portfolio-simulator/Monte3.webp",
+            "assets/images/projects/monte-carlo-portfolio-simulator/Monte4.webp"
         ]
     },
     {
@@ -291,7 +291,7 @@ const PROJECTS = [
         title: "Steam Game Analytics",
         summary: "Offline analytics platform for 42k+ Steam games with CLI tooling and a Streamlit dashboard.",
         categories: ["finance-data"],
-        image: "assets/images/projects/steam-game-analytics/Ana1.png",
+        image: "assets/images/projects/steam-game-analytics/Ana1.webp",
         imageAlt: "Steam game analytics dashboard",
         languages: ["Python"],
         techStack: ["Python", "Pandas", "NumPy", "scikit-learn", "rapidfuzz", "Click", "Streamlit", "Matplotlib"],
@@ -304,9 +304,9 @@ const PROJECTS = [
         ],
         github: { label: "Repository coming soon" },
         images: [
-            "assets/images/projects/steam-game-analytics/Ana1.png",
-            "assets/images/projects/steam-game-analytics/Ana2.png",
-            "assets/images/projects/steam-game-analytics/Ana3.png"
+            "assets/images/projects/steam-game-analytics/Ana1.webp",
+            "assets/images/projects/steam-game-analytics/Ana2.webp",
+            "assets/images/projects/steam-game-analytics/Ana3.webp"
         ]
     },
     {
@@ -314,7 +314,7 @@ const PROJECTS = [
         title: "2D Game Editor",
         summary: "Custom 2D level editor with real-time feedback and structured data handling.",
         categories: ["game-graphics", "tools-systems"],
-        image: "assets/images/projects/2d-game-editor/Menu.png",
+        image: "assets/images/projects/2d-game-editor/Menu.webp",
         imageAlt: "2D game editor menu",
         languages: ["C++"],
         techStack: ["C++", "SDL2", "ImGui", "Lua", "JSON"],
@@ -329,8 +329,8 @@ const PROJECTS = [
         ],
         github: { url: "https://github.com/chilly-nap/Hooked-on-Speed", label: "View on GitHub (older version)" },
         images: [
-            "assets/images/projects/2d-game-editor/Menu.png",
-            "assets/images/projects/2d-game-editor/Game.png"
+            "assets/images/projects/2d-game-editor/Menu.webp",
+            "assets/images/projects/2d-game-editor/Game.webp"
         ]
     },
     {
@@ -338,7 +338,7 @@ const PROJECTS = [
         title: "Tactical RPG",
         summary: "Chess-inspired grid-based tactical RPG with modular classes.",
         categories: ["game-graphics"],
-        image: "assets/images/projects/tactical-rpg/Chess.png",
+        image: "assets/images/projects/tactical-rpg/Chess.webp",
         imageAlt: "Tactical RPG board",
         languages: ["C#"],
         techStack: ["C#", "Unity Engine"],
@@ -350,14 +350,14 @@ const PROJECTS = [
             "Designed a scalable board system supporting variable map sizes"
         ],
         github: { label: "Repository coming soon" },
-        images: ["assets/images/projects/tactical-rpg/Chess.png"]
+        images: ["assets/images/projects/tactical-rpg/Chess.webp"]
     },
     {
         id: "shogi-learning-app",
         title: "Shogi Learning App",
         summary: "Interactive Shogi tutor with tutorials, puzzles, and progress tracking.",
         categories: ["tools-systems"],
-        image: "assets/images/projects/shogi-learning-app/Tutorial.png",
+        image: "assets/images/projects/shogi-learning-app/Tutorial.webp",
         imageAlt: "Shogi learning app tutorial screen",
         languages: ["Java"],
         techStack: ["Java", "Swing", "JUnit"],
@@ -370,8 +370,8 @@ const PROJECTS = [
         ],
         github: { label: "Repository coming soon" },
         images: [
-            "assets/images/projects/shogi-learning-app/Teach.png",
-            "assets/images/projects/shogi-learning-app/Tutorial.png"
+            "assets/images/projects/shogi-learning-app/Teach.webp",
+            "assets/images/projects/shogi-learning-app/Tutorial.webp"
         ]
     },
     {
@@ -379,7 +379,7 @@ const PROJECTS = [
         title: "CHIP-8 Emulator",
         summary: "Low-level CHIP-8 emulator with accurate instruction handling and custom graphics.",
         categories: ["tools-systems", "game-graphics"],
-        image: "assets/images/projects/chip8-emulator/game1.png",
+        image: "assets/images/projects/chip8-emulator/game1.webp",
         imageAlt: "CHIP-8 emulator game screen",
         languages: ["C++"],
         techStack: ["C++", "SDL2"],
@@ -391,7 +391,7 @@ const PROJECTS = [
             "Developed stack system supporting subroutine calls and returns"
         ],
         github: { label: "Repository coming soon" },
-        images: ["assets/images/projects/chip8-emulator/game1.png"]
+        images: ["assets/images/projects/chip8-emulator/game1.webp"]
     }
 ];
 
