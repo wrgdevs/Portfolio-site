@@ -5,15 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Wei Rong Gao's software development portfolio featuring game development, graphics, simulation, data, and finance projects.">
     <title>Wei Rong | Portfolio</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" as="image" href="assets/images/backgroundw.webp?v=20260618a">
-    <link rel="stylesheet" href="styles.css?v=20260618a">
-    <link rel="stylesheet" href="projects.css?v=20260618a">
-    <link rel="stylesheet" href="effects.css?v=20260618a">
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-    <script src="portfolio-data.js?v=20260618a" defer></script>
-    <script src="script.js?v=20260618a" defer></script>
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://github.com/wrgdevs/Portfolio-site">
+    <meta property="og:title" content="Wei Rong Gao | Portfolio">
+    <meta property="og:description" content="Wei Rong Gao's software development portfolio featuring game development, graphics, simulation, data, and finance projects.">
+    <meta property="og:image" content="https://github.com/wrgdevs/Portfolio-site/raw/main/assets/images/backgroundw.webp">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="Wei Rong | Portfolio">
+    <meta property="twitter:description" content="Wei Rong Gao's software development portfolio featuring game development, graphics, simulation, data, and finance projects.">
+    <meta property="twitter:image" content="https://github.com/wrgdevs/Portfolio-site/raw/main/assets/images/backgroundw.webp">
+
+    <link rel="preload" as="image" href="assets/images/backgroundw.webp?v=20260706b">
+    <link rel="stylesheet" href="styles.css?v=20260706b">
+    <link rel="stylesheet" href="projects.css?v=20260706b">
+    <link rel="stylesheet" href="effects.css?v=20260706b">
+    <script src="portfolio-data.js?v=20260706b" defer></script>
+    <script src="script.js?v=20260706b" defer></script>
 </head>
 <body>
     <header class="site-header">
@@ -24,6 +35,7 @@
             </div>
             <div class="header-actions">
                 <button class="sound-toggle" id="sound-toggle" type="button" aria-pressed="false">AUDIO OFF</button>
+                <button class="low-fx-toggle" id="low-fx-toggle" type="button" aria-pressed="false">LOW FX OFF</button>
                 <button class="header-github-button" type="button" onclick="openGithubModal()" aria-haspopup="dialog">GitHub</button>
             </div>
         </div>

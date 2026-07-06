@@ -1,3 +1,19 @@
+@font-face {
+    font-family: 'Press Start 2P';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('assets/fonts/pressstart2p.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Share Tech Mono';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('assets/fonts/sharetechmono.ttf') format('truetype');
+}
+
 /* ====================== TOKENS / BASE ====================== */
 :root {
     --bg-1: #071127;
@@ -550,4 +566,22 @@ h1[data-text]:hover::after,
     transform: translateY(-3px);
     background: rgba(0, 213, 232, 0.09);
     border-color: rgba(255, 209, 102, 0.50);
+}
+
+/* ====================== LOW FX MODE OVERRIDES ====================== */
+body.low-fx::before,
+body.low-fx::after {
+    animation: none !important;
+    display: none !important;
+}
+
+body.low-fx,
+body.low-fx * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+}
+
+body.low-fx .map {
+    background-position: center !important;
 }

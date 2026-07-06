@@ -3,19 +3,20 @@
     max-width: 1220px;
 }
 
-.project-filter-bar {
+.filter-buttons-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 12px;
-    margin: 0 auto 18px;
+    width: 100%;
 }
 
 .project-filter,
 .github-link,
 .header-github-button,
 .github-modal-link,
-.sound-toggle {
+.sound-toggle,
+.low-fx-toggle {
     position: relative;
     overflow: hidden;
     color: var(--green);
@@ -30,13 +31,15 @@
 .project-filter,
 .header-github-button,
 .github-modal-link,
-.sound-toggle {
+.sound-toggle,
+.low-fx-toggle {
     padding: 12px 14px;
     font-size: 0.68rem;
     line-height: 1.5;
 }
 
-.header-actions .sound-toggle {
+.header-actions .sound-toggle,
+.header-actions .low-fx-toggle {
     color: var(--gold);
     border-color: var(--gold);
     box-shadow: 0 0 18px rgba(255, 209, 102, 0.16);
@@ -239,8 +242,8 @@
 
 .project-details {
     grid-column: 1 / -1;
-    display: block;
-    max-height: 0;
+    display: grid;
+    grid-template-rows: 0fr;
     margin-top: 10px;
     padding: 0 clamp(18px, 3vw, 28px);
     overflow: hidden;
@@ -250,11 +253,11 @@
     border-radius: var(--radius);
     transform: translateY(-8px) scaleY(0.98);
     transform-origin: top;
-    transition: opacity 0.24s ease, max-height 0.28s ease, transform 0.24s ease, padding 0.24s ease;
+    transition: opacity 0.24s ease, grid-template-rows 0.28s ease, transform 0.24s ease, padding 0.24s ease;
 }
 
 .project-details.is-open {
-    max-height: 2200px;
+    grid-template-rows: 1fr;
     padding: clamp(18px, 3vw, 28px);
     opacity: 1;
     transform: translateY(0) scaleY(1);
@@ -262,13 +265,19 @@
 }
 
 .project-details.is-closing {
-    max-height: 0;
+    grid-template-rows: 0fr;
+    padding: 0 clamp(18px, 3vw, 28px);
     opacity: 0;
     transform: translateY(-8px) scaleY(0.98);
 }
 
 .project-details[hidden] {
     display: none;
+}
+
+.project-details-content {
+    overflow: hidden;
+    min-height: 0;
 }
 
 .project-features {
@@ -544,13 +553,47 @@
 .project-filter-bar {
     position: relative;
     overflow: hidden;
-    width: fit-content;
-    max-width: 100%;
-    padding: 12px;
+    width: 100%;
+    max-width: 680px;
+    margin: 0 auto 24px;
+    padding: 16px;
     background: rgba(0, 8, 30, 0.36);
     border: 1px solid rgba(0, 213, 232, 0.22);
     border-radius: var(--radius);
     box-shadow: inset 0 0 22px rgba(0, 213, 232, 0.05), 0 0 20px rgba(0, 255, 102, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    align-items: center;
+}
+
+.tech-search-input {
+    width: 100%;
+    max-width: 440px;
+    padding: 10px 14px;
+    color: var(--green);
+    background: rgba(0, 8, 30, 0.86);
+    border: 2px solid rgba(0, 255, 102, 0.45);
+    border-radius: 4px;
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    line-height: 1.4;
+    text-shadow: 0 0 4px rgba(0, 255, 102, 0.45);
+    outline: none;
+    box-shadow: inset 0 0 12px rgba(0, 255, 102, 0.04);
+    transition: border-color 0.22s ease, box-shadow 0.22s ease, color 0.22s ease, text-shadow 0.22s ease;
+}
+
+.tech-search-input::placeholder {
+    color: rgba(0, 255, 102, 0.38);
+    text-shadow: none;
+}
+
+.tech-search-input:focus {
+    border-color: var(--cyan);
+    box-shadow: 0 0 16px rgba(0, 213, 232, 0.24), inset 0 0 12px rgba(0, 213, 232, 0.08);
+    text-shadow: 0 0 4px rgba(0, 213, 232, 0.45);
+    color: var(--cyan);
 }
 
 .project-filter-bar::after {

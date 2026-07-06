@@ -89,15 +89,17 @@ function renderProject(project) {
                 <div class="project-tech-preview">${renderChips(project.techStack, 5)}</div>
             </div>
             <div class="project-details" id="${escapeHtml(project.id)}" hidden>
-                <p><strong>Languages:</strong> ${escapeHtml(project.languages.join(", "))}</p>
-                <div class="project-features">
-                    <h3>Core Features</h3>
-                    <ul>${renderList(project.features)}</ul>
-                    <h3>Tech Stack</h3>
-                    <div class="project-tech-stack">${renderChips(project.techStack)}</div>
+                <div class="project-details-content">
+                    <p><strong>Languages:</strong> ${escapeHtml(project.languages.join(", "))}</p>
+                    <div class="project-features">
+                        <h3>Core Features</h3>
+                        <ul>${renderList(project.features)}</ul>
+                        <h3>Tech Stack</h3>
+                        <div class="project-tech-stack">${renderChips(project.techStack)}</div>
+                    </div>
+                    ${renderProjectLink(project)}
+                    <div class="project-images-grid">${renderProjectImages(project)}</div>
                 </div>
-                ${renderProjectLink(project)}
-                <div class="project-images-grid">${renderProjectImages(project)}</div>
             </div>
         </article>
     `;
@@ -224,7 +226,10 @@ function createSection(sectionId) {
             <div class="projects-container">
                 <h1>PROJECTS</h1>
                 <p class="projects-intro">Filter the same project set toward graphics, finance, simulation, or systems work.</p>
-                <div class="project-filter-bar" aria-label="Project filters">${renderProjectFilters()}</div>
+                <div class="project-filter-bar" aria-label="Project filters">
+                    <div class="filter-buttons-container">${renderProjectFilters()}</div>
+                    <input type="text" id="tech-search" placeholder="Search by technology (e.g., C++, React, SDL2)..." aria-label="Search projects by technology" class="tech-search-input">
+                </div>
                 <p class="project-count" id="project-count" aria-live="polite">${PROJECTS.length} PROJECTS FOUND</p>
                 <div class="projects-grid">${PROJECTS.map(renderProject).join("")}</div>
             </div>`;
@@ -247,6 +252,13 @@ function createSection(sectionId) {
     setupProjectInteractions(section);
     if (radarObserver) {
         radarObserver.observe(section);
+    }
+    if (sectionId === "projects") {
+        const searchInput = section.querySelector("#tech-search");
+        searchInput?.addEventListener("input", event => {
+            currentTextSearch = event.target.value;
+            applyProjectFilters();
+        });
     }
     requestAnimationFrame(() => section.classList.add("is-booted"));
 }
@@ -451,7 +463,7 @@ if (circle) {
 }
 
 function createMouseParticle(e) {
-    if (reduceMotion.matches) return;
+    if (reduceMotion.matches || document.body.classList.contains("low-fx")) return;
 
     const now = performance.now();
     if (now - lastParticleTime < 90) return;
@@ -552,6 +564,31 @@ function stopAmbientAudio() {
         nodes.shimmer.stop();
         nodes.lfo.stop();
     }, 280);
+}
+
+function initLowFx() {
+    const isLowFx = localStorage.getItem("lowFx") === "true";
+    const button = document.getElementById("low-fx-toggle");
+    if (isLowFx) {
+        document.body.classList.add("low-fx");
+        if (button) {
+            button.setAttribute("aria-pressed", "true");
+            button.textContent = "LOW FX ON";
+        }
+    } else {
+        document.body.classList.remove("low-fx");
+        if (button) {
+            button.setAttribute("aria-pressed", "false");
+            button.textContent = "LOW FX OFF";
+        }
+    }
+}
+
+function toggleLowFx() {
+    const isLowFx = !document.body.classList.contains("low-fx");
+    localStorage.setItem("lowFx", String(isLowFx));
+    initLowFx();
+    playSfx("select");
 }
 
 function toggleAudio() {
@@ -667,7 +704,7 @@ function focusProject(direction) {
 }
 
 function updateMapParallax(e) {
-    if (reduceMotion.matches) return;
+    if (reduceMotion.matches || document.body.classList.contains("low-fx")) return;
     if (parallaxFrame) return;
 
     parallaxFrame = requestAnimationFrame(() => {
@@ -761,6 +798,7 @@ document.addEventListener("mousemove", updateMapParallax, { passive: true });
 window.addEventListener("scroll", updateProgress, { passive: true });
 
 document.addEventListener("DOMContentLoaded", () => {
+    initLowFx();
     updateProgress();
     initRadarObserver();
     decorateHeadings();
@@ -768,6 +806,7 @@ document.addEventListener("DOMContentLoaded", () => {
     observeRevealElements();
     setupProjectInteractions();
     document.getElementById("sound-toggle")?.addEventListener("click", toggleAudio);
+    document.getElementById("low-fx-toggle")?.addEventListener("click", toggleLowFx);
     document.querySelectorAll(".section-radar button").forEach(button => {
         button.addEventListener("click", () => jumpToSection(button.dataset.section));
     });
@@ -783,9 +822,49 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+let currentCategoryFilter = "all";
+let currentTextSearch = "";
+
+function applyProjectFilters() {
+    const query = currentTextSearch.toLowerCase().trim();
+    const matchedProjects = PROJECTS.filter(project => {
+        const matchesCategory = currentCategoryFilter === "all" || project.categories.includes(currentCategoryFilter);
+        if (!matchesCategory) return false;
+        
+        if (!query) return true;
+        
+        const matchesTitle = project.title.toLowerCase().includes(query);
+        const matchesSummary = project.summary.toLowerCase().includes(query);
+        const matchesLanguages = project.languages.some(lang => lang.toLowerCase().includes(query));
+        const matchesTech = project.techStack.some(tech => tech.toLowerCase().includes(query));
+        
+        return matchesTitle || matchesSummary || matchesLanguages || matchesTech;
+    });
+    
+    const matchedIds = new Set(matchedProjects.map(p => p.id));
+    updateProjectCount(matchedProjects.length);
+    
+    document.querySelectorAll(".project-item").forEach((item, index) => {
+        const projectId = item.dataset.projectId;
+        const show = matchedIds.has(projectId);
+        
+        item.classList.add("is-filtering");
+        item.style.setProperty("--filter-delay", `${Math.min(index, 8) * 28}ms`);
+        
+        if (show) {
+            item.classList.remove("is-hidden");
+            requestAnimationFrame(() => item.classList.remove("is-filtered-out"));
+        } else {
+            item.classList.add("is-filtered-out");
+            setTimeout(() => item.classList.add("is-hidden"), reduceMotion.matches ? 1 : 240);
+        }
+        
+        setTimeout(() => item.classList.remove("is-filtering"), reduceMotion.matches ? 1 : 300);
+    });
+}
+
 function filterProjects(filter) {
-    const matchingCount = PROJECTS.filter(project => filter === "all" || project.categories.includes(filter)).length;
-    updateProjectCount(matchingCount);
+    currentCategoryFilter = filter;
     playSfx("filter");
 
     document.querySelectorAll(".project-filter").forEach(button => {
@@ -794,22 +873,7 @@ function filterProjects(filter) {
         button.setAttribute("aria-pressed", String(isActive));
     });
 
-    document.querySelectorAll(".project-item").forEach((item, index) => {
-        const categories = item.dataset.category || "";
-        const show = filter === "all" || categories.split(" ").includes(filter);
-        item.classList.add("is-filtering");
-        item.style.setProperty("--filter-delay", `${Math.min(index, 8) * 28}ms`);
-
-        if (show) {
-            item.classList.remove("is-hidden");
-            requestAnimationFrame(() => item.classList.remove("is-filtered-out"));
-        } else {
-            item.classList.add("is-filtered-out");
-            setTimeout(() => item.classList.add("is-hidden"), reduceMotion.matches ? 1 : 240);
-        }
-
-        setTimeout(() => item.classList.remove("is-filtering"), reduceMotion.matches ? 1 : 300);
-    });
+    applyProjectFilters();
 }
 
 // ====================== GITHUB MODAL ======================
