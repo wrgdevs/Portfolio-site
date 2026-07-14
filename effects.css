@@ -91,6 +91,12 @@
         grid-template-columns: repeat(2, minmax(140px, 1fr));
     }
 
+    .map .level:last-child {
+        grid-column: 1 / -1;
+        justify-self: center;
+        width: min(230px, 100%);
+    }
+
     .project-item {
         grid-template-columns: 1fr;
     }
@@ -133,6 +139,11 @@
     .map {
         grid-template-columns: 1fr;
         padding-top: 176px;
+    }
+
+    .map .level:last-child {
+        grid-column: auto;
+        width: 100%;
     }
 
     .level {
@@ -188,7 +199,7 @@
 }
 
 @keyframes backgroundPulse { 50% { opacity: 0.56; } }
-@keyframes scanlineDrift { from { background-position: 0 0; } to { background-position: 0 48px; } }
+@keyframes scanlineDrift { from { transform: translate3d(0, -4px, 0); } to { transform: translate3d(0, 0, 0); } }
 @keyframes neonRail { from { background-position: 0% 50%; } to { background-position: 260% 50%; } }
 @keyframes titleGlow {
     0%, 100% { text-shadow: 0 0 12px var(--green), 0 0 24px rgba(0,255,102,0.12); }

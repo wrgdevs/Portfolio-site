@@ -1,9 +1,10 @@
-const CACHE_NAME = "portfolio-cache-v4";
+const CACHE_NAME = "portfolio-cache-v7";
 const ASSETS_TO_CACHE = [
     "./",
     "./index.html",
     "./styles.css",
     "./projects.css",
+    "./experience.css",
     "./effects.css",
     "./script.js",
     "./portfolio-data.js",

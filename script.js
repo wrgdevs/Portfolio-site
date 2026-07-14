@@ -68,7 +68,7 @@ function renderProjectImages(project) {
     return project.images
         .map((src, index) => {
             const alt = index === 0 ? project.imageAlt : `${project.title} screenshot ${index + 1}`;
-            return `<img loading="lazy" decoding="async" src="${escapeHtml(src)}" alt="${escapeHtml(alt)}">`;
+            return `<img loading="lazy" decoding="async" data-src="${escapeHtml(src)}" alt="${escapeHtml(alt)}">`;
         })
         .join("");
 }
@@ -111,9 +111,59 @@ function renderProjectFilters() {
         .join("");
 }
 
+function renderExperienceCard(experience, index) {
+    const status = experience.status
+        ? `<span class="experience-status">${escapeHtml(experience.status)}</span>`
+        : "";
+    const note = experience.note
+        ? `<p class="experience-note">${escapeHtml(experience.note)}</p>`
+        : "";
+
+    return `
+        <article class="experience-card${experience.incoming ? " experience-card-incoming" : ""} reveal-on-scroll" data-experience-id="${escapeHtml(experience.id)}">
+            <div class="experience-node" aria-hidden="true"><span>${String(index + 1).padStart(2, "0")}</span></div>
+            <div class="experience-card-body">
+                <header class="experience-card-header">
+                    <div>
+                        <p class="experience-period">${escapeHtml(experience.period)}</p>
+                        <h2>${escapeHtml(experience.role)}</h2>
+                        <p class="experience-organization">${escapeHtml(experience.organization)}</p>
+                    </div>
+                    ${status}
+                </header>
+                <p class="experience-summary">${escapeHtml(experience.summary)}</p>
+                <ul class="experience-highlights">${renderList(experience.highlights)}</ul>
+                ${note}
+                <div class="experience-stack">
+                    <p>${escapeHtml(experience.technologyLabel)}</p>
+                    <div>${renderChips(experience.technologies)}</div>
+                </div>
+            </div>
+        </article>
+    `;
+}
+
 // ====================== JUMP TO SECTION ======================
 
 const loadedSections = {};
+const SECTION_ORDER = ["about", "current", "experience", "projects", "contact"];
+
+function insertSectionInOrder(section) {
+    const sectionIndex = SECTION_ORDER.indexOf(section.id);
+    const nextSection = SECTION_ORDER
+        .slice(sectionIndex + 1)
+        .map(id => document.getElementById(id))
+        .find(Boolean);
+    const fallbackAnchor = document.getElementById("github-modal");
+
+    if (nextSection) {
+        document.body.insertBefore(section, nextSection);
+    } else if (fallbackAnchor) {
+        document.body.insertBefore(section, fallbackAnchor);
+    } else {
+        document.body.appendChild(section);
+    }
+}
 
 function jumpToSection(sectionId) {
     if (!loadedSections[sectionId]) {
@@ -221,6 +271,29 @@ function createSection(sectionId) {
                     </article>
                 </div>
             </div>`;
+    } else if (sectionId === "experience") {
+        html = `
+            <div class="experience-container">
+                <header class="experience-intro reveal-on-scroll">
+                    <p class="experience-kicker">CAREER LOG // CO-OP + DEVELOPMENT</p>
+                    <h1>EXPERIENCE</h1>
+                    <p>Production programming, cloud and AI project work, and independent software development—with another cloud-focused co-op beginning in Fall 2026.</p>
+                </header>
+                <div class="experience-timeline">
+                    ${EXPERIENCE.map(renderExperienceCard).join("")}
+                </div>
+                <section class="involvement-panel reveal-on-scroll">
+                    <div class="involvement-heading">
+                        <p>COMMUNITY LOG</p>
+                        <h2>Extracurriculars & Involvement</h2>
+                    </div>
+                    <div class="involvement-content">
+                        <h3>${escapeHtml(INVOLVEMENT.title)}</h3>
+                        <p>${escapeHtml(INVOLVEMENT.summary)}</p>
+                        <ul>${renderList(INVOLVEMENT.highlights)}</ul>
+                    </div>
+                </section>
+            </div>`;
     } else if (sectionId === "projects") {
         html = `
             <div class="projects-container">
@@ -228,7 +301,6 @@ function createSection(sectionId) {
                 <p class="projects-intro">Filter the same project set toward graphics, finance, simulation, or systems work.</p>
                 <div class="project-filter-bar" aria-label="Project filters">
                     <div class="filter-buttons-container">${renderProjectFilters()}</div>
-                    <input type="text" id="tech-search" placeholder="Search by technology (e.g., C++, React, SDL2)..." aria-label="Search projects by technology" class="tech-search-input">
                 </div>
                 <p class="project-count" id="project-count" aria-live="polite">${PROJECTS.length} PROJECTS FOUND</p>
                 <div class="projects-grid">${PROJECTS.map(renderProject).join("")}</div>
@@ -247,18 +319,11 @@ function createSection(sectionId) {
     section.innerHTML = html;
     versionProjectImageSrcs(section);
     decorateHeadings(section);
-    document.body.appendChild(section);
+    insertSectionInOrder(section);
     observeRevealElements(section);
     setupProjectInteractions(section);
     if (radarObserver) {
         radarObserver.observe(section);
-    }
-    if (sectionId === "projects") {
-        const searchInput = section.querySelector("#tech-search");
-        searchInput?.addEventListener("input", event => {
-            currentTextSearch = event.target.value;
-            applyProjectFilters();
-        });
     }
     requestAnimationFrame(() => section.classList.add("is-booted"));
 }
@@ -279,6 +344,7 @@ function toggleProjectDetails(id) {
     const isOpen = !details.classList.contains("is-open");
 
     if (isOpen) {
+        hydrateProjectImages(projectItem);
         details.hidden = false;
         details.classList.remove("is-closing");
         requestAnimationFrame(() => details.classList.add("is-open"));
@@ -374,9 +440,16 @@ function getProjectImages(projectItem) {
     const images = detailImages.length ? detailImages : (mainImage ? [mainImage] : []);
 
     return images.map(img => ({
-        src: versionedAsset(img.getAttribute("src")),
+        src: versionedAsset(img.getAttribute("src") || img.dataset.src),
         alt: img.getAttribute("alt") || projectItem.querySelector("h2")?.textContent || "Project screenshot"
-    }));
+    })).filter(image => image.src);
+}
+
+function hydrateProjectImages(projectItem) {
+    projectItem.querySelectorAll(".project-images-grid img[data-src]").forEach(img => {
+        img.src = versionedAsset(img.dataset.src);
+        delete img.dataset.src;
+    });
 }
 
 function openImageCarousel(projectItem, clickedSrc) {
@@ -445,6 +518,7 @@ function closeImageCarousel() {
 
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const circle = document.querySelector(".progress-ring__circle");
+const mapElement = document.querySelector(".map");
 const circumference = 175;
 let lastParticleTime = 0;
 let revealObserver;
@@ -454,8 +528,14 @@ let audioEnabled = false;
 let ambientNodes;
 let lastSfxTime = 0;
 let currentFilterCount = PROJECTS.length;
-let parallaxFrame = 0;
+let pointerEffectsFrame = 0;
+let latestPointerEvent = null;
+let progressFrame = 0;
+let projectCountFrame = 0;
+let mapRect = null;
+let mapRectDirty = true;
 const tiltFrames = new WeakMap();
+const filterTransitions = new WeakMap();
 
 if (circle) {
     circle.style.strokeDasharray = circumference;
@@ -606,6 +686,8 @@ function toggleAudio() {
 }
 
 function setupProjectInteractions(root = document) {
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+
     root.querySelectorAll(".project-item").forEach(projectItem => {
         projectItem.addEventListener("mousemove", handleProjectTilt);
         projectItem.addEventListener("mouseleave", resetProjectTilt);
@@ -647,8 +729,9 @@ function updateProjectCount(nextCount) {
     const start = currentFilterCount;
     const end = nextCount;
     currentFilterCount = nextCount;
+    if (projectCountFrame) cancelAnimationFrame(projectCountFrame);
 
-    if (reduceMotion.matches) {
+    if (reduceMotion.matches || start === end) {
         counter.textContent = `${end} PROJECT${end === 1 ? "" : "S"} FOUND`;
         return;
     }
@@ -659,9 +742,13 @@ function updateProjectCount(nextCount) {
         const progress = Math.min(1, (now - startTime) / duration);
         const value = Math.round(start + (end - start) * progress);
         counter.textContent = `${value} PROJECT${value === 1 ? "" : "S"} FOUND`;
-        if (progress < 1) requestAnimationFrame(tick);
+        if (progress < 1) {
+            projectCountFrame = requestAnimationFrame(tick);
+        } else {
+            projectCountFrame = 0;
+        }
     }
-    requestAnimationFrame(tick);
+    projectCountFrame = requestAnimationFrame(tick);
 }
 
 let radarObserver = null;
@@ -704,23 +791,20 @@ function focusProject(direction) {
 }
 
 function updateMapParallax(e) {
-    if (reduceMotion.matches || document.body.classList.contains("low-fx")) return;
-    if (parallaxFrame) return;
+    if (reduceMotion.matches || document.body.classList.contains("low-fx") || !mapElement) return;
 
-    parallaxFrame = requestAnimationFrame(() => {
-        parallaxFrame = 0;
-        const map = document.querySelector(".map");
-        if (!map) return;
+    if (mapRectDirty || !mapRect) {
+        mapRect = mapElement.getBoundingClientRect();
+        mapRectDirty = false;
+    }
 
-        const rect = map.getBoundingClientRect();
-        const x = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-        const y = Math.max(0, Math.min(1, (e.clientY - rect.top) / rect.height));
+    const x = Math.max(0, Math.min(1, (e.clientX - mapRect.left) / mapRect.width));
+    const y = Math.max(0, Math.min(1, (e.clientY - mapRect.top) / mapRect.height));
 
-        map.style.setProperty("--spot-x", `${x * 100}%`);
-        map.style.setProperty("--spot-y", `${y * 100}%`);
-        map.style.setProperty("--map-shift-x", `${(x - 0.5) * 10}px`);
-        map.style.setProperty("--map-shift-y", `${(y - 0.5) * 10}px`);
-    });
+    mapElement.style.setProperty("--spot-x", `${x * 100}%`);
+    mapElement.style.setProperty("--spot-y", `${y * 100}%`);
+    mapElement.style.setProperty("--map-shift-x", `${(x - 0.5) * 10}px`);
+    mapElement.style.setProperty("--map-shift-y", `${(y - 0.5) * 10}px`);
 }
 
 function updateProgress() {
@@ -728,6 +812,47 @@ function updateProgress() {
     const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
     const scrollPercent = maxScroll > 0 ? window.scrollY / maxScroll : 0;
     circle.style.strokeDashoffset = circumference * (1 - scrollPercent);
+}
+
+function schedulePointerEffects(event) {
+    latestPointerEvent = event;
+    if (pointerEffectsFrame || document.hidden) return;
+
+    pointerEffectsFrame = requestAnimationFrame(() => {
+        pointerEffectsFrame = 0;
+        if (!latestPointerEvent) return;
+        createMouseParticle(latestPointerEvent);
+        updateMapParallax(latestPointerEvent);
+    });
+}
+
+function handleViewportChange() {
+    mapRectDirty = true;
+    if (progressFrame || document.hidden) return;
+
+    progressFrame = requestAnimationFrame(() => {
+        progressFrame = 0;
+        updateProgress();
+    });
+}
+
+function handleVisibilityChange() {
+    const isPaused = document.hidden;
+    document.body.classList.toggle("effects-paused", isPaused);
+
+    if (isPaused) {
+        if (pointerEffectsFrame) cancelAnimationFrame(pointerEffectsFrame);
+        if (progressFrame) cancelAnimationFrame(progressFrame);
+        pointerEffectsFrame = 0;
+        progressFrame = 0;
+    } else {
+        mapRectDirty = true;
+        updateProgress();
+    }
+
+    if (!audioEnabled || !audioContext) return;
+    if (isPaused && audioContext.state === "running") audioContext.suspend();
+    if (!isPaused && audioContext.state === "suspended") audioContext.resume();
 }
 
 function observeRevealElements(root = document) {
@@ -793,9 +918,10 @@ function startHeaderTypewriter() {
     });
 }
 
-document.addEventListener("mousemove", createMouseParticle, { passive: true });
-document.addEventListener("mousemove", updateMapParallax, { passive: true });
-window.addEventListener("scroll", updateProgress, { passive: true });
+document.addEventListener("mousemove", schedulePointerEffects, { passive: true });
+window.addEventListener("scroll", handleViewportChange, { passive: true });
+window.addEventListener("resize", handleViewportChange, { passive: true });
+document.addEventListener("visibilitychange", handleVisibilityChange);
 
 document.addEventListener("DOMContentLoaded", () => {
     initLowFx();
@@ -823,43 +949,42 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 let currentCategoryFilter = "all";
-let currentTextSearch = "";
 
 function applyProjectFilters() {
-    const query = currentTextSearch.toLowerCase().trim();
-    const matchedProjects = PROJECTS.filter(project => {
-        const matchesCategory = currentCategoryFilter === "all" || project.categories.includes(currentCategoryFilter);
-        if (!matchesCategory) return false;
-        
-        if (!query) return true;
-        
-        const matchesTitle = project.title.toLowerCase().includes(query);
-        const matchesSummary = project.summary.toLowerCase().includes(query);
-        const matchesLanguages = project.languages.some(lang => lang.toLowerCase().includes(query));
-        const matchesTech = project.techStack.some(tech => tech.toLowerCase().includes(query));
-        
-        return matchesTitle || matchesSummary || matchesLanguages || matchesTech;
-    });
+    const projectItems = Array.from(document.querySelectorAll(".project-item"));
+    const itemStates = projectItems.map(item => ({
+        item,
+        show: currentCategoryFilter === "all" || item.dataset.category.split(" ").includes(currentCategoryFilter)
+    }));
+    updateProjectCount(itemStates.filter(state => state.show).length);
     
-    const matchedIds = new Set(matchedProjects.map(p => p.id));
-    updateProjectCount(matchedProjects.length);
-    
-    document.querySelectorAll(".project-item").forEach((item, index) => {
-        const projectId = item.dataset.projectId;
-        const show = matchedIds.has(projectId);
+    itemStates.forEach(({ item, show }, index) => {
+        const isCurrentlyHidden = item.classList.contains("is-hidden") || item.classList.contains("is-filtered-out");
+        const previousTransition = filterTransitions.get(item);
+        if (show === !isCurrentlyHidden && !previousTransition) return;
+
+        if (previousTransition?.frame) cancelAnimationFrame(previousTransition.frame);
+        if (previousTransition?.hideTimer) clearTimeout(previousTransition.hideTimer);
+        if (previousTransition?.cleanupTimer) clearTimeout(previousTransition.cleanupTimer);
+
+        const transition = {};
         
         item.classList.add("is-filtering");
         item.style.setProperty("--filter-delay", `${Math.min(index, 8) * 28}ms`);
         
         if (show) {
             item.classList.remove("is-hidden");
-            requestAnimationFrame(() => item.classList.remove("is-filtered-out"));
+            transition.frame = requestAnimationFrame(() => item.classList.remove("is-filtered-out"));
         } else {
             item.classList.add("is-filtered-out");
-            setTimeout(() => item.classList.add("is-hidden"), reduceMotion.matches ? 1 : 240);
+            transition.hideTimer = setTimeout(() => item.classList.add("is-hidden"), reduceMotion.matches ? 1 : 240);
         }
         
-        setTimeout(() => item.classList.remove("is-filtering"), reduceMotion.matches ? 1 : 300);
+        transition.cleanupTimer = setTimeout(() => {
+            item.classList.remove("is-filtering");
+            filterTransitions.delete(item);
+        }, reduceMotion.matches ? 1 : 300);
+        filterTransitions.set(item, transition);
     });
 }
 
@@ -940,12 +1065,16 @@ document.addEventListener("click", event => {
 });
 
 document.addEventListener("mouseover", event => {
-    if (event.target.closest(".project-features li, .tech-chip, .image-carousel-thumbnail")) {
+    const featureTarget = event.target.closest(".project-features li, .tech-chip, .image-carousel-thumbnail");
+    const movedWithinFeature = event.relatedTarget instanceof Node && featureTarget?.contains(event.relatedTarget);
+    if (featureTarget && !movedWithinFeature) {
         playSfx("feature");
         return;
     }
 
-    if (event.target.closest(".level, .project-filter, .github-link, .header-github-button, .github-modal-link")) {
+    const interactiveTarget = event.target.closest(".level, .project-filter, .github-link, .header-github-button, .github-modal-link");
+    const movedWithinInteractive = event.relatedTarget instanceof Node && interactiveTarget?.contains(event.relatedTarget);
+    if (interactiveTarget && !movedWithinInteractive) {
         playSfx("hover");
     }
 }, { passive: true });

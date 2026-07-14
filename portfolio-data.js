@@ -1,4 +1,4 @@
-const ASSET_VERSION = "20260706b";
+const ASSET_VERSION = "20260713c";
 
 const PROJECT_FILTERS = [
     { id: "all", label: "All" },
@@ -11,11 +11,137 @@ const PROJECT_FILTERS = [
 const SECTION_KEYS = {
     "1": "about",
     "2": "current",
-    "3": "projects",
-    "4": "contact"
+    "3": "experience",
+    "4": "projects",
+    "5": "contact"
+};
+
+const EXPERIENCE = [
+    {
+        id: "statistics-canada",
+        period: "Fall 2026",
+        role: "Incoming Programmer-Analyst / Stack Cloud Developer Co-op",
+        organization: "Statistics Canada",
+        summary: "Joining Statistics Canada’s Digital Solutions Field to support the development and modernization of cloud-based applications and enterprise data services.",
+        highlights: [
+            "Expected to contribute to application development and cloud-based solutions supporting statistical research across Canada",
+            "Will collaborate with technical teams and stakeholders in an Agile development environment",
+            "Potential work includes Python applications, Microsoft Azure, REST APIs, data pipelines, containers, and CI/CD workflows"
+        ],
+        technologies: ["Python", "Microsoft Azure", "REST APIs", "Data Pipelines", "Containers", "CI/CD"],
+        technologyLabel: "Potential focus",
+        status: "Incoming Co-op",
+        incoming: true
+    },
+    {
+        id: "digital-extremes",
+        period: "Winter 2026",
+        role: "Programmer Co-op",
+        organization: "Digital Extremes",
+        summary: "Worked within a large proprietary C++ game engine, contributing to gameplay features and development tooling in a production environment.",
+        highlights: [
+            "Designed, debugged, and integrated gameplay features across multiple interconnected engine systems",
+            "Investigated complex runtime issues involving state synchronization, system dependencies, and unexpected gameplay behaviour",
+            "Collaborated with experienced developers to review, test, and safely integrate changes into an established production codebase"
+        ],
+        technologies: ["C++", "Proprietary Game Engine", "Git", "Debugging Tools"],
+        technologyLabel: "Technologies"
+    },
+    {
+        id: "independent-development",
+        period: "Spring 2025",
+        role: "Independent Software & Game Developer",
+        organization: "Independent and Collaborative Development",
+        summary: "Dedicated the work term to developing independent software projects and collaborating with a small development team on an original game project.",
+        highlights: [
+            "Contributed to gameplay programming, combat systems, development tools, technical design, and iterative prototyping",
+            "Collaborated on feature planning, responsibility sharing, idea reviews, and version-controlled changes",
+            "Designed tools and workflows that made gameplay systems easier to test, debug, and refine",
+            "Managed the architecture, scope, and technical challenges of a long-term software project"
+        ],
+        technologies: ["C++", "Game Development", "Git", "Gameplay Systems", "Tool Development"],
+        technologyLabel: "Technologies",
+        note: "The original game project remains in development and has not yet been publicly released."
+    },
+    {
+        id: "waterloo-ai-project",
+        period: "Spring 2024",
+        role: "AI Project Developer Co-op",
+        organization: "University of Waterloo",
+        summary: "Collaborated remotely on a healthcare-focused artificial intelligence project using Microsoft Azure technologies.",
+        highlights: [
+            "Contributed to project research, requirements planning, technical implementation, and milestone organization",
+            "Helped define project direction, coordinate responsibilities, and present progress and final outcomes",
+            "Developed practical Microsoft Azure experience and earned a Microsoft Azure certification during the work term"
+        ],
+        technologies: ["Microsoft Azure", "Artificial Intelligence", "Cloud Computing", "Project Planning"],
+        technologyLabel: "Technologies"
+    }
+];
+
+const INVOLVEMENT = {
+    title: "Game Jams and Hackathons",
+    summary: "Participated in collaborative game-development, hackathon-style, and technical activities through school and community groups.",
+    highlights: [
+        "Worked with teams to develop project ideas and prototypes",
+        "Contributed to programming, planning, problem-solving, and presentations",
+        "Developed early experience collaborating on technical projects and working within project constraints"
+    ]
 };
 
 const PROJECTS = [
+    {
+        id: "valuation-deal-lab",
+        title: "Valuation & Deal Lab",
+        summary: "Source-traceable corporate valuation platform that turns SEC filings into DCF, comparable-company, M&A, and formula-driven Excel models.",
+        categories: ["finance-data", "tools-systems"],
+        image: "assets/images/projects/valuation-deal-lab/dcf_sensitivity_analysis.png",
+        imageAlt: "Valuation and Deal Lab DCF sensitivity analysis dashboard",
+        languages: ["Python"],
+        techStack: ["Python 3.12", "Pandas", "NumPy", "Streamlit", "Plotly", "Pydantic", "XlsxWriter", "openpyxl", "SEC EDGAR", "Ollama", "Pytest"],
+        features: [
+            "Built a source-traceable pipeline that downloads, caches, and normalizes SEC EDGAR XBRL facts through reviewed company mappings",
+            "Created downside, base, and upside forecasts with Gordon-growth DCF valuation and WACC/TGR sensitivity analysis",
+            "Implemented comparable-company valuation using EV/Revenue, EV/Estimated EBITDA, P/E, and Price/FCF multiples",
+            "Modelled cash, debt, and stock-funded acquisition scenarios with EPS accretion, dilution, leverage, and synergy breakeven analysis",
+            "Exported editable nine-sheet Excel workbooks with formulas, audit trails, source links, and Python-to-Excel reconciliation checks",
+            "Added a grounded local-AI analyst with structured outputs, citation verification, numerical checks, and deterministic fallbacks",
+            "Built a Streamlit workflow for company import, historical analysis, valuation, deal analysis, model checks, and workbook export"
+        ],
+        github: { label: "Repository coming soon" },
+        images: [
+            "assets/images/projects/valuation-deal-lab/dcf_sensitivity_analysis.png",
+            "assets/images/projects/valuation-deal-lab/historical_company_overview.png",
+            "assets/images/projects/valuation-deal-lab/comparable_companies_football_field.png",
+            "assets/images/projects/valuation-deal-lab/deal_model_ai_explanation.png"
+        ]
+    },
+    {
+        id: "credit-decision-lab",
+        title: "Credit Decision Lab",
+        summary: "Local credit-risk analytics lab for calibrated default modelling, approval-policy scenarios, portfolio stress simulation, and model monitoring.",
+        categories: ["finance-data", "simulation", "tools-systems"],
+        image: "assets/images/projects/credit-decision-lab/dashboard.png",
+        imageAlt: "Credit Decision Lab model dashboard",
+        languages: ["Python", "SQL"],
+        techStack: ["Python 3.12", "Pandas", "NumPy", "SciPy", "scikit-learn", "Streamlit", "Plotly", "FastAPI", "SQLAlchemy", "PostgreSQL", "MLflow", "Docker", "Pytest"],
+        features: [
+            "Built a reproducible credit-default modelling pipeline with stratified train, validation, and held-out test partitions",
+            "Compared logistic regression and histogram gradient boosting with uncalibrated, sigmoid, and isotonic probability calibration",
+            "Created approval-threshold scenarios using configurable revenue, loss-given-default, recovery, cost, risk, and profit constraints",
+            "Implemented seeded Monte Carlo portfolio stress tests with loss distributions, 95%/99% VaR, and expected shortfall",
+            "Added model diagnostics for errors, feature importance, coefficients, calibration, demographic groups, and artificial drift batches",
+            "Developed a seven-page Streamlit dashboard plus FastAPI prediction, policy, simulation, health, and model-metadata endpoints",
+            "Added SQLAlchemy/Alembic persistence, PostgreSQL, MLflow tracking, Docker Compose services, and automated test coverage"
+        ],
+        github: { label: "Repository coming soon" },
+        images: [
+            "assets/images/projects/credit-decision-lab/dashboard.png",
+            "assets/images/projects/credit-decision-lab/calibration.png",
+            "assets/images/projects/credit-decision-lab/approval-policy.png",
+            "assets/images/projects/credit-decision-lab/portfolio-simulation.png"
+        ]
+    },
     {
         id: "graphics-rasterizer",
         title: "3D Graphics Rasterizer",
