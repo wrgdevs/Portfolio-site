@@ -712,6 +712,7 @@
     align-items: start;
     min-height: 100%;
     scroll-margin-top: 118px;
+    contain-intrinsic-size: auto 560px;
     padding: 0;
     border: 1px solid color-mix(in srgb, var(--project-accent) 42%, transparent);
     border-top: 4px solid var(--project-accent);
@@ -820,4 +821,19 @@
 .project-features {
     border-radius: 0;
     clip-path: polygon(0 18px, 18px 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%);
+}
+
+.projects-container::before {
+    inset: -36px;
+    opacity: 0.56;
+    animation: none;
+}
+
+.project-filter-bar::after {
+    will-change: transform, opacity;
+}
+
+.project-filter.active {
+    animation: none;
+    box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.30), 0 0 18px rgba(103, 239, 255, 0.20);
 }

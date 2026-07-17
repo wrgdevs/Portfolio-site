@@ -1,4 +1,4 @@
-const CACHE_NAME = "portfolio-cache-v8";
+const CACHE_NAME = "portfolio-cache-v10";
 const ASSETS_TO_CACHE = [
     "./",
     "./index.html",
@@ -13,7 +13,6 @@ const ASSETS_TO_CACHE = [
     "./assets/images/backgroundw.webp",
     "./assets/images/robot.webp",
     "./assets/images/sky.webp",
-    "./assets/images/particle.png",
     "./assets/fonts/pressstart2p.ttf",
     "./assets/fonts/sharetechmono.ttf"
 ];

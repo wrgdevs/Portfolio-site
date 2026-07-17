@@ -67,7 +67,10 @@ body::after {
 
 body::before {
     z-index: -1;
-    background: url('assets/images/particle.png?v=20260614b') repeat;
+    background:
+        radial-gradient(circle, rgba(103, 239, 255, 0.72) 0 1px, transparent 1.5px) 0 0 / 86px 86px,
+        radial-gradient(circle, rgba(255, 92, 170, 0.52) 0 1px, transparent 1.5px) 29px 17px / 137px 137px,
+        radial-gradient(circle, rgba(255, 190, 85, 0.50) 0 1px, transparent 1.5px) 61px 43px / 191px 191px;
     opacity: 0.72;
     animation: moveParticles 25s linear infinite, backgroundPulse 7s steps(2, end) infinite;
 }
@@ -682,7 +685,7 @@ body::after {
     background:
         linear-gradient(180deg, rgba(3, 6, 18, 0.08), rgba(3, 6, 18, 0.32) 42%, rgba(3, 6, 18, 0.88)),
         radial-gradient(circle at 52% 30%, transparent 0 17%, rgba(103, 239, 255, 0.08) 18% 18.4%, transparent 19%),
-        url('assets/images/backgroundw.webp?v=20260717d') center/cover no-repeat;
+        url('assets/images/backgroundw.webp?v=20260717f') center/cover no-repeat;
 }
 
 .map::before {
@@ -867,4 +870,39 @@ body::after {
 .contact-email {
     color: var(--cyan);
     border-bottom-color: var(--pink);
+}
+
+/* ====================== PERFORMANCE + FINISHING PASS ====================== */
+body::before {
+    inset: -24px;
+    opacity: 0.10;
+    mix-blend-mode: normal;
+    will-change: transform, opacity;
+}
+
+body::after {
+    mix-blend-mode: normal;
+    will-change: transform;
+}
+
+.site-header {
+    background:
+        linear-gradient(90deg, rgba(103, 239, 255, 0.035) 1px, transparent 1px),
+        rgba(3, 6, 18, 0.97);
+    backdrop-filter: none;
+}
+
+.site-header p {
+    min-width: 13ch;
+    text-align: center;
+}
+
+.map::after {
+    mix-blend-mode: normal;
+    will-change: transform, opacity;
+}
+
+.map,
+.level {
+    backface-visibility: hidden;
 }

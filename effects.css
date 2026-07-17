@@ -65,13 +65,14 @@
 }
 
 .particle {
-    position: absolute;
+    position: fixed;
     z-index: 9997;
     border-radius: 0;
     box-shadow: 0 0 0 1px rgba(255,255,255,0.18), 0 0 12px currentColor;
     pointer-events: none;
     image-rendering: pixelated;
-    animation: pixelParticleFade 0.72s steps(6, end) forwards;
+    contain: strict;
+    will-change: transform, opacity;
 }
 
 .reveal-on-scroll {
@@ -194,8 +195,8 @@
 
 /* ====================== KEYFRAMES ====================== */
 @keyframes moveParticles {
-    from { transform: translate3d(0, 100%, 0); }
-    to { transform: translate3d(0, -100%, 0); }
+    from { transform: translate3d(0, 16px, 0); }
+    to { transform: translate3d(0, -16px, 0); }
 }
 
 @keyframes backgroundPulse { 50% { opacity: 0.56; } }
@@ -306,6 +307,10 @@
         border-right: 0;
         border-bottom: 1px solid color-mix(in srgb, var(--project-accent) 34%, transparent);
     }
+
+    .project-item {
+        contain-intrinsic-size: auto 470px;
+    }
 }
 
 @media (max-width: 900px) {
@@ -323,6 +328,13 @@
 }
 
 @media (max-width: 760px) {
+    body::before {
+        opacity: 0.07;
+        animation: backgroundPulse 9s steps(2, end) infinite;
+        transform: none;
+        will-change: opacity;
+    }
+
     .site-header {
         padding: 10px 12px;
     }

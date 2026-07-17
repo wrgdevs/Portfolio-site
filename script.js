@@ -165,17 +165,47 @@ function insertSectionInOrder(section) {
     }
 }
 
+function scrollToPortfolioSection(section) {
+    if (!section) return;
+    requestAnimationFrame(() => {
+        const distance = Math.abs(section.getBoundingClientRect().top);
+        const shouldJump =
+            reduceMotion.matches ||
+            document.body.classList.contains("low-fx") ||
+            distance > window.innerHeight * 3;
+        if (!shouldJump) {
+            section.scrollIntoView({ behavior: "smooth", block: "start" });
+            return;
+        }
+
+        const root = document.documentElement;
+        const previousScrollBehavior = root.style.scrollBehavior;
+        root.style.scrollBehavior = "auto";
+        const alignSection = () => section.scrollIntoView({ behavior: "auto", block: "start" });
+        alignSection();
+        requestAnimationFrame(alignSection);
+        setTimeout(() => {
+            alignSection();
+            if (previousScrollBehavior) {
+                root.style.scrollBehavior = previousScrollBehavior;
+            } else {
+                root.style.removeProperty("scroll-behavior");
+            }
+        }, 100);
+    });
+}
+
 function jumpToSection(sectionId) {
     if (!loadedSections[sectionId]) {
         playSfx("nav");
         createSection(sectionId);
         loadedSections[sectionId] = true;
-        document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
+        scrollToPortfolioSection(document.getElementById(sectionId));
         return;
     }
 
     playSfx("nav");
-    document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
+    scrollToPortfolioSection(document.getElementById(sectionId));
 }
 
 // ====================== CREATE SECTIONS ======================
@@ -540,6 +570,9 @@ let progressFrame = 0;
 let projectCountFrame = 0;
 let mapRect = null;
 let mapRectDirty = true;
+let particleCursor = 0;
+const particlePool = [];
+const PARTICLE_POOL_SIZE = 8;
 const tiltFrames = new WeakMap();
 const filterTransitions = new WeakMap();
 
@@ -552,20 +585,40 @@ function createMouseParticle(e) {
     if (reduceMotion.matches || document.body.classList.contains("low-fx")) return;
 
     const now = performance.now();
-    if (now - lastParticleTime < 90) return;
+    if (now - lastParticleTime < 120) return;
     lastParticleTime = now;
 
-    const p = document.createElement("div");
+    let p;
+    if (particlePool.length < PARTICLE_POOL_SIZE) {
+        p = document.createElement("div");
+        p.className = "particle";
+        p.hidden = true;
+        particlePool.push(p);
+        document.body.appendChild(p);
+    } else {
+        p = particlePool[particleCursor % PARTICLE_POOL_SIZE];
+    }
+    particleCursor += 1;
+
     const size = Math.floor(Math.random() * 4 + 3);
     const colors = ["var(--green)", "var(--cyan)", "var(--pink)", "var(--gold)"];
-    p.className = "particle";
-    p.style.left = `${e.pageX}px`;
-    p.style.top = `${e.pageY}px`;
+    p.getAnimations().forEach(animation => animation.cancel());
+    p.hidden = false;
+    p.style.left = `${e.clientX}px`;
+    p.style.top = `${e.clientY}px`;
     p.style.width = `${size}px`;
     p.style.height = `${size}px`;
     p.style.background = colors[Math.floor(Math.random() * colors.length)];
-    document.body.appendChild(p);
-    setTimeout(() => p.remove(), 800);
+
+    const animation = p.animate([
+        { opacity: 1, transform: "translate3d(-50%, -50%, 0) scale(1)" },
+        { opacity: 0, transform: "translate3d(-50%, -30px, 0) scale(0.35) rotate(12deg)" }
+    ], {
+        duration: 620,
+        easing: "steps(6, end)",
+        fill: "forwards"
+    });
+    animation.onfinish = () => { p.hidden = true; };
 }
 
 function ensureAudioContext() {
@@ -702,7 +755,7 @@ function setupProjectInteractions(root = document) {
 }
 
 function handleProjectTilt(event) {
-    if (reduceMotion.matches) return;
+    if (reduceMotion.matches || document.body.classList.contains("low-fx")) return;
     const card = event.currentTarget;
     if (tiltFrames.has(card)) return;
 
@@ -803,6 +856,13 @@ function updateMapParallax(e) {
         mapRect = mapElement.getBoundingClientRect();
         mapRectDirty = false;
     }
+
+    if (
+        e.clientX < mapRect.left ||
+        e.clientX > mapRect.right ||
+        e.clientY < mapRect.top ||
+        e.clientY > mapRect.bottom
+    ) return;
 
     const x = Math.max(0, Math.min(1, (e.clientX - mapRect.left) / mapRect.width));
     const y = Math.max(0, Math.min(1, (e.clientY - mapRect.top) / mapRect.height));

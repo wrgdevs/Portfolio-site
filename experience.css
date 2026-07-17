@@ -396,37 +396,116 @@
     clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
 }
 
-@media (min-width: 961px) {
+.experience-timeline {
+    max-width: 1060px;
+    margin-inline: auto;
+    gap: 28px;
+}
+
+.experience-timeline::before {
+    top: 18px;
+    bottom: 18px;
+    left: 38px;
+    width: 2px;
+    transform: none;
+}
+
+.experience-card {
+    padding-left: 112px;
+    contain-intrinsic-size: auto 420px;
+}
+
+.experience-card::before {
+    content: '';
+    position: absolute;
+    top: 42px;
+    left: 76px;
+    width: 36px;
+    height: 1px;
+    background: linear-gradient(90deg, var(--cyan), rgba(103, 239, 255, 0.22));
+    box-shadow: 0 0 10px rgba(103, 239, 255, 0.28);
+}
+
+.experience-card:nth-child(even)::before {
+    background: linear-gradient(90deg, var(--pink), rgba(255, 92, 170, 0.22));
+    box-shadow: 0 0 10px rgba(255, 92, 170, 0.25);
+}
+
+.experience-node,
+.experience-card:nth-child(odd) .experience-node,
+.experience-card:nth-child(even) .experience-node {
+    top: 23px;
+    right: auto;
+    left: 0;
+    width: 76px;
+}
+
+.experience-card-body {
+    min-height: 0;
+    padding: clamp(24px, 3vw, 34px);
+}
+
+.experience-summary,
+.experience-highlights,
+.experience-note {
+    max-width: 880px;
+}
+
+.involvement-panel {
+    width: calc(100% - 112px);
+    margin-left: 112px;
+}
+
+@media (max-width: 760px) {
     .experience-timeline {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 34px 86px;
+        gap: 22px;
     }
 
     .experience-timeline::before {
-        top: 18px;
-        bottom: 18px;
-        left: 50%;
-        transform: translateX(-50%);
+        left: 17px;
     }
 
     .experience-card {
-        padding-left: 0;
+        padding-left: 52px;
     }
 
-    .experience-card:nth-child(odd) {
-        grid-column: 1;
+    .experience-card::before {
+        top: 40px;
+        left: 36px;
+        width: 16px;
     }
 
-    .experience-card:nth-child(even) {
-        grid-column: 2;
-    }
-
-    .experience-card:nth-child(odd) .experience-node {
-        right: -77px;
-        left: auto;
-    }
-
+    .experience-node,
+    .experience-card:nth-child(odd) .experience-node,
     .experience-card:nth-child(even) .experience-node {
-        left: -77px;
+        left: 0;
+        width: 36px;
+    }
+
+    .involvement-panel {
+        width: 100%;
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 520px) {
+    .experience-timeline::before {
+        left: 13px;
+    }
+
+    .experience-card {
+        padding-left: 44px;
+    }
+
+    .experience-card::before {
+        left: 30px;
+        width: 14px;
+    }
+
+    .experience-node,
+    .experience-card:nth-child(odd) .experience-node,
+    .experience-card:nth-child(even) .experience-node {
+        left: -4px;
+        width: 34px;
     }
 }
