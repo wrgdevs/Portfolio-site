@@ -1,0 +1,432 @@
+/* ====================== EXPERIENCE ====================== */
+.experience-container {
+    position: relative;
+    isolation: isolate;
+    width: min(1120px, 100%);
+    margin: 0 auto;
+}
+
+.experience-container::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    inset: -34px -22px;
+    background:
+        radial-gradient(circle at 14% 10%, rgba(0, 213, 232, 0.12), transparent 24%),
+        radial-gradient(circle at 92% 46%, rgba(255, 79, 216, 0.09), transparent 28%),
+        linear-gradient(90deg, rgba(0, 213, 232, 0.045) 1px, transparent 1px),
+        linear-gradient(rgba(0, 255, 102, 0.035) 1px, transparent 1px);
+    background-size: auto, auto, 48px 48px, 48px 48px;
+    border-radius: calc(var(--radius) * 2);
+    pointer-events: none;
+}
+
+.experience-intro {
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 34px;
+    padding: clamp(24px, 4vw, 42px);
+    background: linear-gradient(135deg, rgba(0, 8, 30, 0.84), rgba(0, 24, 70, 0.60));
+    border: 1px solid rgba(0, 213, 232, 0.34);
+    border-left: 4px solid var(--green);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-cyan), 0 18px 42px rgba(0, 0, 0, 0.30);
+}
+
+.experience-intro::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: min(42%, 360px);
+    height: 100%;
+    background:
+        linear-gradient(90deg, transparent, rgba(0, 213, 232, 0.07)),
+        repeating-linear-gradient(0deg, transparent 0 12px, rgba(0, 255, 102, 0.08) 12px 13px);
+    clip-path: polygon(34% 0, 100% 0, 100% 100%, 0 100%);
+    pointer-events: none;
+}
+
+.experience-intro h1,
+.experience-intro > p {
+    position: relative;
+    z-index: 1;
+}
+
+.experience-intro h1 {
+    margin: 8px 0 14px;
+}
+
+.experience-intro > p:last-child {
+    max-width: 780px;
+    margin: 0;
+    color: rgba(238, 247, 255, 0.82);
+}
+
+.experience-kicker,
+.experience-period,
+.experience-stack > p,
+.involvement-heading > p {
+    margin: 0;
+    color: var(--gold);
+    font-family: var(--font-display);
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.experience-timeline {
+    position: relative;
+    display: grid;
+    gap: 24px;
+}
+
+.experience-timeline::before {
+    content: '';
+    position: absolute;
+    top: 24px;
+    bottom: 24px;
+    left: 33px;
+    width: 2px;
+    background: linear-gradient(var(--gold), var(--cyan) 28%, var(--green) 70%, rgba(255, 79, 216, 0.55));
+    box-shadow: 0 0 14px rgba(0, 213, 232, 0.40);
+}
+
+.experience-card {
+    position: relative;
+    min-width: 0;
+    padding-left: 88px;
+    content-visibility: auto;
+    contain-intrinsic-size: 360px;
+}
+
+.experience-node {
+    position: absolute;
+    z-index: 2;
+    top: 24px;
+    left: 0;
+    display: grid;
+    place-items: center;
+    width: 68px;
+    height: 38px;
+    color: var(--cyan);
+    background: rgba(1, 4, 20, 0.96);
+    border: 2px solid var(--cyan);
+    box-shadow: 0 0 16px rgba(0, 213, 232, 0.30), inset 0 0 12px rgba(0, 213, 232, 0.08);
+    clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+}
+
+.experience-node span {
+    font-size: 0.62rem;
+}
+
+.experience-card-body {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(20px, 3vw, 30px);
+    background:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.025)),
+        rgba(0, 8, 30, 0.68);
+    border: 1px solid rgba(0, 213, 232, 0.28);
+    border-radius: var(--radius);
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.28), inset 3px 0 0 rgba(0, 255, 102, 0.55);
+    transition: transform 0.24s ease, border-color 0.24s ease, box-shadow 0.24s ease;
+}
+
+.experience-card-body::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(110deg, transparent 0 38%, rgba(0, 213, 232, 0.10) 48%, transparent 58%);
+    opacity: 0;
+    transform: translateX(-70%);
+    transition: opacity 0.22s ease, transform 0.48s ease;
+    pointer-events: none;
+}
+
+.experience-card:hover .experience-card-body,
+.experience-card:focus-within .experience-card-body {
+    border-color: rgba(0, 213, 232, 0.64);
+    box-shadow: 0 0 24px rgba(0, 213, 232, 0.14), 0 18px 38px rgba(0, 0, 0, 0.34), inset 3px 0 0 var(--green);
+    transform: translateX(4px);
+}
+
+.experience-card:hover .experience-card-body::after,
+.experience-card:focus-within .experience-card-body::after {
+    opacity: 1;
+    transform: translateX(70%);
+}
+
+.experience-card-header,
+.experience-summary,
+.experience-highlights,
+.experience-note,
+.experience-stack {
+    position: relative;
+    z-index: 1;
+}
+
+.experience-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.experience-card-header h2 {
+    margin: 8px 0 7px;
+    color: var(--green);
+    font-size: clamp(0.9rem, 2vw, 1.22rem);
+    line-height: 1.45;
+}
+
+.experience-organization {
+    margin: 0;
+    color: var(--cyan);
+    font-size: 0.78rem;
+}
+
+.experience-status {
+    flex: 0 0 auto;
+    padding: 8px 10px;
+    color: #06131d;
+    background: var(--gold);
+    border: 1px solid rgba(255, 255, 255, 0.42);
+    box-shadow: 0 0 18px rgba(255, 209, 102, 0.24);
+    font-size: 0.56rem;
+    line-height: 1.3;
+    text-transform: uppercase;
+}
+
+.experience-summary {
+    max-width: 900px;
+    margin: 20px 0 16px;
+    color: rgba(238, 247, 255, 0.88);
+}
+
+.experience-highlights,
+.involvement-content ul {
+    display: grid;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.experience-highlights li,
+.involvement-content li {
+    position: relative;
+    padding-left: 20px;
+}
+
+.experience-highlights li::before,
+.involvement-content li::before {
+    content: '>';
+    position: absolute;
+    left: 0;
+    color: var(--green);
+    text-shadow: 0 0 8px rgba(0, 255, 102, 0.65);
+}
+
+.experience-note {
+    margin: 18px 0 0;
+    padding: 12px 14px;
+    color: rgba(255, 209, 102, 0.88);
+    background: rgba(255, 209, 102, 0.06);
+    border-left: 2px solid var(--gold);
+    font-size: 0.7rem;
+}
+
+.experience-stack {
+    display: grid;
+    gap: 10px;
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(0, 213, 232, 0.18);
+}
+
+.experience-stack > div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.experience-card-incoming .experience-node {
+    color: var(--gold);
+    border-color: var(--gold);
+    box-shadow: 0 0 18px rgba(255, 209, 102, 0.32), inset 0 0 12px rgba(255, 209, 102, 0.08);
+}
+
+.experience-card-incoming .experience-card-body {
+    border-color: rgba(255, 209, 102, 0.42);
+    border-style: dashed;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.28), inset 3px 0 0 var(--gold);
+}
+
+.experience-card-incoming .experience-stack .tech-chip {
+    border-color: rgba(255, 209, 102, 0.38);
+    background: rgba(255, 209, 102, 0.08);
+}
+
+.involvement-panel {
+    display: grid;
+    grid-template-columns: minmax(220px, 0.75fr) minmax(0, 1.6fr);
+    margin-top: 36px;
+    overflow: hidden;
+    background: rgba(0, 8, 30, 0.68);
+    border: 1px solid rgba(255, 79, 216, 0.28);
+    border-radius: var(--radius);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.28), 0 0 20px rgba(255, 79, 216, 0.08);
+}
+
+.involvement-heading,
+.involvement-content {
+    padding: clamp(20px, 3vw, 30px);
+}
+
+.involvement-heading {
+    background:
+        linear-gradient(145deg, rgba(255, 79, 216, 0.10), rgba(0, 213, 232, 0.05)),
+        rgba(0, 8, 30, 0.44);
+    border-right: 1px solid rgba(255, 79, 216, 0.24);
+}
+
+.involvement-heading h2 {
+    margin: 10px 0 0;
+    color: var(--pink);
+    font-size: clamp(0.85rem, 2vw, 1.08rem);
+    line-height: 1.55;
+}
+
+.involvement-content h3 {
+    margin-top: 0;
+    color: var(--cyan);
+}
+
+.involvement-content > p {
+    margin: 0 0 16px;
+}
+
+@media (max-width: 760px) {
+    .experience-timeline::before {
+        left: 17px;
+    }
+
+    .experience-card {
+        padding-left: 52px;
+    }
+
+    .experience-node {
+        top: 22px;
+        width: 36px;
+        height: 36px;
+    }
+
+    .experience-card-header {
+        display: grid;
+    }
+
+    .experience-status {
+        width: fit-content;
+    }
+
+    .involvement-panel {
+        grid-template-columns: 1fr;
+    }
+
+    .involvement-heading {
+        border-right: 0;
+        border-bottom: 1px solid rgba(255, 79, 216, 0.24);
+    }
+}
+
+@media (max-width: 520px) {
+    .experience-container::before {
+        inset-inline: -8px;
+    }
+
+    .experience-card {
+        padding-left: 44px;
+    }
+
+    .experience-timeline::before {
+        left: 13px;
+    }
+
+    .experience-node {
+        left: -4px;
+        width: 34px;
+        height: 34px;
+    }
+
+    .experience-card-body {
+        padding: 18px;
+    }
+}
+
+/* ====================== CAREER MAP UPGRADE ====================== */
+.experience-intro,
+.experience-card-body,
+.involvement-panel {
+    border-radius: 0;
+}
+
+.experience-intro {
+    border-left-color: var(--gold);
+    clip-path: polygon(0 0, calc(100% - 26px) 0, 100% 26px, 100% 100%, 0 100%);
+}
+
+.experience-card-body {
+    border-top: 3px solid var(--cyan);
+    box-shadow: 10px 12px 0 rgba(2, 5, 15, 0.42), inset 3px 0 0 rgba(109, 255, 158, 0.48);
+    clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%);
+}
+
+.experience-card:nth-child(even) .experience-card-body {
+    border-top-color: var(--pink);
+    box-shadow: 10px 12px 0 rgba(2, 5, 15, 0.42), inset 3px 0 0 rgba(255, 92, 170, 0.48);
+}
+
+.experience-card-incoming .experience-card-body {
+    border-top-color: var(--gold);
+}
+
+.involvement-panel {
+    border-top: 3px solid var(--pink);
+    clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
+}
+
+@media (min-width: 961px) {
+    .experience-timeline {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 34px 86px;
+    }
+
+    .experience-timeline::before {
+        top: 18px;
+        bottom: 18px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .experience-card {
+        padding-left: 0;
+    }
+
+    .experience-card:nth-child(odd) {
+        grid-column: 1;
+    }
+
+    .experience-card:nth-child(even) {
+        grid-column: 2;
+    }
+
+    .experience-card:nth-child(odd) .experience-node {
+        right: -77px;
+        left: auto;
+    }
+
+    .experience-card:nth-child(even) .experience-node {
+        left: -77px;
+    }
+}
