@@ -1,6 +1,6 @@
-const ASSET_VERSION = "20260713c";
+export const ASSET_VERSION = "20260713c";
 
-const PROJECT_FILTERS = [
+export const PROJECT_FILTERS = [
     { id: "all", label: "All" },
     { id: "game-graphics", label: "Game & Graphics" },
     { id: "finance-data", label: "Finance & Data" },
@@ -8,7 +8,7 @@ const PROJECT_FILTERS = [
     { id: "tools-systems", label: "Tools & Systems" }
 ];
 
-const SECTION_KEYS = {
+export const SECTION_KEYS = {
     "1": "about",
     "2": "current",
     "3": "experience",
@@ -16,7 +16,7 @@ const SECTION_KEYS = {
     "5": "contact"
 };
 
-const EXPERIENCE = [
+export const EXPERIENCE = [
     {
         id: "statistics-canada",
         period: "Fall 2026",
@@ -79,7 +79,7 @@ const EXPERIENCE = [
     }
 ];
 
-const INVOLVEMENT = {
+export const INVOLVEMENT = {
     title: "Game Jams and Hackathons",
     summary: "Participated in collaborative game-development, hackathon-style, and technical activities through school and community groups.",
     highlights: [
@@ -89,7 +89,7 @@ const INVOLVEMENT = {
     ]
 };
 
-const PROJECTS = [
+export const PROJECTS = [
     {
         id: "valuation-deal-lab",
         title: "Valuation & Deal Lab",
@@ -521,5 +521,5 @@ const PROJECTS = [
     }
 ];
 
-const HEADER_TITLE = "WELCOME TO MY PORTFOLIO";
-const HEADER_SUBTITLE = "WEI RONG GAO";
+export const HEADER_TITLE = "WELCOME TO MY PORTFOLIO";
+export const HEADER_SUBTITLE = "WEI RONG GAO";
