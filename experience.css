@@ -364,6 +364,38 @@
     }
 }
 
+/* ====================== TIMELINE NODE NAVIGATION ====================== */
+.experience-card {
+    scroll-margin-top: 120px;
+}
+
+.experience-node {
+    appearance: none;
+    padding: 0;
+    font: inherit;
+    cursor: url('assets/cursor/SELECT.cur?v=20260718b'), pointer;
+}
+
+.experience-node:hover,
+.experience-node:focus-visible {
+    filter: brightness(1.18);
+    outline: 2px solid var(--text);
+    outline-offset: 3px;
+    transform: translateX(3px);
+}
+
+.experience-node:active {
+    transform: translate(2px, 2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .experience-node:hover,
+    .experience-node:focus-visible,
+    .experience-node:active {
+        transform: none;
+    }
+}
+
 /* ====================== CHRONOLOGICAL PROGRESS RAIL ====================== */
 .experience-timeline::before {
     z-index: 0;

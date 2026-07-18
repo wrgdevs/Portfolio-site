@@ -68,7 +68,7 @@ function renderProjectImages(project) {
     return project.images
         .map((src, index) => {
             const alt = index === 0 ? project.imageAlt : `${project.title} screenshot ${index + 1}`;
-            return `<img loading="lazy" decoding="async" data-src="${escapeHtml(src)}" alt="${escapeHtml(alt)}">`;
+            return `<img loading="lazy" decoding="async" width="960" height="540" data-src="${escapeHtml(src)}" alt="${escapeHtml(alt)}">`;
         })
         .join("");
 }
@@ -81,7 +81,7 @@ function renderProject(project) {
                 <span>${escapeHtml(project.images.length)} IMAGES</span>
                 <span>${project.github?.url ? "REPO ONLINE" : "REPO SOON"}</span>
             </div>
-            <img loading="lazy" decoding="async" src="${escapeHtml(project.image)}" alt="${escapeHtml(project.imageAlt)}">
+            <img loading="lazy" decoding="async" width="960" height="540" src="${escapeHtml(project.image)}" alt="${escapeHtml(project.imageAlt)}">
             <div class="project-summary">
                 <div class="project-category-row">${renderChips(project.languages)}</div>
                 <h2>${escapeHtml(project.title)}</h2>
@@ -121,7 +121,7 @@ function renderExperienceCard(experience, index) {
 
     return `
         <article class="experience-card${experience.incoming ? " experience-card-incoming" : ""} reveal-on-scroll" data-experience-id="${escapeHtml(experience.id)}">
-            <div class="experience-node" aria-hidden="true"><span>${String(index + 1).padStart(2, "0")}</span></div>
+            <button class="experience-node" type="button" aria-label="Jump to ${escapeHtml(experience.role)} at ${escapeHtml(experience.organization)}"><span>${String(index + 1).padStart(2, "0")}</span></button>
             <div class="experience-card-body">
                 <header class="experience-card-header">
                     <div>
@@ -196,6 +196,7 @@ function scrollToPortfolioSection(section) {
 }
 
 function jumpToSection(sectionId) {
+    markZoneVisited(sectionId);
     if (!loadedSections[sectionId]) {
         playSfx("nav");
         createSection(sectionId);
@@ -221,7 +222,7 @@ function createSection(sectionId) {
             <div class="about-section reveal-on-scroll">
                 <h1>ABOUT ME</h1>
                 <p>Hi, I'm Wei Rong. I'm a Mathematics student who enjoys building software systems that model, visualize, or interact with complex ideas. My projects often sit between technical tools and interactive experiences, whether that means simulating economies and ecosystems, building game engines and editors, or creating finance and data-driven applications.</p>
-                <img class="section-artwork" src="assets/images/sky.webp" alt="Wei Rong Gao">
+                <img class="section-artwork" src="assets/images/sky.webp" width="1920" height="1080" loading="lazy" decoding="async" alt="Wei Rong Gao">
                 <h1>What I Like Building</h1>
                 <p>I like projects where the logic underneath matters just as much as what appears on screen. I'm drawn to systems with moving parts: simulations with emergent behavior, tools that turn data into decisions, and interactive applications where design choices affect how users understand the system.</p>
                 <button class="collapsible" type="button" aria-expanded="false">Education</button>
@@ -345,7 +346,7 @@ function createSection(sectionId) {
             <div class="contact-section reveal-on-scroll">
                 <h1>CONTACT</h1>
                 <p>Want to chat or collaborate?</p>
-                <img class="section-artwork" src="assets/images/robot.webp" alt="Robot illustration">
+                <img class="section-artwork" src="assets/images/robot.webp" width="1920" height="804" loading="lazy" decoding="async" alt="Robot illustration">
                 <a class="contact-email" href="mailto:wrgao@uwaterloo.ca">wrgao@uwaterloo.ca</a>
                 <button type="button" onclick="openGithubModal()" class="github-link profile-github-link">View GitHub Profile</button>
             </div>`;
@@ -433,7 +434,7 @@ function ensureImageCarousel() {
             <button class="image-carousel-close" type="button" aria-label="Close image carousel">x</button>
             <button class="image-carousel-nav image-carousel-prev" type="button" aria-label="Previous image">&lt;</button>
             <div class="image-carousel-frame">
-                <img class="image-carousel-image" src="" alt="Project screenshot preview">
+                <img class="image-carousel-image" src="" width="960" height="540" alt="Project screenshot preview">
             </div>
             <button class="image-carousel-nav image-carousel-next" type="button" aria-label="Next image">&gt;</button>
             <p class="image-carousel-counter"></p>
@@ -534,7 +535,7 @@ function renderImageCarousel() {
     thumbnailTrack.innerHTML = carouselImages
         .map((item, index) => `
             <button class="image-carousel-thumbnail${index === carouselIndex ? " active" : ""}" type="button" data-index="${index}" aria-label="Show image ${index + 1}">
-                <img src="${escapeHtml(item.src)}" alt="">
+                <img src="${escapeHtml(item.src)}" width="160" height="90" alt="">
             </button>
         `)
         .join("");
@@ -585,6 +586,8 @@ let mapRectDirty = true;
 let particleCursor = 0;
 let currentProjectQuery = "";
 let activeSectionId = "about";
+const VISITED_STORAGE_KEY = "portfolioVisitedSections";
+const visitedSections = new Set();
 let activeProjectPreview = null;
 let projectPreviewDelay = 0;
 let projectPreviewInterval = 0;
@@ -961,6 +964,37 @@ function updateProjectCount(nextCount) {
 
 let radarObserver = null;
 
+function updateVisitedZoneMarkers() {
+    document.querySelectorAll(".map .level").forEach(level => {
+        level.classList.toggle("is-visited", visitedSections.has(level.dataset.section));
+    });
+}
+
+function restoreVisitedZones() {
+    try {
+        const savedSections = JSON.parse(sessionStorage.getItem(VISITED_STORAGE_KEY) || "[]");
+        if (Array.isArray(savedSections)) {
+            savedSections.filter(sectionId => SECTION_ORDER.includes(sectionId)).forEach(sectionId => visitedSections.add(sectionId));
+        }
+    } catch {
+        visitedSections.clear();
+    }
+    updateVisitedZoneMarkers();
+}
+
+function markZoneVisited(sectionId) {
+    if (!SECTION_ORDER.includes(sectionId)) return;
+    const isNewVisit = !visitedSections.has(sectionId);
+    visitedSections.add(sectionId);
+    updateVisitedZoneMarkers();
+    if (!isNewVisit) return;
+    try {
+        sessionStorage.setItem(VISITED_STORAGE_KEY, JSON.stringify([...visitedSections]));
+    } catch {
+        // Session storage is an enhancement; map state still works for this page view.
+    }
+}
+
 function setMapDestination(sectionId) {
     if (mapElement && SECTION_ORDER.includes(sectionId)) {
         mapElement.dataset.destination = sectionId;
@@ -972,6 +1006,7 @@ function setActiveSection(sectionId) {
     activeSectionId = sectionId;
     document.body.dataset.activeSection = sectionId;
     const activeIndex = SECTION_ORDER.indexOf(sectionId);
+    if (document.getElementById(sectionId)) markZoneVisited(sectionId);
 
     document.querySelectorAll(".content-section").forEach(section => {
         section.classList.toggle("is-active-zone", section.id === sectionId);
@@ -1195,6 +1230,7 @@ document.addEventListener("visibilitychange", handleVisibilityChange);
 
 document.addEventListener("DOMContentLoaded", () => {
     initLowFx();
+    restoreVisitedZones();
     setActiveSection("about");
     setupMapInteractions();
     updateProgress();
@@ -1285,6 +1321,18 @@ document.addEventListener("input", event => {
     });
 });
 
+function clearProjectNameSearch() {
+    const searchInput = document.querySelector(".project-name-search");
+    if (!searchInput || (!searchInput.value && !currentProjectQuery)) return false;
+    searchInput.value = "";
+    currentProjectQuery = "";
+    if (projectSearchFrame) cancelAnimationFrame(projectSearchFrame);
+    projectSearchFrame = 0;
+    applyProjectFilters();
+    playSfx("close");
+    return true;
+}
+
 // ====================== GITHUB MODAL ======================
 
 function openGithubModal() {
@@ -1327,6 +1375,19 @@ document.addEventListener("click", event => {
         closeGithubModal();
     }
 
+    const experienceNode = event.target.closest?.(".experience-node");
+    if (experienceNode) {
+        const experienceCard = experienceNode.closest(".experience-card");
+        if (experienceCard) {
+            playSfx("nav");
+            experienceCard.scrollIntoView({
+                behavior: reduceMotion.matches || document.body.classList.contains("low-fx") ? "auto" : "smooth",
+                block: "center"
+            });
+        }
+        return;
+    }
+
     if (event.target.classList.contains("project-filter")) {
         filterProjects(event.target.dataset.filter);
         return;
@@ -1356,7 +1417,7 @@ document.addEventListener("mouseover", event => {
         return;
     }
 
-    const interactiveTarget = event.target.closest(".level, .project-filter, .github-link, .header-github-button, .github-modal-link");
+    const interactiveTarget = event.target.closest(".level, .experience-node, .project-filter, .github-link, .header-github-button, .github-modal-link");
     const movedWithinInteractive = event.relatedTarget instanceof Node && interactiveTarget?.contains(event.relatedTarget);
     if (interactiveTarget && !movedWithinInteractive) {
         playSfx("hover");
@@ -1366,6 +1427,10 @@ document.addEventListener("mouseover", event => {
 document.addEventListener("keydown", event => {
     const githubModal = document.getElementById("github-modal");
     const carouselModal = document.getElementById("image-carousel-modal");
+    const modalWasOpen = Boolean(
+        githubModal?.classList.contains("is-open") ||
+        carouselModal?.classList.contains("is-open")
+    );
     
     if (githubModal && githubModal.classList.contains("is-open")) {
         if (event.key === "Tab") {
@@ -1378,8 +1443,13 @@ document.addEventListener("keydown", event => {
     }
 
     if (event.key === "Escape") {
-        closeGithubModal();
-        closeImageCarousel();
+        if (githubModal?.classList.contains("is-open")) closeGithubModal();
+        if (carouselModal?.classList.contains("is-open")) closeImageCarousel();
+        if (modalWasOpen) {
+            event.preventDefault();
+            return;
+        }
+        if (clearProjectNameSearch()) event.preventDefault();
     }
 
     if (document.getElementById("image-carousel-modal")?.classList.contains("is-open")) {
