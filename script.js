@@ -75,7 +75,7 @@ function renderProjectImages(project) {
 
 function renderProject(project) {
     return `
-        <article class="project-item reveal-on-scroll" data-category="${escapeHtml(project.categories.join(" "))}" data-project-id="${escapeHtml(project.id)}" role="button" tabindex="0" aria-expanded="false" aria-controls="${escapeHtml(project.id)}">
+        <article class="project-item reveal-on-scroll" data-category="${escapeHtml(project.categories.join(" "))}" data-project-id="${escapeHtml(project.id)}" data-project-name="${escapeHtml(project.title.toLocaleLowerCase())}" data-project-title="${escapeHtml(project.title)}" data-preview-images="${escapeHtml(project.images.join("|"))}" role="button" tabindex="0" aria-expanded="false" aria-controls="${escapeHtml(project.id)}">
             <div class="project-scan-panel" aria-hidden="true">
                 <span>${escapeHtml(project.languages.join(" / "))}</span>
                 <span>${escapeHtml(project.images.length)} IMAGES</span>
@@ -221,7 +221,7 @@ function createSection(sectionId) {
             <div class="about-section reveal-on-scroll">
                 <h1>ABOUT ME</h1>
                 <p>Hi, I'm Wei Rong. I'm a Mathematics student who enjoys building software systems that model, visualize, or interact with complex ideas. My projects often sit between technical tools and interactive experiences, whether that means simulating economies and ecosystems, building game engines and editors, or creating finance and data-driven applications.</p>
-                <img src="assets/images/sky.webp" alt="Wei Rong Gao">
+                <img class="section-artwork" src="assets/images/sky.webp" alt="Wei Rong Gao">
                 <h1>What I Like Building</h1>
                 <p>I like projects where the logic underneath matters just as much as what appears on screen. I'm drawn to systems with moving parts: simulations with emergent behavior, tools that turn data into decisions, and interactive applications where design choices affect how users understand the system.</p>
                 <button class="collapsible" type="button" aria-expanded="false">Education</button>
@@ -310,6 +310,7 @@ function createSection(sectionId) {
                     <p>Production programming, cloud and AI project work, and independent software development—with another cloud-focused co-op beginning in Fall 2026.</p>
                 </header>
                 <div class="experience-timeline">
+                    <div class="experience-timeline-progress" aria-hidden="true"></div>
                     ${EXPERIENCE.map(renderExperienceCard).join("")}
                 </div>
                 <section class="involvement-panel reveal-on-scroll">
@@ -330,6 +331,10 @@ function createSection(sectionId) {
                 <h1>PROJECTS</h1>
                 <p class="projects-intro">Filter the same project set toward graphics, finance, simulation, or systems work.</p>
                 <div class="project-filter-bar" aria-label="Project filters">
+                    <label class="project-search-shell">
+                        <span class="sr-only">Search projects by name</span>
+                        <input class="project-name-search" type="search" placeholder="PROJECT NAME" aria-label="Search projects by name" autocomplete="off" spellcheck="false">
+                    </label>
                     <div class="filter-buttons-container">${renderProjectFilters()}</div>
                 </div>
                 <p class="project-count" id="project-count" aria-live="polite">${PROJECTS.length} PROJECTS FOUND</p>
@@ -340,7 +345,7 @@ function createSection(sectionId) {
             <div class="contact-section reveal-on-scroll">
                 <h1>CONTACT</h1>
                 <p>Want to chat or collaborate?</p>
-                <img src="assets/images/robot.webp" alt="Robot illustration">
+                <img class="section-artwork" src="assets/images/robot.webp" alt="Robot illustration">
                 <a class="contact-email" href="mailto:wrgao@uwaterloo.ca">wrgao@uwaterloo.ca</a>
                 <button type="button" onclick="openGithubModal()" class="github-link profile-github-link">View GitHub Profile</button>
             </div>`;
@@ -352,10 +357,14 @@ function createSection(sectionId) {
     insertSectionInOrder(section);
     observeRevealElements(section);
     setupProjectInteractions(section);
+    setupArtworkInteractions(section);
     if (radarObserver) {
         radarObserver.observe(section);
     }
-    requestAnimationFrame(() => section.classList.add("is-booted"));
+    requestAnimationFrame(() => {
+        section.classList.add("is-booted");
+        updateTimelineProgress();
+    });
 }
 
 function decorateHeadings(root = document) {
@@ -370,6 +379,7 @@ function toggleProjectDetails(id) {
     if (!details || !projectItem) return;
 
     const isOpen = !details.classList.contains("is-open");
+    stopProjectPreview(projectItem);
 
     if (isOpen) {
         hydrateProjectImages(projectItem);
@@ -489,6 +499,7 @@ function hydrateProjectImages(projectItem) {
 }
 
 function openImageCarousel(projectItem, clickedSrc) {
+    stopProjectPreview(projectItem);
     carouselImages = getProjectImages(projectItem);
     if (!carouselImages.length) return;
     playSfx("open");
@@ -568,13 +579,22 @@ let pointerEffectsFrame = 0;
 let latestPointerEvent = null;
 let progressFrame = 0;
 let projectCountFrame = 0;
+let projectSearchFrame = 0;
 let mapRect = null;
 let mapRectDirty = true;
 let particleCursor = 0;
+let currentProjectQuery = "";
+let activeSectionId = "about";
+let activeProjectPreview = null;
+let projectPreviewDelay = 0;
+let projectPreviewInterval = 0;
+let projectPreviewSwap = 0;
+let projectPreviewObserver = null;
 const particlePool = [];
 const PARTICLE_POOL_SIZE = 8;
 const tiltFrames = new WeakMap();
 const filterTransitions = new WeakMap();
+const artworkFrames = new WeakMap();
 
 if (circle) {
     circle.style.strokeDasharray = circumference;
@@ -709,6 +729,7 @@ function initLowFx() {
     const isLowFx = localStorage.getItem("lowFx") === "true";
     const button = document.getElementById("low-fx-toggle");
     if (isLowFx) {
+        stopProjectPreview();
         document.body.classList.add("low-fx");
         if (button) {
             button.setAttribute("aria-pressed", "true");
@@ -744,13 +765,141 @@ function toggleAudio() {
     }
 }
 
+function stopProjectPreview(projectItem = activeProjectPreview) {
+    if (!activeProjectPreview || (projectItem && projectItem !== activeProjectPreview)) return;
+
+    clearTimeout(projectPreviewDelay);
+    clearTimeout(projectPreviewSwap);
+    clearInterval(projectPreviewInterval);
+    projectPreviewDelay = 0;
+    projectPreviewSwap = 0;
+    projectPreviewInterval = 0;
+
+    const card = activeProjectPreview;
+    const image = card.querySelector(":scope > img");
+    if (image?.dataset.previewOriginalSrc) {
+        image.src = image.dataset.previewOriginalSrc;
+        image.alt = image.dataset.previewOriginalAlt || card.dataset.projectTitle || "Project screenshot";
+        delete image.dataset.previewOriginalSrc;
+        delete image.dataset.previewOriginalAlt;
+    }
+    image?.classList.remove("is-preview-switching");
+    card.classList.remove("is-previewing");
+    delete card.dataset.previewIndex;
+    activeProjectPreview = null;
+}
+
+function cycleProjectPreview(projectItem) {
+    if (activeProjectPreview !== projectItem || projectItem.getAttribute("aria-expanded") === "true") return;
+
+    const image = projectItem.querySelector(":scope > img");
+    const images = (projectItem.dataset.previewImages || "").split("|").filter(Boolean);
+    if (!image || images.length < 2) return;
+
+    const nextIndex = (Number(projectItem.dataset.previewIndex || 0) + 1) % images.length;
+    const nextSrc = versionedAsset(images[nextIndex]);
+    const preload = new Image();
+    preload.decoding = "async";
+    preload.onload = () => {
+        if (activeProjectPreview !== projectItem) return;
+        image.classList.add("is-preview-switching");
+        clearTimeout(projectPreviewSwap);
+        projectPreviewSwap = setTimeout(() => {
+            if (activeProjectPreview !== projectItem) return;
+            image.src = nextSrc;
+            image.alt = `${projectItem.dataset.projectTitle} screenshot ${nextIndex + 1}`;
+            projectItem.dataset.previewIndex = String(nextIndex);
+            requestAnimationFrame(() => image.classList.remove("is-preview-switching"));
+        }, 110);
+    };
+    preload.src = nextSrc;
+}
+
+function queueProjectPreview(projectItem) {
+    if (
+        reduceMotion.matches ||
+        document.body.classList.contains("low-fx") ||
+        projectItem.getAttribute("aria-expanded") === "true"
+    ) return;
+
+    stopProjectPreview();
+    const image = projectItem.querySelector(":scope > img");
+    const images = (projectItem.dataset.previewImages || "").split("|").filter(Boolean);
+    if (!image || images.length < 2) return;
+
+    activeProjectPreview = projectItem;
+    image.dataset.previewOriginalSrc = image.src;
+    image.dataset.previewOriginalAlt = image.alt;
+    projectItem.dataset.previewIndex = "0";
+    projectPreviewDelay = setTimeout(() => {
+        if (activeProjectPreview !== projectItem) return;
+        projectItem.classList.add("is-previewing");
+        cycleProjectPreview(projectItem);
+        projectPreviewInterval = setInterval(() => cycleProjectPreview(projectItem), 1650);
+    }, 520);
+}
+
 function setupProjectInteractions(root = document) {
     if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+
+    if (!projectPreviewObserver && "IntersectionObserver" in window) {
+        projectPreviewObserver = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting && entry.target === activeProjectPreview) {
+                    stopProjectPreview(entry.target);
+                }
+            });
+        }, { rootMargin: "120px 0px", threshold: 0.01 });
+    }
 
     root.querySelectorAll(".project-item").forEach(projectItem => {
         projectItem.addEventListener("mousemove", handleProjectTilt);
         projectItem.addEventListener("mouseleave", resetProjectTilt);
+        projectItem.addEventListener("mouseleave", () => stopProjectPreview(projectItem));
+        projectItem.addEventListener("mouseenter", () => queueProjectPreview(projectItem));
+        projectItem.addEventListener("focusin", () => queueProjectPreview(projectItem));
+        projectItem.addEventListener("focusout", event => {
+            if (!(event.relatedTarget instanceof Node) || !projectItem.contains(event.relatedTarget)) {
+                stopProjectPreview(projectItem);
+            }
+        });
         projectItem.addEventListener("mouseenter", () => playSfx("hover"));
+        projectPreviewObserver?.observe(projectItem);
+    });
+}
+
+function setupArtworkInteractions(root = document) {
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+
+    root.querySelectorAll(".section-artwork").forEach(image => {
+        if (image.dataset.artworkReady === "true") return;
+        image.dataset.artworkReady = "true";
+        const panel = image.parentElement;
+        if (!panel) return;
+
+        panel.addEventListener("pointermove", event => {
+            if (reduceMotion.matches || document.body.classList.contains("low-fx") || artworkFrames.has(panel)) return;
+            artworkFrames.set(panel, requestAnimationFrame(() => {
+                artworkFrames.delete(panel);
+                const rect = image.getBoundingClientRect();
+                const x = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
+                const y = Math.max(0, Math.min(1, (event.clientY - rect.top) / rect.height));
+                image.style.setProperty("--art-x", `${(x - 0.5) * 10}px`);
+                image.style.setProperty("--art-y", `${(y - 0.5) * 8}px`);
+                panel.style.setProperty("--art-light-x", `${x * 100}%`);
+                panel.style.setProperty("--art-light-y", `${y * 100}%`);
+            }));
+        }, { passive: true });
+
+        panel.addEventListener("pointerleave", () => {
+            const frame = artworkFrames.get(panel);
+            if (frame) cancelAnimationFrame(frame);
+            artworkFrames.delete(panel);
+            image.style.setProperty("--art-x", "0px");
+            image.style.setProperty("--art-y", "0px");
+            panel.style.setProperty("--art-light-x", "50%");
+            panel.style.setProperty("--art-light-y", "50%");
+        }, { passive: true });
     });
 }
 
@@ -811,10 +960,54 @@ function updateProjectCount(nextCount) {
 }
 
 let radarObserver = null;
+
+function setMapDestination(sectionId) {
+    if (mapElement && SECTION_ORDER.includes(sectionId)) {
+        mapElement.dataset.destination = sectionId;
+    }
+}
+
+function setActiveSection(sectionId) {
+    if (!SECTION_ORDER.includes(sectionId)) return;
+    activeSectionId = sectionId;
+    document.body.dataset.activeSection = sectionId;
+    const activeIndex = SECTION_ORDER.indexOf(sectionId);
+
+    document.querySelectorAll(".content-section").forEach(section => {
+        section.classList.toggle("is-active-zone", section.id === sectionId);
+    });
+    document.querySelectorAll(".section-radar button").forEach(button => {
+        button.classList.toggle("active", button.dataset.section === sectionId);
+    });
+    document.querySelectorAll(".map .level").forEach(level => {
+        if (level.dataset.section === sectionId) {
+            level.setAttribute("aria-current", "true");
+        } else {
+            level.removeAttribute("aria-current");
+        }
+    });
+
+    document.querySelector(".section-radar")?.style.setProperty("--radar-offset", `${activeIndex * 22}px`);
+    setMapDestination(sectionId);
+}
+
+function setupMapInteractions() {
+    setMapDestination(activeSectionId);
+    document.querySelectorAll(".map .level").forEach(level => {
+        const previewDestination = () => setMapDestination(level.dataset.section);
+        const restoreDestination = () => setMapDestination(activeSectionId);
+        level.addEventListener("mouseenter", previewDestination);
+        level.addEventListener("focus", previewDestination);
+        level.addEventListener("mouseleave", () => {
+            if (!level.matches(":focus")) restoreDestination();
+        });
+        level.addEventListener("blur", restoreDestination);
+    });
+}
+
 function initRadarObserver() {
     if (!("IntersectionObserver" in window)) return;
-    
-    const buttons = document.querySelectorAll(".section-radar button");
+
     const observerOptions = {
         root: null,
         rootMargin: "-45% 0px -45% 0px",
@@ -825,15 +1018,7 @@ function initRadarObserver() {
         entries.forEach(entry => {
             const sectionId = entry.target.id;
             if (entry.isIntersecting) {
-                buttons.forEach(button => {
-                    button.classList.toggle("active", button.dataset.section === sectionId);
-                });
-            } else {
-                buttons.forEach(button => {
-                    if (button.dataset.section === sectionId) {
-                        button.classList.remove("active");
-                    }
-                });
+                setActiveSection(sectionId);
             }
         });
     }, observerOptions);
@@ -880,6 +1065,22 @@ function updateProgress() {
     circle.style.strokeDashoffset = circumference * (1 - scrollPercent);
 }
 
+function updateTimelineProgress() {
+    const timeline = document.querySelector(".experience-timeline");
+    const progressRail = timeline?.querySelector(".experience-timeline-progress");
+    if (!timeline || !progressRail) return;
+
+    const rect = timeline.getBoundingClientRect();
+    const viewportAnchor = window.innerHeight * 0.58;
+    const trackLength = Math.max(0, timeline.offsetHeight - 36);
+    const progress = Math.max(0, Math.min(1, (viewportAnchor - rect.top) / Math.max(1, rect.height - window.innerHeight * 0.18)));
+    progressRail.style.height = `${trackLength * progress}px`;
+
+    timeline.querySelectorAll(".experience-card").forEach(card => {
+        card.classList.toggle("is-passed", card.getBoundingClientRect().top <= viewportAnchor);
+    });
+}
+
 function schedulePointerEffects(event) {
     latestPointerEvent = event;
     if (pointerEffectsFrame || document.hidden) return;
@@ -899,6 +1100,7 @@ function handleViewportChange() {
     progressFrame = requestAnimationFrame(() => {
         progressFrame = 0;
         updateProgress();
+        updateTimelineProgress();
     });
 }
 
@@ -907,6 +1109,7 @@ function handleVisibilityChange() {
     document.body.classList.toggle("effects-paused", isPaused);
 
     if (isPaused) {
+        stopProjectPreview();
         if (pointerEffectsFrame) cancelAnimationFrame(pointerEffectsFrame);
         if (progressFrame) cancelAnimationFrame(progressFrame);
         pointerEffectsFrame = 0;
@@ -914,6 +1117,7 @@ function handleVisibilityChange() {
     } else {
         mapRectDirty = true;
         updateProgress();
+        updateTimelineProgress();
     }
 
     if (!audioEnabled || !audioContext) return;
@@ -991,6 +1195,8 @@ document.addEventListener("visibilitychange", handleVisibilityChange);
 
 document.addEventListener("DOMContentLoaded", () => {
     initLowFx();
+    setActiveSection("about");
+    setupMapInteractions();
     updateProgress();
     initRadarObserver();
     decorateHeadings();
@@ -1018,13 +1224,15 @@ let currentCategoryFilter = "all";
 
 function applyProjectFilters() {
     const projectItems = Array.from(document.querySelectorAll(".project-item"));
-    const itemStates = projectItems.map(item => ({
-        item,
-        show: currentCategoryFilter === "all" || item.dataset.category.split(" ").includes(currentCategoryFilter)
-    }));
+    const itemStates = projectItems.map(item => {
+        const categoryMatches = currentCategoryFilter === "all" || item.dataset.category.split(" ").includes(currentCategoryFilter);
+        const nameMatches = (item.dataset.projectName || "").includes(currentProjectQuery);
+        return { item, show: categoryMatches && nameMatches };
+    });
     updateProjectCount(itemStates.filter(state => state.show).length);
     
     itemStates.forEach(({ item, show }, index) => {
+        if (!show && item === activeProjectPreview) stopProjectPreview(item);
         const isCurrentlyHidden = item.classList.contains("is-hidden") || item.classList.contains("is-filtered-out");
         const previousTransition = filterTransitions.get(item);
         if (show === !isCurrentlyHidden && !previousTransition) return;
@@ -1066,6 +1274,16 @@ function filterProjects(filter) {
 
     applyProjectFilters();
 }
+
+document.addEventListener("input", event => {
+    if (!(event.target instanceof HTMLInputElement) || !event.target.classList.contains("project-name-search")) return;
+    currentProjectQuery = event.target.value.trim().toLocaleLowerCase();
+    if (projectSearchFrame) cancelAnimationFrame(projectSearchFrame);
+    projectSearchFrame = requestAnimationFrame(() => {
+        projectSearchFrame = 0;
+        applyProjectFilters();
+    });
+});
 
 // ====================== GITHUB MODAL ======================
 
@@ -1169,6 +1387,8 @@ document.addEventListener("keydown", event => {
         if (event.key === "ArrowRight") moveImageCarousel(1);
         return;
     }
+
+    if (event.target.matches?.("input, textarea, select, [contenteditable='true']")) return;
 
     if (SECTION_KEYS[event.key] && !event.altKey && !event.ctrlKey && !event.metaKey) {
         jumpToSection(SECTION_KEYS[event.key]);

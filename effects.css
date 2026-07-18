@@ -391,3 +391,54 @@
         margin-inline: 14px;
     }
 }
+
+/* ====================== ZONE-AWARE HUD ====================== */
+.progress-circle {
+    border-color: color-mix(in srgb, var(--zone-accent) 46%, transparent);
+    box-shadow: 0 0 18px color-mix(in srgb, var(--zone-accent) 22%, transparent), inset 0 0 20px rgba(0, 213, 232, 0.06);
+    transition: border-color 0.28s ease, box-shadow 0.28s ease;
+}
+
+.progress-ring__circle {
+    stroke: var(--zone-accent);
+    filter: drop-shadow(0 0 6px var(--zone-accent));
+    transition: stroke 0.28s ease, filter 0.28s ease, stroke-dashoffset 0.12s linear;
+}
+
+.section-radar {
+    --radar-offset: 0px;
+    border-color: color-mix(in srgb, var(--zone-accent) 42%, transparent);
+    transition: border-color 0.28s ease;
+}
+
+.section-radar::after {
+    content: '';
+    position: absolute;
+    z-index: 2;
+    top: calc(9px + var(--radar-offset));
+    left: 9px;
+    width: 18px;
+    height: 18px;
+    border: 1px solid var(--zone-accent);
+    box-shadow: 0 0 12px color-mix(in srgb, var(--zone-accent) 54%, transparent);
+    pointer-events: none;
+    transition: top 0.28s steps(4, end), border-color 0.28s ease, box-shadow 0.28s ease;
+}
+
+.section-radar button {
+    position: relative;
+    z-index: 3;
+}
+
+.section-radar button.active,
+.section-radar button:hover,
+.section-radar button:focus-visible {
+    background: var(--zone-accent);
+    border-color: var(--text);
+    box-shadow: 0 0 14px color-mix(in srgb, var(--zone-accent) 62%, transparent);
+}
+
+body.low-fx .section-radar::after,
+body.low-fx .progress-ring__circle {
+    transition: none;
+}

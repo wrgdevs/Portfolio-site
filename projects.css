@@ -837,3 +837,168 @@
     animation: none;
     box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.30), 0 0 18px rgba(103, 239, 255, 0.20);
 }
+
+/* ====================== NAME FINDER / LIVE CARD PREVIEWS ====================== */
+.project-search-shell {
+    position: relative;
+    width: min(100%, 520px);
+}
+
+.project-search-shell::before,
+.project-search-shell::after {
+    content: '';
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    pointer-events: none;
+}
+
+.project-search-shell::before {
+    left: 17px;
+    width: 10px;
+    height: 10px;
+    border: 2px solid var(--gold);
+    transform: translateY(-62%) rotate(45deg);
+}
+
+.project-search-shell::after {
+    left: 28px;
+    width: 8px;
+    height: 2px;
+    background: var(--gold);
+    transform: translateY(4px) rotate(45deg);
+    transform-origin: left center;
+}
+
+.project-name-search {
+    width: 100%;
+    min-height: 50px;
+    padding: 14px 46px 14px 48px;
+    color: var(--text);
+    caret-color: var(--gold);
+    font: 0.72rem/1.5 var(--font-display);
+    letter-spacing: 0.04em;
+    background:
+        linear-gradient(90deg, rgba(255, 190, 85, 0.08), transparent 38%),
+        rgba(2, 6, 20, 0.86);
+    border: 1px solid rgba(255, 190, 85, 0.46);
+    border-left: 4px solid var(--gold);
+    border-radius: 0;
+    box-shadow: inset 0 0 18px rgba(255, 190, 85, 0.04), 6px 6px 0 rgba(0, 0, 0, 0.25);
+    outline: none;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+
+.project-name-search::placeholder {
+    color: rgba(255, 190, 85, 0.66);
+    opacity: 1;
+}
+
+.project-name-search:focus {
+    border-color: var(--gold);
+    background: rgba(6, 10, 27, 0.96);
+    box-shadow: inset 0 0 22px rgba(255, 190, 85, 0.08), 6px 6px 0 rgba(0, 0, 0, 0.34), 0 0 22px rgba(255, 190, 85, 0.13);
+}
+
+.project-name-search::-webkit-search-cancel-button {
+    filter: invert(89%) sepia(74%) saturate(892%);
+    cursor: pointer;
+}
+
+.project-item > img {
+    transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.16s ease, filter 0.25s ease;
+}
+
+.project-item > img.is-preview-switching {
+    opacity: 0.22;
+}
+
+.project-item.is-previewing {
+    border-color: var(--project-accent);
+}
+
+.project-item.is-previewing .project-scan-panel {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.project-item.is-previewing .project-scan-panel::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: -1px;
+    left: 0;
+    height: 2px;
+    background: var(--project-accent);
+    box-shadow: 0 0 10px var(--project-accent);
+    transform-origin: left;
+    animation: projectPreviewTick 1.65s linear infinite;
+}
+
+.project-filter:active,
+.github-link:active,
+.header-github-button:active,
+.sound-toggle:active,
+.low-fx-toggle:active,
+.github-modal-link:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.34);
+}
+
+.level:active {
+    transform: translateY(calc(var(--level-y) - 2px));
+}
+
+.collapsible:active {
+    transform: translate(2px, 2px);
+    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.34);
+}
+
+.github-modal-card::after,
+.image-carousel-card::after {
+    content: '';
+    position: absolute;
+    z-index: 8;
+    right: 0;
+    left: 0;
+    top: 0;
+    height: 2px;
+    opacity: 0;
+    background: linear-gradient(90deg, transparent, var(--cyan), var(--text), var(--pink), transparent);
+    box-shadow: 0 0 14px rgba(103, 239, 255, 0.48);
+    pointer-events: none;
+}
+
+.github-modal.is-open .github-modal-card::after,
+.image-carousel-modal.is-open .image-carousel-card::after {
+    animation: modalSignalScan 0.58s steps(7, end) 1;
+}
+
+@keyframes projectPreviewTick {
+    from { transform: scaleX(0); opacity: 0.45; }
+    to { transform: scaleX(1); opacity: 1; }
+}
+
+@keyframes modalSignalScan {
+    0% { opacity: 0; transform: translateY(0); }
+    14% { opacity: 1; }
+    82% { opacity: 0.72; }
+    100% { opacity: 0; transform: translateY(min(70vh, 680px)); }
+}
+
+@media (max-width: 560px) {
+    .project-search-shell { width: 100%; }
+    .project-name-search { font-size: 0.62rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .project-item.is-previewing .project-scan-panel::after,
+    .github-modal.is-open .github-modal-card::after,
+    .image-carousel-modal.is-open .image-carousel-card::after {
+        animation: none;
+    }
+}
+
+body.low-fx .project-item.is-previewing .project-scan-panel::after {
+    animation: none;
+}

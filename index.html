@@ -19,13 +19,13 @@
     <meta property="twitter:description" content="Wei Rong Gao's software development portfolio featuring game development, graphics, simulation, data, and finance projects.">
     <meta property="twitter:image" content="https://wrgdevs.github.io/Portfolio-site/assets/images/backgroundw.webp">
 
-    <link rel="preload" as="image" href="assets/images/backgroundw.webp?v=20260717f">
-    <link rel="stylesheet" href="styles.css?v=20260717f">
-    <link rel="stylesheet" href="projects.css?v=20260717f">
-    <link rel="stylesheet" href="experience.css?v=20260717f">
-    <link rel="stylesheet" href="effects.css?v=20260717f">
-    <script src="portfolio-data.js?v=20260717f" defer></script>
-    <script src="script.js?v=20260717f" defer></script>
+    <link rel="preload" as="image" href="assets/images/backgroundw.webp?v=20260718a">
+    <link rel="stylesheet" href="styles.css?v=20260718a">
+    <link rel="stylesheet" href="projects.css?v=20260718a">
+    <link rel="stylesheet" href="experience.css?v=20260718a">
+    <link rel="stylesheet" href="effects.css?v=20260718a">
+    <script src="portfolio-data.js?v=20260718a" defer></script>
+    <script src="script.js?v=20260718a" defer></script>
 </head>
 <body>
     <header class="site-header">
@@ -44,11 +44,16 @@
 
     <main>
         <nav class="map" aria-label="Portfolio sections">
-            <button class="level" type="button" onclick="jumpToSection('about')">ABOUT ME</button>
-            <button class="level" type="button" onclick="jumpToSection('current')">CURRENTLY WORKING ON</button>
-            <button class="level" type="button" onclick="jumpToSection('experience')">EXPERIENCE</button>
-            <button class="level" type="button" onclick="jumpToSection('projects')">PROJECTS</button>
-            <button class="level" type="button" onclick="jumpToSection('contact')">CONTACT</button>
+            <div class="map-route" aria-hidden="true">
+                <span></span><span></span><span></span><span></span>
+                <i></i><i></i><i></i><i></i><i></i>
+                <b></b>
+            </div>
+            <button class="level" type="button" data-section="about" onclick="jumpToSection('about')">ABOUT ME</button>
+            <button class="level" type="button" data-section="current" onclick="jumpToSection('current')">CURRENTLY WORKING ON</button>
+            <button class="level" type="button" data-section="experience" onclick="jumpToSection('experience')">EXPERIENCE</button>
+            <button class="level" type="button" data-section="projects" onclick="jumpToSection('projects')">PROJECTS</button>
+            <button class="level" type="button" data-section="contact" onclick="jumpToSection('contact')">CONTACT</button>
         </nav>
     </main>
 

@@ -364,6 +364,92 @@
     }
 }
 
+/* ====================== CHRONOLOGICAL PROGRESS RAIL ====================== */
+.experience-timeline::before {
+    z-index: 0;
+    background: repeating-linear-gradient(to bottom, rgba(103, 239, 255, 0.24) 0 7px, rgba(103, 239, 255, 0.055) 7px 13px);
+    box-shadow: none;
+}
+
+.experience-timeline-progress {
+    position: absolute;
+    z-index: 1;
+    top: 18px;
+    left: 38px;
+    width: 2px;
+    height: 0;
+    max-height: calc(100% - 36px);
+    background: linear-gradient(var(--gold), var(--cyan) 34%, var(--green) 72%, var(--pink));
+    box-shadow: 0 0 12px rgba(103, 239, 255, 0.58), 0 0 3px var(--text);
+    pointer-events: none;
+}
+
+.experience-timeline-progress::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -7px;
+    width: 12px;
+    height: 12px;
+    background: #050713;
+    border: 2px solid var(--green);
+    box-shadow: 0 0 0 3px rgba(0, 255, 102, 0.10), 0 0 16px rgba(0, 255, 102, 0.68);
+    transform: translateX(-50%) rotate(45deg);
+}
+
+.experience-card {
+    z-index: 2;
+}
+
+.experience-card .experience-node,
+.experience-card::before,
+.experience-card .experience-card-body {
+    transition: border-color 0.24s ease, box-shadow 0.24s ease, opacity 0.24s ease, background 0.24s ease, transform 0.24s ease;
+}
+
+.experience-card:not(.is-passed) .experience-card-body {
+    opacity: 0.78;
+}
+
+.experience-card.is-passed .experience-node {
+    color: #050713;
+    background: var(--green);
+    border-color: var(--text);
+    box-shadow: 0 0 0 3px rgba(0, 255, 102, 0.10), 0 0 20px rgba(0, 255, 102, 0.48);
+}
+
+.experience-card.is-passed::before {
+    background: linear-gradient(90deg, var(--green), rgba(0, 255, 102, 0.30));
+    box-shadow: 0 0 12px rgba(0, 255, 102, 0.44);
+}
+
+.experience-card.is-passed .experience-card-body {
+    opacity: 1;
+    border-color: rgba(0, 255, 102, 0.38);
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.32), inset 3px 0 0 var(--green);
+}
+
+.experience-card-incoming.is-passed .experience-node {
+    background: var(--gold);
+    box-shadow: 0 0 0 3px rgba(255, 190, 85, 0.10), 0 0 20px rgba(255, 190, 85, 0.48);
+}
+
+@media (max-width: 760px) {
+    .experience-timeline-progress { left: 17px; }
+}
+
+@media (max-width: 520px) {
+    .experience-timeline-progress { left: 13px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .experience-card .experience-node,
+    .experience-card::before,
+    .experience-card .experience-card-body {
+        transition: none;
+    }
+}
+
 /* ====================== CAREER MAP UPGRADE ====================== */
 .experience-intro,
 .experience-card-body,
