@@ -147,6 +147,56 @@ function renderExperienceCard(experience, index) {
 
 const loadedSections = {};
 const SECTION_ORDER = ["about", "current", "experience", "projects", "contact"];
+let hashNavigationFrame = 0;
+let hashNavigationForceAuto = false;
+
+function ensureSectionLoaded(sectionId) {
+    if (!SECTION_ORDER.includes(sectionId)) return null;
+    if (!loadedSections[sectionId]) {
+        createSection(sectionId);
+        loadedSections[sectionId] = true;
+    }
+    return document.getElementById(sectionId);
+}
+
+function buildPortfolioHash(type, id = "") {
+    if (type === "home") return "";
+    if (type === "section" && SECTION_ORDER.includes(id)) return `#${id}`;
+    if (type === "experience") return `#experience/${encodeURIComponent(id)}`;
+    if (type === "project") return `#project/${encodeURIComponent(id)}`;
+    return "";
+}
+
+function writePortfolioHash(type, id, historyMode = "push") {
+    if (historyMode === "none") return;
+    const nextHash = buildPortfolioHash(type, id);
+    if (window.location.hash === nextHash) return;
+    const method = historyMode === "replace" ? "replaceState" : "pushState";
+    window.history[method](null, "", nextHash || `${window.location.pathname}${window.location.search}`);
+}
+
+function parsePortfolioHash(hash = window.location.hash) {
+    const rawHash = hash.replace(/^#/, "");
+    if (!rawHash) return { type: "home" };
+
+    let parts;
+    try {
+        parts = rawHash.split("/").map(part => decodeURIComponent(part));
+    } catch {
+        return null;
+    }
+
+    if (parts.length === 1 && SECTION_ORDER.includes(parts[0])) {
+        return { type: "section", sectionId: parts[0] };
+    }
+    if (parts.length === 2 && parts[0] === "experience" && EXPERIENCE.some(item => item.id === parts[1])) {
+        return { type: "experience", id: parts[1] };
+    }
+    if (parts.length === 2 && parts[0] === "project" && PROJECTS.some(item => item.id === parts[1])) {
+        return { type: "project", id: parts[1] };
+    }
+    return null;
+}
 
 function insertSectionInOrder(section) {
     const sectionIndex = SECTION_ORDER.indexOf(section.id);
@@ -165,27 +215,28 @@ function insertSectionInOrder(section) {
     }
 }
 
-function scrollToPortfolioSection(section) {
-    if (!section) return;
+function scrollToPortfolioTarget(target, { block = "start", forceAuto = false } = {}) {
+    if (!target) return;
     requestAnimationFrame(() => {
-        const distance = Math.abs(section.getBoundingClientRect().top);
+        const distance = Math.abs(target.getBoundingClientRect().top);
         const shouldJump =
+            forceAuto ||
             reduceMotion.matches ||
             document.body.classList.contains("low-fx") ||
             distance > window.innerHeight * 3;
         if (!shouldJump) {
-            section.scrollIntoView({ behavior: "smooth", block: "start" });
+            target.scrollIntoView({ behavior: "smooth", block });
             return;
         }
 
         const root = document.documentElement;
         const previousScrollBehavior = root.style.scrollBehavior;
         root.style.scrollBehavior = "auto";
-        const alignSection = () => section.scrollIntoView({ behavior: "auto", block: "start" });
-        alignSection();
-        requestAnimationFrame(alignSection);
+        const alignTarget = () => target.scrollIntoView({ behavior: "auto", block });
+        alignTarget();
+        requestAnimationFrame(alignTarget);
         setTimeout(() => {
-            alignSection();
+            alignTarget();
             if (previousScrollBehavior) {
                 root.style.scrollBehavior = previousScrollBehavior;
             } else {
@@ -195,18 +246,19 @@ function scrollToPortfolioSection(section) {
     });
 }
 
-function jumpToSection(sectionId) {
-    markZoneVisited(sectionId);
-    if (!loadedSections[sectionId]) {
-        playSfx("nav");
-        createSection(sectionId);
-        loadedSections[sectionId] = true;
-        scrollToPortfolioSection(document.getElementById(sectionId));
-        return;
-    }
+function scrollToPortfolioSection(section, forceAuto = false) {
+    scrollToPortfolioTarget(section, { block: "start", forceAuto });
+}
 
-    playSfx("nav");
-    scrollToPortfolioSection(document.getElementById(sectionId));
+function jumpToSection(sectionId, { historyMode = "push", playSound = true, forceAuto = false } = {}) {
+    if (!SECTION_ORDER.includes(sectionId)) return;
+    markZoneVisited(sectionId);
+    if (playSound) playSfx("nav");
+    const section = ensureSectionLoaded(sectionId);
+    if (sectionId === "projects") closeAllProjectDetails();
+    setActiveSection(sectionId);
+    writePortfolioHash("section", sectionId, historyMode);
+    scrollToPortfolioSection(section, forceAuto);
 }
 
 // ====================== CREATE SECTIONS ======================
@@ -374,21 +426,29 @@ function decorateHeadings(root = document) {
 
 // ====================== PROJECT TOGGLE ======================
 
-function toggleProjectDetails(id) {
+function toggleProjectDetails(id, forceOpen = null, {
+    updateHistory = true,
+    historyMode = "push",
+    scrollIntoView = true
+} = {}) {
     const details = document.getElementById(id);
     const projectItem = details?.closest(".project-item");
-    if (!details || !projectItem) return;
+    if (!details || !projectItem) return false;
 
-    const isOpen = !details.classList.contains("is-open");
+    const currentlyOpen = projectItem.getAttribute("aria-expanded") === "true";
+    const isOpen = typeof forceOpen === "boolean" ? forceOpen : !currentlyOpen;
     stopProjectPreview(projectItem);
+    if (isOpen && updateHistory) closeAllProjectDetails(id);
+    projectItem.setAttribute("aria-expanded", String(isOpen));
 
     if (isOpen) {
         hydrateProjectImages(projectItem);
         details.hidden = false;
         details.classList.remove("is-closing");
         requestAnimationFrame(() => {
+            if (projectItem.getAttribute("aria-expanded") !== "true") return;
             details.classList.add("is-open");
-            requestAnimationFrame(() => {
+            if (scrollIntoView) requestAnimationFrame(() => {
                 projectItem.scrollIntoView({
                     behavior: reduceMotion.matches || document.body.classList.contains("low-fx") ? "auto" : "smooth",
                     block: "start"
@@ -406,7 +466,124 @@ function toggleProjectDetails(id) {
         }, reduceMotion.matches ? 1 : 260);
     }
 
-    projectItem.setAttribute("aria-expanded", String(isOpen));
+    if (updateHistory) {
+        writePortfolioHash(isOpen ? "project" : "section", isOpen ? id : "projects", historyMode);
+    }
+    return isOpen;
+}
+
+function closeAllProjectDetails(exceptId = "") {
+    document.querySelectorAll(".project-item[aria-expanded='true']").forEach(projectItem => {
+        if (projectItem.dataset.projectId === exceptId) return;
+        toggleProjectDetails(projectItem.dataset.projectId, false, {
+            updateHistory: false,
+            scrollIntoView: false
+        });
+    });
+}
+
+function resetProjectDiscoveryForDeepLink() {
+    currentCategoryFilter = "all";
+    currentProjectQuery = "";
+    if (projectSearchFrame) cancelAnimationFrame(projectSearchFrame);
+    projectSearchFrame = 0;
+
+    const searchInput = document.querySelector(".project-name-search");
+    if (searchInput) searchInput.value = "";
+    document.querySelectorAll(".project-filter").forEach(button => {
+        const isActive = button.dataset.filter === "all";
+        button.classList.toggle("active", isActive);
+        button.setAttribute("aria-pressed", String(isActive));
+    });
+    applyProjectFilters();
+}
+
+function highlightLinkedDestination(element) {
+    if (!element) return;
+    const previousTimer = deepLinkHighlightTimers.get(element);
+    if (previousTimer) clearTimeout(previousTimer);
+    element.classList.remove("is-linked-destination");
+    requestAnimationFrame(() => {
+        element.classList.add("is-linked-destination");
+        deepLinkHighlightTimers.set(element, setTimeout(() => {
+            element.classList.remove("is-linked-destination");
+            deepLinkHighlightTimers.delete(element);
+        }, 900));
+    });
+}
+
+function jumpToExperience(experienceId, {
+    historyMode = "push",
+    playSound = true,
+    forceAuto = false
+} = {}) {
+    if (!EXPERIENCE.some(item => item.id === experienceId)) return;
+    const section = ensureSectionLoaded("experience");
+    const card = section?.querySelector(`[data-experience-id="${experienceId}"]`);
+    if (!card) return;
+
+    markZoneVisited("experience");
+    setActiveSection("experience");
+    if (playSound) playSfx("nav");
+    writePortfolioHash("experience", experienceId, historyMode);
+    highlightLinkedDestination(card);
+    scrollToPortfolioTarget(card, { block: "center", forceAuto });
+}
+
+function jumpToProject(projectId, {
+    historyMode = "push",
+    playSound = true,
+    forceAuto = false
+} = {}) {
+    if (!PROJECTS.some(item => item.id === projectId)) return;
+    const section = ensureSectionLoaded("projects");
+    const projectItem = Array.from(section?.querySelectorAll(".project-item") || [])
+        .find(item => item.dataset.projectId === projectId);
+    if (!projectItem) return;
+
+    markZoneVisited("projects");
+    setActiveSection("projects");
+    resetProjectDiscoveryForDeepLink();
+    closeAllProjectDetails(projectId);
+    toggleProjectDetails(projectId, true, {
+        updateHistory: false,
+        scrollIntoView: false
+    });
+    if (playSound) playSfx("open");
+    writePortfolioHash("project", projectId, historyMode);
+    highlightLinkedDestination(projectItem);
+    scrollToPortfolioTarget(projectItem, { block: "start", forceAuto });
+}
+
+function jumpToHome({ forceAuto = false } = {}) {
+    closeAllProjectDetails();
+    setActiveSection("about");
+    scrollToPortfolioTarget(mapElement, { block: "start", forceAuto });
+}
+
+function applyPortfolioHash({ forceAuto = false } = {}) {
+    const route = parsePortfolioHash();
+    if (!route) return;
+    if (route.type === "home") {
+        jumpToHome({ forceAuto });
+    } else if (route.type === "section") {
+        jumpToSection(route.sectionId, { historyMode: "none", playSound: false, forceAuto });
+    } else if (route.type === "experience") {
+        jumpToExperience(route.id, { historyMode: "none", playSound: false, forceAuto });
+    } else if (route.type === "project") {
+        jumpToProject(route.id, { historyMode: "none", playSound: false, forceAuto });
+    }
+}
+
+function schedulePortfolioHashNavigation(forceAuto = false) {
+    hashNavigationForceAuto ||= forceAuto;
+    if (hashNavigationFrame) return;
+    hashNavigationFrame = requestAnimationFrame(() => {
+        hashNavigationFrame = 0;
+        const shouldForceAuto = hashNavigationForceAuto;
+        hashNavigationForceAuto = false;
+        applyPortfolioHash({ forceAuto: shouldForceAuto });
+    });
 }
 
 function shouldIgnoreProjectToggle(event) {
@@ -598,6 +775,7 @@ const PARTICLE_POOL_SIZE = 8;
 const tiltFrames = new WeakMap();
 const filterTransitions = new WeakMap();
 const artworkFrames = new WeakMap();
+const deepLinkHighlightTimers = new WeakMap();
 
 if (circle) {
     circle.style.strokeDasharray = circumference;
@@ -1226,6 +1404,8 @@ function startHeaderTypewriter() {
 document.addEventListener("mousemove", schedulePointerEffects, { passive: true });
 window.addEventListener("scroll", handleViewportChange, { passive: true });
 window.addEventListener("resize", handleViewportChange, { passive: true });
+window.addEventListener("popstate", () => schedulePortfolioHashNavigation());
+window.addEventListener("hashchange", () => schedulePortfolioHashNavigation());
 document.addEventListener("visibilitychange", handleVisibilityChange);
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -1244,6 +1424,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".section-radar button").forEach(button => {
         button.addEventListener("click", () => jumpToSection(button.dataset.section));
     });
+    schedulePortfolioHashNavigation(true);
 
     if ("serviceWorker" in navigator) {
         window.addEventListener("load", () => {
@@ -1379,11 +1560,7 @@ document.addEventListener("click", event => {
     if (experienceNode) {
         const experienceCard = experienceNode.closest(".experience-card");
         if (experienceCard) {
-            playSfx("nav");
-            experienceCard.scrollIntoView({
-                behavior: reduceMotion.matches || document.body.classList.contains("low-fx") ? "auto" : "smooth",
-                block: "center"
-            });
+            jumpToExperience(experienceCard.dataset.experienceId);
         }
         return;
     }
@@ -1404,7 +1581,7 @@ document.addEventListener("click", event => {
 
     const projectItem = event.target.closest(".project-item");
     if (projectItem && !shouldIgnoreProjectToggle(event)) {
-        playSfx("open");
+        playSfx(projectItem.getAttribute("aria-expanded") === "true" ? "close" : "open");
         toggleProjectDetails(projectItem.dataset.projectId);
     }
 });

@@ -392,6 +392,43 @@
     }
 }
 
+/* ====================== DEEP-LINK DESTINATION SIGNAL ====================== */
+.project-item.is-linked-destination,
+.experience-card.is-linked-destination {
+    animation: linkedDestinationSignal 0.86s steps(6, end) 1;
+}
+
+@keyframes linkedDestinationSignal {
+    0% {
+        outline: 2px solid var(--text);
+        outline-offset: 12px;
+    }
+    45% {
+        outline-color: var(--zone-accent);
+        outline-offset: 5px;
+    }
+    100% {
+        outline: 2px solid transparent;
+        outline-offset: 1px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .project-item.is-linked-destination,
+    .experience-card.is-linked-destination {
+        animation: none;
+        outline: 2px solid var(--zone-accent);
+        outline-offset: 3px;
+    }
+}
+
+body.low-fx .project-item.is-linked-destination,
+body.low-fx .experience-card.is-linked-destination {
+    animation: none;
+    outline: 2px solid var(--zone-accent);
+    outline-offset: 3px;
+}
+
 /* ====================== ZONE-AWARE HUD ====================== */
 .progress-circle {
     border-color: color-mix(in srgb, var(--zone-accent) 46%, transparent);
