@@ -1,6 +1,6 @@
-import { EXPERIENCE, INVOLVEMENT, PROJECTS } from "../portfolio-data.js?v=20260719e";
-import { escapeHtml } from "./core.js?v=20260719e";
-import { renderExperienceCard, renderList, renderProject, renderProjectFilters } from "./renderers.js?v=20260719e";
+import { EXPERIENCE, INVOLVEMENT, PROJECTS } from "../portfolio-data.js?v=20260719i";
+import { escapeHtml } from "./core.js?v=20260719i";
+import { renderExperienceCard, renderList, renderProject, renderProjectFilters } from "./renderers.js?v=20260719i";
 
 function renderAboutSection() {
     return `
@@ -128,8 +128,8 @@ function renderProjectsSection() {
                     <input class="project-name-search" type="search" placeholder="PROJECT NAME" aria-label="Search projects by name" autocomplete="off" spellcheck="false">
                 </label>
                 <div class="filter-buttons-container">${renderProjectFilters()}</div>
+                <p class="project-count" id="project-count" aria-live="polite">${PROJECTS.length} PROJECTS FOUND</p>
             </div>
-            <p class="project-count" id="project-count" aria-live="polite">${PROJECTS.length} PROJECTS FOUND</p>
             <div class="projects-grid">${PROJECTS.map(renderProject).join("")}</div>
         </div>`;
 }

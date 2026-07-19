@@ -1,5 +1,5 @@
-import { PROJECT_FILTERS } from "../portfolio-data.js?v=20260719e";
-import { escapeHtml, FLAGSHIP_PROJECT_IDS } from "./core.js?v=20260719e";
+import { PROJECT_FILTERS } from "../portfolio-data.js?v=20260719i";
+import { escapeHtml, FLAGSHIP_PROJECT_IDS } from "./core.js?v=20260719i";
 
 function renderList(items) {
     return items.map((item) => `<li>${escapeHtml(item)}</li>`).join("");

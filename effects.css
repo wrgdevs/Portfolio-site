@@ -68,7 +68,7 @@
     background: color-mix(in srgb, var(--radar-node-accent) 30%, #020617);
     border: 1px solid var(--radar-node-accent);
     box-shadow: 0 0 8px color-mix(in srgb, var(--radar-node-accent) 34%, transparent);
-    cursor: url("assets/cursor/SELECT.cur?v=20260719e"), pointer;
+    cursor: url("assets/cursor/SELECT.cur?v=20260719i"), pointer;
     transform: rotate(45deg) scale(0.76);
     transition:
         transform 0.18s steps(2, end),
@@ -406,6 +406,15 @@
     }
 }
 /* ====================== RESPONSIVE IDENTITY OVERRIDES ====================== */
+.level[data-section="experience"] {
+    padding-inline: 12px;
+}
+
+.level[data-section="experience"] .level-label {
+    font-size: clamp(0.72rem, 1.35vw, 0.94rem);
+    white-space: nowrap;
+}
+
 @media (max-width: 1100px) {
     .map {
         grid-template-columns: repeat(3, minmax(160px, 220px));
@@ -776,7 +785,6 @@
     }
 
     .map .level,
-    .map .level:nth-of-type(n),
     .map .level:nth-of-type(n) {
         min-height: 104px;
     }

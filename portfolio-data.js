@@ -1,4 +1,4 @@
-const ASSET_VERSION = "20260719e";
+const ASSET_VERSION = "20260719i";
 
 const PROJECT_FILTERS = [
     { id: "all", label: "All" },

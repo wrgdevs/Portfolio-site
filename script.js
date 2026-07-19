@@ -1,13 +1,13 @@
-import { EXPERIENCE, HEADER_SUBTITLE, HEADER_TITLE, PROJECTS, SECTION_KEYS } from "./portfolio-data.js?v=20260719e";
-import { playSfx, syncAudioVisibility, toggleAudio } from "./js/audio.js?v=20260719e";
+import { EXPERIENCE, HEADER_SUBTITLE, HEADER_TITLE, PROJECTS, SECTION_KEYS } from "./portfolio-data.js?v=20260719i";
+import { playSfx, syncAudioVisibility, toggleAudio } from "./js/audio.js?v=20260719i";
 import {
     closeImageCarousel,
     hydrateProjectImages,
     moveImageCarousel,
     openImageCarousel,
-} from "./js/carousel.js?v=20260719e";
-import { FINE_POINTER_QUERY, handleModalTab, versionAssetImages, versionedAsset } from "./js/core.js?v=20260719e";
-import { renderSection } from "./js/sections.js?v=20260719e";
+} from "./js/carousel.js?v=20260719i";
+import { FINE_POINTER_QUERY, handleModalTab, versionAssetImages, versionedAsset } from "./js/core.js?v=20260719i";
+import { renderSection } from "./js/sections.js?v=20260719i";
 
 const PARTICLE_COLORS = Object.freeze(["var(--green)", "var(--cyan)", "var(--pink)", "var(--gold)"]);
 const POINTER_DEPTH_EASE = 0.23;
@@ -87,20 +87,30 @@ function insertSectionInOrder(section) {
     }
 }
 
-function scrollToPortfolioTarget(target, { block = "start", forceAuto = false } = {}) {
+function alignPortfolioTarget(target, { behavior, block, offset }) {
+    if (block === "start" && offset > 0) {
+        const top = Math.max(0, window.scrollY + target.getBoundingClientRect().top - offset);
+        window.scrollTo({ top, behavior });
+        return;
+    }
+
+    target.scrollIntoView({ behavior, block });
+}
+
+function scrollToPortfolioTarget(target, { block = "start", forceAuto = false, offset = 0 } = {}) {
     if (!target) return;
     requestAnimationFrame(() => {
-        const distance = Math.abs(target.getBoundingClientRect().top);
+        const distance = Math.abs(target.getBoundingClientRect().top - offset);
         const shouldJump = forceAuto || reduceMotion.matches || distance > window.innerHeight * 3;
         if (!shouldJump) {
-            target.scrollIntoView({ behavior: "smooth", block });
+            alignPortfolioTarget(target, { behavior: "smooth", block, offset });
             return;
         }
 
         const root = document.documentElement;
         const previousScrollBehavior = root.style.scrollBehavior;
         root.style.scrollBehavior = "auto";
-        const alignTarget = () => target.scrollIntoView({ behavior: "auto", block });
+        const alignTarget = () => alignPortfolioTarget(target, { behavior: "auto", block, offset });
         alignTarget();
         requestAnimationFrame(alignTarget);
         setTimeout(() => {
@@ -162,6 +172,31 @@ function isProjectExpanded(projectItem) {
     return projectItem?.querySelector(".project-summary-toggle")?.getAttribute("aria-expanded") === "true";
 }
 
+function getProjectScrollOffset() {
+    const header = document.querySelector(".site-header");
+    const filterBar = document.querySelector(".project-filter-bar");
+    const headerHeight = header?.getBoundingClientRect().height || 0;
+    if (!filterBar || getComputedStyle(filterBar).position !== "sticky") return headerHeight + 16;
+
+    const stickyTop = Number.parseFloat(getComputedStyle(filterBar).top) || headerHeight;
+    return Math.max(headerHeight, stickyTop + filterBar.getBoundingClientRect().height) + 16;
+}
+
+function alignExpandedProject(projectItem, forceAuto = false) {
+    const align = (jump) =>
+        scrollToPortfolioTarget(projectItem, {
+            block: "start",
+            forceAuto: jump,
+            offset: getProjectScrollOffset(),
+        });
+
+    align(forceAuto);
+    if (reduceMotion.matches) return;
+    setTimeout(() => {
+        if (isProjectExpanded(projectItem)) align(true);
+    }, 320);
+}
+
 function updateProjectFocusState() {
     const grid = document.querySelector(".projects-grid");
     if (!grid) return;
@@ -199,10 +234,7 @@ function toggleProjectDetails(
             details.classList.add("is-open");
             if (scrollIntoView)
                 requestAnimationFrame(() => {
-                    projectItem.scrollIntoView({
-                        behavior: reduceMotion.matches ? "auto" : "smooth",
-                        block: "start",
-                    });
+                    alignExpandedProject(projectItem);
                 });
         });
     } else {
@@ -301,7 +333,7 @@ function jumpToProject(projectId, { historyMode = "push", playSound = true, forc
     if (playSound) playSfx("open");
     writePortfolioHash("project", projectId, historyMode);
     highlightLinkedDestination(projectItem);
-    scrollToPortfolioTarget(projectItem, { block: "start", forceAuto });
+    alignExpandedProject(projectItem, forceAuto);
 }
 
 function jumpToHome({ forceAuto = false } = {}) {

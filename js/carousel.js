@@ -1,5 +1,5 @@
-import { playSfx } from "./audio.js?v=20260719e";
-import { escapeHtml, normalizeAssetUrl, versionedAsset } from "./core.js?v=20260719e";
+import { playSfx } from "./audio.js?v=20260719i";
+import { escapeHtml, normalizeAssetUrl, versionedAsset } from "./core.js?v=20260719i";
 
 let images = [];
 let activeIndex = 0;

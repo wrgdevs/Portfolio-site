@@ -26,7 +26,7 @@
     border: 1px solid var(--green);
     border-radius: 0;
     box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.3);
-    cursor: url("assets/cursor/SELECT.cur?v=20260719e"), pointer;
+    cursor: url("assets/cursor/SELECT.cur?v=20260719i"), pointer;
     transition:
         transform 0.22s ease,
         box-shadow 0.22s ease,
@@ -103,7 +103,7 @@
 
 .project-count {
     width: fit-content;
-    margin: 0 0 28px auto;
+    margin: 0 0 0 auto;
     padding: 10px 14px;
     color: var(--gold);
     background: rgba(0, 8, 30, 0.76);
@@ -111,6 +111,7 @@
     border-radius: 0;
     box-shadow: 0 0 16px rgba(255, 209, 102, 0.1);
     font-size: 0.68rem;
+    white-space: nowrap;
 }
 
 .projects-grid {
@@ -232,7 +233,7 @@
     min-width: 0;
     padding: 24px 26px 28px;
     background: linear-gradient(145deg, color-mix(in srgb, var(--project-accent) 6%, transparent), transparent 62%);
-    cursor: url("assets/cursor/SELECT.cur?v=20260719e"), pointer;
+    cursor: url("assets/cursor/SELECT.cur?v=20260719i"), pointer;
 }
 
 .project-summary-toggle {
@@ -246,7 +247,7 @@
     font: inherit;
     text-align: left;
     text-shadow: inherit;
-    cursor: url("assets/cursor/SELECT.cur?v=20260719e"), pointer;
+    cursor: url("assets/cursor/SELECT.cur?v=20260719i"), pointer;
 }
 
 .project-summary-toggle:focus {
@@ -547,7 +548,7 @@ body.carousel-open {
     color: var(--green);
     background: rgba(0, 8, 30, 0.86);
     border: 2px solid var(--green);
-    cursor: url("assets/cursor/SELECT.cur?v=20260719e"), pointer;
+    cursor: url("assets/cursor/SELECT.cur?v=20260719i"), pointer;
     font: inherit;
     box-shadow: var(--shadow-green);
 }
@@ -724,7 +725,7 @@ body.carousel-open {
     padding: 3px;
     background: rgba(0, 8, 30, 0.82);
     border: 1px solid rgba(0, 213, 232, 0.32);
-    cursor: url("assets/cursor/SELECT.cur?v=20260719e"), pointer;
+    cursor: url("assets/cursor/SELECT.cur?v=20260719i"), pointer;
     scroll-snap-align: center;
     transition:
         border-color 0.16s ease,
@@ -1059,7 +1060,7 @@ body.carousel-open {
     box-shadow:
         8px 10px 0 rgba(0, 0, 0, 0.24),
         0 0 24px color-mix(in srgb, var(--project-accent) 12%, transparent);
-    cursor: url("assets/cursor/SELECT.cur?v=20260719e"), pointer;
+    cursor: url("assets/cursor/SELECT.cur?v=20260719i"), pointer;
 }
 
 .project-inspection-stage::after {
@@ -1115,7 +1116,7 @@ body.carousel-open {
     padding: 3px;
     background: rgba(2, 6, 20, 0.94);
     border: 1px solid color-mix(in srgb, var(--project-accent) 28%, transparent);
-    cursor: url("assets/cursor/SELECT.cur?v=20260719e"), pointer;
+    cursor: url("assets/cursor/SELECT.cur?v=20260719i"), pointer;
     opacity: 0.58;
     transition:
         opacity 0.18s ease,
@@ -1320,7 +1321,7 @@ body.carousel-open {
         z-index: 60;
         top: 104px;
         display: grid;
-        grid-template-columns: minmax(280px, 0.72fr) minmax(520px, 1.28fr);
+        grid-template-columns: minmax(240px, 0.68fr) minmax(0, 1.32fr);
         align-items: center;
         gap: 12px;
         padding: 10px 12px;
@@ -1347,6 +1348,32 @@ body.carousel-open {
     .project-filter-bar .project-filter {
         padding: 9px 10px;
         font-size: 0.6rem;
+    }
+
+    .project-filter-bar .project-count {
+        grid-column: 1 / -1;
+        justify-self: end;
+        align-self: center;
+        padding: 8px 10px;
+        font-size: 0.58rem;
+    }
+
+    .project-item {
+        scroll-margin-top: 232px;
+    }
+}
+
+@media (min-width: 1220px) {
+    .project-filter-bar {
+        grid-template-columns: minmax(250px, 0.6fr) minmax(0, 1.4fr) auto;
+    }
+
+    .project-filter-bar .project-count {
+        grid-column: auto;
+    }
+
+    .project-item {
+        scroll-margin-top: 188px;
     }
 }
 
@@ -1387,7 +1414,6 @@ body.carousel-open {
     }
 
     .project-count {
-        margin-bottom: 18px;
         padding: 8px 10px;
         font-size: 0.58rem;
     }
