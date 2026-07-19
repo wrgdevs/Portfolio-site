@@ -1,0 +1,23 @@
+{
+    "name": "wrg-portfolio",
+    "version": "1.0.0",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "build": "esbuild script.js --bundle --format=iife --platform=browser --target=es2022 --minify --legal-comments=none --outfile=script.bundle.js",
+        "check": "npm run check:syntax && npm run lint && npm run lint:css && npm run format:check && npm run test:smoke",
+        "check:syntax": "node --check script.js && node --check script.bundle.js && node --check portfolio-data.js && node --check sw.js && node --check js/audio.js && node --check js/carousel.js && node --check js/core.js && node --check js/renderers.js && node --check js/sections.js",
+        "lint": "eslint script.js portfolio-data.js sw.js js tests eslint.config.js stylelint.config.js",
+        "lint:css": "stylelint \"*.css\"",
+        "format": "prettier --write index.html script.js portfolio-data.js sw.js \"js/**/*.js\" \"tests/**/*.mjs\" \"*.css\" \"*.json\" \".github/**/*.yml\"",
+        "format:check": "prettier --check index.html script.js portfolio-data.js sw.js \"js/**/*.js\" \"tests/**/*.mjs\" \"*.css\" \"*.json\" \".github/**/*.yml\"",
+        "test:smoke": "node tests/smoke.mjs"
+    },
+    "devDependencies": {
+        "esbuild": "^0.28.1",
+        "eslint": "^10.7.0",
+        "globals": "^17.7.0",
+        "prettier": "^3.9.5",
+        "stylelint": "^17.14.0"
+    }
+}

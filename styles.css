@@ -1,17 +1,17 @@
 @font-face {
-    font-family: 'Press Start 2P';
+    font-family: "Press Start 2P";
     font-style: normal;
     font-weight: 400;
     font-display: swap;
-    src: url('assets/fonts/pressstart2p.ttf') format('truetype');
+    src: url("assets/fonts/pressstart2p.ttf") format("truetype");
 }
 
 @font-face {
-    font-family: 'Share Tech Mono';
+    font-family: "Share Tech Mono";
     font-style: normal;
     font-weight: 400;
     font-display: swap;
-    src: url('assets/fonts/sharetechmono.ttf') format('truetype');
+    src: url("assets/fonts/sharetechmono.ttf") format("truetype");
 }
 
 /* ====================== TOKENS / BASE ====================== */
@@ -31,11 +31,15 @@
     --shadow-cyan: 0 0 28px rgba(0, 213, 232, 0.22);
     --radius: 8px;
     --content-width: 1180px;
-    --font-display: 'Press Start 2P', system-ui, sans-serif;
-    --font-body: 'Share Tech Mono', monospace;
+    --font-display: "Press Start 2P", system-ui, sans-serif;
+    --font-body: "Share Tech Mono", monospace;
+    --ambient-depth-x: 0px;
+    --ambient-depth-y: 0px;
 }
 
-* { box-sizing: border-box; }
+* {
+    box-sizing: border-box;
+}
 
 html {
     min-height: 100%;
@@ -53,13 +57,13 @@ body {
     overflow-x: hidden;
     color: var(--text);
     background: transparent;
-    cursor: url('assets/cursor/NORMAL.cur?v=20260614b'), auto;
+    cursor: url("assets/cursor/NORMAL.cur?v=20260719e"), auto;
     font-family: var(--font-display);
 }
 
 body::before,
 body::after {
-    content: '';
+    content: "";
     position: fixed;
     inset: 0;
     pointer-events: none;
@@ -70,15 +74,17 @@ body::before {
     background:
         radial-gradient(circle, rgba(103, 239, 255, 0.72) 0 1px, transparent 1.5px) 0 0 / 86px 86px,
         radial-gradient(circle, rgba(255, 92, 170, 0.52) 0 1px, transparent 1.5px) 29px 17px / 137px 137px,
-        radial-gradient(circle, rgba(255, 190, 85, 0.50) 0 1px, transparent 1.5px) 61px 43px / 191px 191px;
+        radial-gradient(circle, rgba(255, 190, 85, 0.5) 0 1px, transparent 1.5px) 61px 43px / 191px 191px;
     opacity: 0.72;
-    animation: moveParticles 25s linear infinite, backgroundPulse 7s steps(2, end) infinite;
+    animation:
+        moveParticles 25s linear infinite,
+        backgroundPulse 7s steps(2, end) infinite;
 }
 
 body::after {
     z-index: 9998;
     inset: -4px 0;
-    background: linear-gradient(rgba(255,255,255,0.025) 50%, transparent 50%);
+    background: linear-gradient(rgba(255, 255, 255, 0.025) 50%, transparent 50%);
     background-size: 100% 4px;
     mix-blend-mode: soft-light;
     animation: scanlineDrift 8s linear infinite;
@@ -128,24 +134,40 @@ img {
     z-index: 1000;
     width: 100%;
     overflow: hidden;
-    padding: 18px 20px;
+    padding: 14px clamp(16px, 3vw, 34px);
     color: var(--green);
     text-align: center;
-    background: rgba(1, 4, 20, 0.88);
-    border-bottom: 3px solid var(--green);
-    box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+    background: linear-gradient(90deg, rgba(103, 239, 255, 0.035) 1px, transparent 1px), rgba(3, 6, 18, 0.97);
+    background-size:
+        32px 100%,
+        auto;
+    border-bottom: 1px solid var(--zone-accent);
+    box-shadow:
+        0 12px 36px rgba(0, 0, 0, 0.46),
+        0 1px 0 rgba(255, 190, 85, 0.25);
     text-shadow: 0 0 12px var(--green);
+    backdrop-filter: none;
+    transition:
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
 }
 
 .site-header::before {
-    content: '';
+    content: "";
     position: absolute;
     left: 0;
     right: 0;
-    bottom: -3px;
-    height: 3px;
-    background: linear-gradient(90deg, var(--green), var(--cyan), var(--pink), var(--gold), var(--green));
-    background-size: 260% 100%;
+    bottom: -1px;
+    height: 2px;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        var(--zone-accent) 18%,
+        var(--text) 50%,
+        var(--zone-accent) 82%,
+        transparent
+    );
+    background-size: 160% 100%;
     animation: neonRail 5s linear infinite;
 }
 
@@ -153,7 +175,7 @@ img {
     width: min(100%, var(--content-width));
     margin: 0 auto;
     display: grid;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
     gap: 18px;
 }
@@ -180,7 +202,7 @@ header p {
 
 .typewriter.typing::after,
 #typed-subheader.typing::after {
-    content: '_';
+    content: "_";
     display: inline-block;
     margin-left: 6px;
     color: var(--green);
@@ -200,17 +222,44 @@ header p {
     place-content: center;
     gap: 24px;
     overflow: hidden;
-    background:
-        linear-gradient(rgba(3, 6, 20, 0.08), rgba(3, 6, 20, 0.52)),
-        url('assets/images/backgroundw.webp?v=20260614b') center/cover no-repeat;
-    background-position:
-        calc(50% + var(--map-shift-x, 0px)) calc(50% + var(--map-shift-y, 0px)),
-        center;
+    isolation: isolate;
+    background: #050713;
+}
+
+.map-depth-surface {
+    position: absolute;
+    z-index: 0;
+    inset: -16px;
+    background: url("assets/images/backgroundw.webp?v=20260719e") center/cover no-repeat;
+    pointer-events: none;
+    contain: strict;
+    transform: translate3d(var(--surface-depth-x, 0px), var(--surface-depth-y, 0px), 0) scale(1.03);
+    will-change: transform;
+}
+
+.map-pointer-field {
+    position: absolute;
+    z-index: 4;
+    top: 0;
+    left: 0;
+    width: min(480px, 48vw);
+    aspect-ratio: 1;
+    opacity: 0;
+    background: radial-gradient(circle, rgba(255, 190, 85, 0.18), rgba(103, 239, 255, 0.055) 38%, transparent 70%);
+    pointer-events: none;
+    contain: strict;
+    transform: translate3d(
+        calc(var(--pointer-local-x, 0px) - 50% + var(--surface-near-x, 0px)),
+        calc(var(--pointer-local-y, 0px) - 50% + var(--surface-near-y, 0px)),
+        0
+    );
+    transition: opacity 0.16s ease-out;
+    will-change: transform, opacity;
 }
 
 .map::before,
 .map::after {
-    content: '';
+    content: "";
     position: absolute;
     inset: 0;
     pointer-events: none;
@@ -223,14 +272,11 @@ header p {
     background-size: 58px 58px;
     -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 16%, black 86%, transparent 100%);
     mask-image: linear-gradient(to bottom, transparent 0%, black 16%, black 86%, transparent 100%);
-    transform: translate3d(calc(var(--map-shift-x, 0px) * -0.35), calc(var(--map-shift-y, 0px) * -0.35), 0);
-    transition: transform 0.16s ease-out;
+    transform: translate3d(var(--surface-grid-x, 0px), var(--surface-grid-y, 0px), 0);
 }
 
 .map::after {
-    background:
-        radial-gradient(circle at var(--spot-x, 50%) var(--spot-y, 50%), rgba(255,255,255,0.13), transparent 18%),
-        linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.05) 48%, transparent 58%);
+    background: linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.05) 48%, transparent 58%);
     opacity: 0.55;
     mix-blend-mode: screen;
     animation: mapLightSweep 9s ease-in-out infinite;
@@ -248,22 +294,50 @@ header p {
     line-height: 1.65;
     background: linear-gradient(145deg, rgba(0, 8, 30, 0.88), rgba(0, 24, 70, 0.78));
     border: 2px solid var(--green);
-    box-shadow: 0 12px 26px rgba(0,0,0,0.48), inset 0 0 24px rgba(0,255,102,0.05);
-    cursor: url('assets/cursor/SELECT.cur?v=20260614b'), pointer;
-    clip-path: polygon(0 10px, 10px 10px, 10px 0, calc(100% - 10px) 0, calc(100% - 10px) 10px, 100% 10px, 100% calc(100% - 10px), calc(100% - 10px) calc(100% - 10px), calc(100% - 10px) 100%, 10px 100%, 10px calc(100% - 10px), 0 calc(100% - 10px));
+    box-shadow:
+        0 12px 26px rgba(0, 0, 0, 0.48),
+        inset 0 0 24px rgba(0, 255, 102, 0.05);
+    cursor: url("assets/cursor/SELECT.cur?v=20260719e"), pointer;
+    clip-path: polygon(
+        0 10px,
+        10px 10px,
+        10px 0,
+        calc(100% - 10px) 0,
+        calc(100% - 10px) 10px,
+        100% 10px,
+        100% calc(100% - 10px),
+        calc(100% - 10px) calc(100% - 10px),
+        calc(100% - 10px) 100%,
+        10px 100%,
+        10px calc(100% - 10px),
+        0 calc(100% - 10px)
+    );
     animation: levelIdleGlow 4s steps(2, end) infinite;
-    transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+    transition:
+        transform 0.25s ease,
+        border-color 0.25s ease,
+        background 0.25s ease;
 }
 
-.level:nth-child(1) { animation-delay: 0ms; }
-.level:nth-child(2) { animation-delay: 120ms; }
-.level:nth-child(3) { animation-delay: 240ms; }
-.level:nth-child(4) { animation-delay: 360ms; }
-.level:nth-child(5) { animation-delay: 480ms; }
+.level:nth-of-type(1) {
+    animation-delay: 0ms;
+}
+.level:nth-of-type(2) {
+    animation-delay: 120ms;
+}
+.level:nth-of-type(3) {
+    animation-delay: 240ms;
+}
+.level:nth-of-type(4) {
+    animation-delay: 360ms;
+}
+.level:nth-of-type(5) {
+    animation-delay: 480ms;
+}
 
 .level::before,
 .level::after {
-    content: '';
+    content: "";
     position: absolute;
     pointer-events: none;
 }
@@ -276,10 +350,12 @@ header p {
 
 .level::after {
     inset: 0;
-    background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.12) 45%, transparent 62%);
+    background: linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.12) 45%, transparent 62%);
     opacity: 0;
     transform: translateX(-70%);
-    transition: opacity 0.28s ease, transform 0.45s ease;
+    transition:
+        opacity 0.28s ease,
+        transform 0.45s ease;
 }
 
 .level:hover,
@@ -304,13 +380,16 @@ header p {
 }
 
 .level:hover {
-    box-shadow: 0 0 0 2px rgba(255, 209, 102, 0.28), 0 16px 34px rgba(0,0,0,0.44), 0 0 26px rgba(0, 213, 232, 0.24);
+    box-shadow:
+        0 0 0 2px rgba(255, 209, 102, 0.28),
+        0 16px 34px rgba(0, 0, 0, 0.44),
+        0 0 26px rgba(0, 213, 232, 0.24);
 }
 
 /* ====================== SECTIONS ====================== */
 .content-section {
     position: relative;
-    padding: 104px 20px 116px;
+    padding: 82px 20px 104px;
     scroll-margin-top: 92px;
 }
 
@@ -328,13 +407,21 @@ header p {
 }
 
 .content-section::before {
-    content: '';
+    content: "";
     position: absolute;
-    top: 86px;
+    top: 62px;
     left: 0;
     right: 0;
     height: 2px;
-    background: linear-gradient(90deg, transparent, var(--cyan), var(--green), transparent);
+    background: linear-gradient(
+        90deg,
+        transparent 3%,
+        color-mix(in srgb, var(--section-accent, var(--cyan)) 18%, transparent) 12%,
+        var(--section-accent, var(--cyan)) 48%,
+        color-mix(in srgb, var(--section-accent, var(--cyan)) 28%, var(--text)) 52%,
+        transparent 97%
+    );
+    box-shadow: 0 0 18px color-mix(in srgb, var(--section-accent, var(--cyan)) 30%, transparent);
     opacity: 0;
     pointer-events: none;
 }
@@ -357,21 +444,26 @@ header p {
     position: relative;
     padding: clamp(24px, 4vw, 44px);
     background: var(--panel);
-    border: 1px solid rgba(0, 213, 232, 0.30);
+    border: 1px solid rgba(0, 213, 232, 0.3);
     border-radius: var(--radius);
-    box-shadow: var(--shadow-cyan), 0 18px 45px rgba(0,0,0,0.36);
+    box-shadow:
+        var(--shadow-cyan),
+        0 18px 45px rgba(0, 0, 0, 0.36);
 }
 
 .about-section::before,
 .current-container::before,
 .contact-section::before,
 .project-item::before {
-    content: '';
+    content: "";
     position: absolute;
     inset: -1px;
     border: 1px solid transparent;
-    background: linear-gradient(135deg, rgba(0,255,102,0.72), rgba(0,213,232,0.15), rgba(255,79,216,0.48)) border-box;
-    -webkit-mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0);
+    background: linear-gradient(135deg, rgba(0, 255, 102, 0.72), rgba(0, 213, 232, 0.15), rgba(255, 79, 216, 0.48))
+        border-box;
+    -webkit-mask:
+        linear-gradient(#000 0 0) padding-box,
+        linear-gradient(#000 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
     opacity: 0.42;
@@ -386,48 +478,6 @@ header p {
     text-align: center;
     text-shadow: 0 0 12px var(--cyan);
     font-size: clamp(1.15rem, 2.2vw, 1.7rem);
-}
-
-h1[data-text],
-h2[data-text] {
-    position: relative;
-}
-
-h1[data-text]::before,
-h1[data-text]::after,
-.project-item:hover h2[data-text]::before,
-.project-item:hover h2[data-text]::after,
-.current-card:hover h2[data-text]::before,
-.current-card:hover h2[data-text]::after {
-    content: attr(data-text);
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    pointer-events: none;
-}
-
-h1[data-text]::before,
-.project-item:hover h2[data-text]::before,
-.current-card:hover h2[data-text]::before {
-    color: var(--pink);
-    transform: translate(-2px, 0);
-}
-
-h1[data-text]::after,
-.project-item:hover h2[data-text]::after,
-.current-card:hover h2[data-text]::after {
-    color: var(--cyan);
-    transform: translate(2px, 0);
-}
-
-h1[data-text]:hover::before,
-h1[data-text]:hover::after,
-.project-item:hover h2[data-text]::before,
-.project-item:hover h2[data-text]::after,
-.current-card:hover h2[data-text]::before,
-.current-card:hover h2[data-text]::after {
-    opacity: 0.58;
-    animation: glitchJitter 0.18s steps(2, end) 2;
 }
 
 .about-section > img,
@@ -449,22 +499,22 @@ h1[data-text]:hover::after,
     text-align: left;
     background: rgba(0, 8, 36, 0.88);
     border: 2px solid var(--green);
-    cursor: url('assets/cursor/SELECT.cur?v=20260614b'), pointer;
+    cursor: url("assets/cursor/SELECT.cur?v=20260719e"), pointer;
 }
 
 .collapsible::after {
-    content: '+';
+    content: "+";
     color: var(--cyan);
 }
 
 .collapsible.active::after {
-    content: '-';
+    content: "-";
 }
 
 .content {
     margin-top: 10px;
     padding: 16px;
-    background: rgba(255,255,255,0.06);
+    background: rgba(255, 255, 255, 0.06);
     border-left: 3px solid var(--cyan);
     border-radius: var(--radius);
     animation: panelOpen 0.24s steps(4, end);
@@ -485,7 +535,7 @@ h1[data-text]:hover::after,
     font-size: clamp(1rem, 2.4vw, 1.35rem);
     text-decoration: none;
     border-bottom: 2px solid rgba(0, 255, 102, 0.62);
-    cursor: url('assets/cursor/SELECT.cur?v=20260614b'), pointer;
+    cursor: url("assets/cursor/SELECT.cur?v=20260719e"), pointer;
 }
 
 .contact-email:hover,
@@ -514,17 +564,22 @@ h1[data-text]:hover::after,
     position: relative;
     overflow: hidden;
     padding: clamp(18px, 3vw, 28px);
-    background: rgba(255,255,255,0.075);
+    background: rgba(255, 255, 255, 0.075);
     border: 1px solid rgba(0, 255, 102, 0.32);
     border-radius: var(--radius);
-    box-shadow: 0 12px 28px rgba(0,0,0,0.22);
-    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+    transition:
+        transform 0.25s ease,
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
 }
 
 .current-card:hover {
     transform: translateY(-6px);
     border-color: rgba(0, 255, 102, 0.72);
-    box-shadow: var(--shadow-green), 0 16px 36px rgba(0,0,0,0.32);
+    box-shadow:
+        var(--shadow-green),
+        0 16px 36px rgba(0, 0, 0, 0.32);
 }
 
 .current-card h2,
@@ -534,7 +589,7 @@ h1[data-text]:hover::after,
 
 .current-card h2::before,
 .project-item h2::before {
-    content: '>';
+    content: ">";
     margin-right: 10px;
     color: var(--green);
     text-shadow: 0 0 10px var(--green);
@@ -564,31 +619,16 @@ h1[data-text]:hover::after,
     padding: 16px 18px;
     background: rgba(0, 8, 30, 0.42);
     border: 1px solid rgba(0, 213, 232, 0.18);
-    transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+    transition:
+        transform 0.25s ease,
+        border-color 0.25s ease,
+        background 0.25s ease;
 }
 
 .current-feature-group:hover {
     transform: translateY(-3px);
     background: rgba(0, 213, 232, 0.09);
-    border-color: rgba(255, 209, 102, 0.50);
-}
-
-/* ====================== LOW FX MODE OVERRIDES ====================== */
-body.low-fx::before,
-body.low-fx::after {
-    animation: none !important;
-    display: none !important;
-}
-
-body.low-fx,
-body.low-fx * {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-}
-
-body.low-fx .map {
-    background-position: center !important;
+    border-color: rgba(255, 209, 102, 0.5);
 }
 
 body.effects-paused *,
@@ -613,7 +653,7 @@ body.effects-paused::after {
     --muted: #c8d6e6;
     --border: rgba(103, 239, 255, 0.48);
     --shadow-green: 0 0 28px rgba(109, 255, 158, 0.18);
-    --shadow-cyan: 0 0 34px rgba(103, 239, 255, 0.20);
+    --shadow-cyan: 0 0 34px rgba(103, 239, 255, 0.2);
     --radius: 2px;
     --content-width: 1240px;
 }
@@ -634,27 +674,6 @@ body::after {
     opacity: 0.56;
 }
 
-.site-header {
-    padding: 14px clamp(16px, 3vw, 34px);
-    background:
-        linear-gradient(90deg, rgba(103, 239, 255, 0.035) 1px, transparent 1px),
-        rgba(3, 6, 18, 0.88);
-    background-size: 32px 100%, auto;
-    border-bottom: 1px solid rgba(103, 239, 255, 0.70);
-    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.46), 0 1px 0 rgba(255, 190, 85, 0.25);
-    backdrop-filter: blur(18px) saturate(1.15);
-}
-
-.site-header::before {
-    bottom: -1px;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--cyan) 16%, var(--gold) 48%, var(--pink) 78%, transparent);
-}
-
-.header-content {
-    grid-template-columns: minmax(0, 1fr) auto;
-}
-
 .header-copy {
     min-width: 0;
     text-align: left;
@@ -664,28 +683,45 @@ body::after {
     margin-bottom: 6px;
     color: var(--text);
     font-size: clamp(0.9rem, 2vw, 1.45rem);
-    text-shadow: 3px 3px 0 rgba(255, 92, 170, 0.28), 0 0 18px rgba(103, 239, 255, 0.36);
+    text-shadow:
+        3px 3px 0 rgba(255, 92, 170, 0.28),
+        0 0 18px rgba(103, 239, 255, 0.36);
 }
 
 .site-header p {
     width: fit-content;
+    min-width: 13ch;
     padding: 4px 8px;
     color: #07101e;
     background: var(--gold);
     box-shadow: 4px 4px 0 rgba(255, 92, 170, 0.22);
     font-size: clamp(0.56rem, 1vw, 0.72rem);
+    text-align: center;
     text-shadow: none;
 }
 
 .map {
+    --camera-x: 50%;
+    --camera-y: 50%;
     min-height: 100svh;
     padding: 146px clamp(22px, 5vw, 72px) 84px;
-    grid-template-columns: repeat(5, minmax(150px, 220px));
-    gap: clamp(16px, 2.4vw, 32px);
+    grid-template-columns: minmax(150px, 200px) minmax(190px, 240px) repeat(3, minmax(150px, 200px));
+    gap: clamp(14px, 1.8vw, 26px);
+    background: linear-gradient(180deg, rgba(3, 6, 18, 0.08), rgba(3, 6, 18, 0.32) 42%, rgba(3, 6, 18, 0.88));
+}
+
+.map-depth-surface {
     background:
         linear-gradient(180deg, rgba(3, 6, 18, 0.08), rgba(3, 6, 18, 0.32) 42%, rgba(3, 6, 18, 0.88)),
         radial-gradient(circle at 52% 30%, transparent 0 17%, rgba(103, 239, 255, 0.08) 18% 18.4%, transparent 19%),
-        url('assets/images/backgroundw.webp?v=20260717f') center/cover no-repeat;
+        url("assets/images/backgroundw.webp?v=20260719e") center/cover no-repeat;
+    background-position:
+        center,
+        center,
+        50% 50%;
+    transition:
+        background-position 0.5s ease,
+        filter 0.5s ease;
 }
 
 .map::before {
@@ -693,14 +729,15 @@ body::after {
         linear-gradient(154deg, transparent 0 49.72%, rgba(103, 239, 255, 0.18) 49.8% 50.1%, transparent 50.18%),
         linear-gradient(90deg, rgba(103, 239, 255, 0.08) 1px, transparent 1px),
         linear-gradient(rgba(255, 190, 85, 0.055) 1px, transparent 1px);
-    background-size: 100% 100%, 64px 64px, 64px 64px;
+    background-size:
+        100% 100%,
+        64px 64px,
+        64px 64px;
     opacity: 0.78;
 }
 
 .map::after {
-    background:
-        radial-gradient(circle at var(--spot-x, 50%) var(--spot-y, 50%), rgba(255, 190, 85, 0.17), transparent 16%),
-        linear-gradient(120deg, transparent 0%, rgba(103, 239, 255, 0.07) 46%, transparent 58%);
+    background: linear-gradient(120deg, transparent 0%, rgba(103, 239, 255, 0.07) 46%, transparent 58%);
     mix-blend-mode: screen;
 }
 
@@ -712,26 +749,34 @@ body::after {
     color: var(--level-accent);
     background:
         linear-gradient(180deg, color-mix(in srgb, var(--level-accent) 10%, transparent), transparent 34%),
-        linear-gradient(145deg, rgba(4, 8, 25, 0.96), rgba(7, 20, 46, 0.90));
+        linear-gradient(145deg, rgba(4, 8, 25, 0.96), rgba(7, 20, 46, 0.9));
     border: 1px solid color-mix(in srgb, var(--level-accent) 82%, transparent);
     border-left-width: 4px;
-    box-shadow: 10px 12px 0 rgba(2, 5, 16, 0.52), 0 0 24px color-mix(in srgb, var(--level-accent) 14%, transparent);
-    clip-path: polygon(0 14px, 14px 14px, 14px 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
+    box-shadow:
+        10px 12px 0 rgba(2, 5, 16, 0.52),
+        0 0 24px color-mix(in srgb, var(--level-accent) 14%, transparent);
+    clip-path: polygon(
+        0 14px,
+        14px 14px,
+        14px 0,
+        calc(100% - 20px) 0,
+        100% 20px,
+        100% 100%,
+        18px 100%,
+        0 calc(100% - 18px)
+    );
     transform: translateY(var(--level-y));
     animation: none;
 }
 
-.level:nth-child(1) { --level-accent: var(--cyan); --level-y: 30px; }
-.level:nth-child(2) { --level-accent: var(--gold); --level-y: -22px; }
-.level:nth-child(3) { --level-accent: var(--green); --level-y: 18px; }
-.level:nth-child(4) { --level-accent: var(--pink); --level-y: -34px; }
-.level:nth-child(5) { --level-accent: var(--cyan); --level-y: 24px; }
-
 .level::before {
     inset: 8px;
     border: 1px solid color-mix(in srgb, var(--level-accent) 22%, transparent);
-    background:
-        repeating-linear-gradient(90deg, transparent 0 14px, color-mix(in srgb, var(--level-accent) 10%, transparent) 14px 15px);
+    background: repeating-linear-gradient(
+        90deg,
+        transparent 0 14px,
+        color-mix(in srgb, var(--level-accent) 10%, transparent) 14px 15px
+    );
 }
 
 .level:hover,
@@ -739,18 +784,20 @@ body::after {
     color: #050713;
     background: var(--level-accent);
     border-color: var(--text);
-    box-shadow: 10px 12px 0 rgba(2, 5, 16, 0.66), 0 0 34px color-mix(in srgb, var(--level-accent) 38%, transparent);
+    box-shadow:
+        10px 12px 0 rgba(2, 5, 16, 0.66),
+        0 0 34px color-mix(in srgb, var(--level-accent) 38%, transparent);
     transform: translateY(calc(var(--level-y) - 8px));
 }
 
 .content-section {
     overflow: clip;
-    padding: clamp(104px, 10vw, 148px) clamp(18px, 4vw, 48px);
-    border-top: 1px solid rgba(103, 239, 255, 0.10);
+    padding: clamp(78px, 7vw, 102px) clamp(18px, 4vw, 48px) clamp(88px, 9vw, 126px);
+    border-top: 1px solid rgba(103, 239, 255, 0.1);
 }
 
 #about {
-    background: radial-gradient(circle at 82% 24%, rgba(255, 190, 85, 0.10), transparent 27%);
+    background: radial-gradient(circle at 82% 24%, rgba(255, 190, 85, 0.1), transparent 27%);
 }
 
 #current {
@@ -758,7 +805,7 @@ body::after {
 }
 
 #experience {
-    background: radial-gradient(circle at 88% 22%, rgba(103, 239, 255, 0.10), transparent 32%);
+    background: radial-gradient(circle at 88% 22%, rgba(103, 239, 255, 0.1), transparent 32%);
 }
 
 #contact {
@@ -807,7 +854,9 @@ body::after {
 .projects-container > h1 {
     color: var(--text);
     text-align: left;
-    text-shadow: 3px 3px 0 rgba(255, 92, 170, 0.26), 0 0 18px rgba(103, 239, 255, 0.22);
+    text-shadow:
+        3px 3px 0 rgba(255, 92, 170, 0.26),
+        0 0 18px rgba(103, 239, 255, 0.22);
 }
 
 .about-section > h1:not(:first-child) {
@@ -875,7 +924,7 @@ body::after {
 /* ====================== PERFORMANCE + FINISHING PASS ====================== */
 body::before {
     inset: -24px;
-    opacity: 0.10;
+    opacity: 0.1;
     mix-blend-mode: normal;
     will-change: transform, opacity;
 }
@@ -885,24 +934,13 @@ body::after {
     will-change: transform;
 }
 
-.site-header {
-    background:
-        linear-gradient(90deg, rgba(103, 239, 255, 0.035) 1px, transparent 1px),
-        rgba(3, 6, 18, 0.97);
-    backdrop-filter: none;
-}
-
-.site-header p {
-    min-width: 13ch;
-    text-align: center;
-}
-
 .map::after {
     mix-blend-mode: normal;
-    will-change: transform, opacity;
+    will-change: opacity;
 }
 
 .map,
+.map-depth-surface,
 .level {
     backface-visibility: hidden;
 }
@@ -912,10 +950,18 @@ body {
     --zone-accent: var(--cyan);
 }
 
-body[data-active-section="current"] { --zone-accent: var(--gold); }
-body[data-active-section="experience"] { --zone-accent: var(--green); }
-body[data-active-section="projects"] { --zone-accent: var(--pink); }
-body[data-active-section="contact"] { --zone-accent: var(--cyan); }
+body[data-active-section="current"] {
+    --zone-accent: var(--gold);
+}
+body[data-active-section="experience"] {
+    --zone-accent: var(--green);
+}
+body[data-active-section="projects"] {
+    --zone-accent: var(--pink);
+}
+body[data-active-section="contact"] {
+    --zone-accent: var(--cyan);
+}
 
 .sr-only {
     position: absolute;
@@ -929,23 +975,17 @@ body[data-active-section="contact"] { --zone-accent: var(--cyan); }
     border: 0;
 }
 
-.site-header {
-    border-bottom-color: var(--zone-accent);
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+.map::before {
+    z-index: 1;
 }
-
-.site-header::before {
-    background: linear-gradient(90deg, transparent, var(--zone-accent) 18%, var(--text) 50%, var(--zone-accent) 82%, transparent);
-    background-size: 160% 100%;
+.map::after {
+    z-index: 5;
 }
-
-.map::before { z-index: 0; }
-.map::after { z-index: 3; }
 
 .map-route {
     --route-accent: var(--cyan);
     position: absolute;
-    z-index: 1;
+    z-index: 2;
     top: 50%;
     left: 50%;
     width: min(78vw, 1100px);
@@ -956,10 +996,94 @@ body[data-active-section="contact"] { --zone-accent: var(--cyan); }
     transition: filter 0.28s ease;
 }
 
-.map[data-destination="current"] .map-route { --route-accent: var(--gold); }
-.map[data-destination="experience"] .map-route { --route-accent: var(--green); }
-.map[data-destination="projects"] .map-route { --route-accent: var(--pink); }
-.map[data-destination="contact"] .map-route { --route-accent: var(--cyan); }
+.map[data-destination="current"] .map-route {
+    --route-accent: var(--gold);
+}
+.map[data-destination="experience"] .map-route {
+    --route-accent: var(--green);
+}
+.map[data-destination="projects"] .map-route {
+    --route-accent: var(--pink);
+}
+.map[data-destination="contact"] .map-route {
+    --route-accent: var(--cyan);
+}
+
+.map[data-destination="about"] {
+    --camera-x: 42%;
+    --camera-y: 48%;
+}
+.map[data-destination="current"] {
+    --camera-x: 47%;
+    --camera-y: 40%;
+}
+.map[data-destination="experience"] {
+    --camera-x: 52%;
+    --camera-y: 46%;
+}
+.map[data-destination="projects"] {
+    --camera-x: 59%;
+    --camera-y: 39%;
+}
+.map[data-destination="contact"] {
+    --camera-x: 64%;
+    --camera-y: 48%;
+}
+
+.map.is-travelling {
+    filter: none;
+}
+
+.map.is-travelling .map-depth-surface {
+    background-position:
+        center,
+        center,
+        var(--camera-x) var(--camera-y);
+    filter: saturate(1.08) contrast(1.025);
+}
+
+.map.is-travelling::after {
+    animation: mapTravelSweep 0.52s steps(6, end);
+}
+
+.map.is-pointer-zone::before {
+    transform: translate3d(var(--surface-grid-x, 0px), var(--surface-grid-y, 0px), 0);
+}
+
+.map.is-pointer-zone::after {
+    opacity: 0.78;
+    animation: none;
+}
+
+.map.is-pointer-zone .map-route {
+    transform: translate3d(calc(-50% + var(--surface-near-x, 0px)), calc(-38% + var(--surface-near-y, 0px)), 0);
+}
+
+body.has-pointer-depth .map.is-pointer-zone .map-pointer-field {
+    opacity: 0.78;
+}
+
+.map.is-travelling .level:not([aria-current="true"]) {
+    opacity: 0.62;
+    filter: saturate(0.66) brightness(0.8);
+    transform: translateY(var(--level-y)) scale(0.975);
+}
+
+.map.is-travelling .level[aria-current="true"] {
+    transform: translateY(var(--level-y)) scale(1.045);
+}
+
+@keyframes mapTravelSweep {
+    0% {
+        opacity: 0.25;
+    }
+    42% {
+        opacity: 0.95;
+    }
+    100% {
+        opacity: 0.48;
+    }
+}
 
 .map-route > span {
     position: absolute;
@@ -973,10 +1097,26 @@ body[data-active-section="contact"] { --zone-accent: var(--cyan); }
     transform-origin: left center;
 }
 
-.map-route > span:nth-child(1) { --route-left: 5%; --route-top: 58%; --route-angle: -11deg; }
-.map-route > span:nth-child(2) { --route-left: 27.5%; --route-top: 31%; --route-angle: 9deg; }
-.map-route > span:nth-child(3) { --route-left: 50%; --route-top: 52%; --route-angle: -14deg; }
-.map-route > span:nth-child(4) { --route-left: 72.5%; --route-top: 21%; --route-angle: 12deg; }
+.map-route > span:nth-child(1) {
+    --route-left: 5%;
+    --route-top: 58%;
+    --route-angle: -11deg;
+}
+.map-route > span:nth-child(2) {
+    --route-left: 27.5%;
+    --route-top: 31%;
+    --route-angle: 9deg;
+}
+.map-route > span:nth-child(3) {
+    --route-left: 50%;
+    --route-top: 52%;
+    --route-angle: -14deg;
+}
+.map-route > span:nth-child(4) {
+    --route-left: 72.5%;
+    --route-top: 21%;
+    --route-angle: 12deg;
+}
 
 .map-route > i {
     position: absolute;
@@ -988,14 +1128,31 @@ body[data-active-section="contact"] { --zone-accent: var(--cyan); }
     border: 2px solid var(--route-accent);
     box-shadow: 0 0 12px color-mix(in srgb, var(--route-accent) 52%, transparent);
     transform: translate(-50%, -50%) rotate(45deg);
-    transition: border-color 0.28s ease, box-shadow 0.28s ease;
+    transition:
+        border-color 0.28s ease,
+        box-shadow 0.28s ease;
 }
 
-.map-route > i:nth-of-type(1) { --node-left: 5%; --node-top: 58%; }
-.map-route > i:nth-of-type(2) { --node-left: 27.5%; --node-top: 31%; }
-.map-route > i:nth-of-type(3) { --node-left: 50%; --node-top: 52%; }
-.map-route > i:nth-of-type(4) { --node-left: 72.5%; --node-top: 21%; }
-.map-route > i:nth-of-type(5) { --node-left: 95%; --node-top: 54%; }
+.map-route > i:nth-of-type(1) {
+    --node-left: 5%;
+    --node-top: 58%;
+}
+.map-route > i:nth-of-type(2) {
+    --node-left: 27.5%;
+    --node-top: 31%;
+}
+.map-route > i:nth-of-type(3) {
+    --node-left: 50%;
+    --node-top: 52%;
+}
+.map-route > i:nth-of-type(4) {
+    --node-left: 72.5%;
+    --node-top: 21%;
+}
+.map-route > i:nth-of-type(5) {
+    --node-left: 95%;
+    --node-top: 54%;
+}
 
 .map-route > b {
     position: absolute;
@@ -1004,22 +1161,49 @@ body[data-active-section="contact"] { --zone-accent: var(--cyan); }
     width: 21px;
     height: 21px;
     border: 2px solid var(--route-accent);
-    box-shadow: 0 0 0 4px color-mix(in srgb, var(--route-accent) 14%, transparent), 0 0 20px var(--route-accent);
+    box-shadow:
+        0 0 0 4px color-mix(in srgb, var(--route-accent) 14%, transparent),
+        0 0 20px var(--route-accent);
     transform: translate(-50%, -50%) rotate(45deg);
-    transition: left 0.34s steps(5, end), top 0.34s steps(5, end), border-color 0.28s ease, box-shadow 0.28s ease;
+    transition:
+        left 0.34s steps(5, end),
+        top 0.34s steps(5, end),
+        border-color 0.28s ease,
+        box-shadow 0.28s ease;
 }
 
-.map[data-destination="current"] .map-route > b { left: 27.5%; top: 31%; }
-.map[data-destination="experience"] .map-route > b { left: 50%; top: 52%; }
-.map[data-destination="projects"] .map-route > b { left: 72.5%; top: 21%; }
-.map[data-destination="contact"] .map-route > b { left: 95%; top: 54%; }
+.map[data-destination="current"] .map-route > b {
+    left: 27.5%;
+    top: 31%;
+}
+.map[data-destination="experience"] .map-route > b {
+    left: 50%;
+    top: 52%;
+}
+.map[data-destination="projects"] .map-route > b {
+    left: 72.5%;
+    top: 21%;
+}
+.map[data-destination="contact"] .map-route > b {
+    left: 95%;
+    top: 54%;
+}
 
 .level {
-    z-index: 2;
+    z-index: 3;
+    transition:
+        transform 0.28s ease,
+        opacity 0.28s ease,
+        filter 0.28s ease,
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
 }
 
 .level[aria-current="true"] {
-    box-shadow: 10px 12px 0 rgba(2, 5, 16, 0.66), 0 0 0 2px color-mix(in srgb, var(--level-accent) 34%, transparent), 0 0 32px color-mix(in srgb, var(--level-accent) 30%, transparent);
+    box-shadow:
+        10px 12px 0 rgba(2, 5, 16, 0.66),
+        0 0 0 2px color-mix(in srgb, var(--level-accent) 34%, transparent),
+        0 0 32px color-mix(in srgb, var(--level-accent) 30%, transparent);
 }
 
 .level[aria-current="true"]::before {
@@ -1028,30 +1212,54 @@ body[data-active-section="contact"] { --zone-accent: var(--cyan); }
 
 /* ====================== ARTWORK / INVENTORY PANELS ====================== */
 .section-artwork {
-    transform: translate3d(var(--art-x, 0px), var(--art-y, 0px), 0) scale(1.015);
-    transition: transform 0.22s ease-out, filter 0.25s ease;
+    transform: perspective(1000px) translate3d(var(--art-x, 0px), var(--art-y, 0px), 0) rotateX(var(--art-tilt-x, 0deg))
+        rotateY(var(--art-tilt-y, 0deg)) scale(1.018);
+    filter: saturate(0.96) contrast(1.035) drop-shadow(0 22px 30px rgba(0, 0, 0, 0.34));
+    transition:
+        transform 0.22s ease-out,
+        filter 0.25s ease,
+        box-shadow 0.25s ease;
     will-change: transform;
 }
 
 .about-section:hover .section-artwork,
 .contact-section:hover .section-artwork {
-    filter: saturate(1.08) contrast(1.04);
+    filter: saturate(1.08) contrast(1.055) drop-shadow(0 26px 34px rgba(0, 0, 0, 0.4));
 }
 
+.about-section,
 .contact-section {
+    --art-depth-color: var(--pink);
     isolation: isolate;
     overflow: hidden;
 }
 
+.about-section {
+    --art-depth-color: var(--cyan);
+}
+
+.about-section::after,
 .contact-section::after {
-    content: '';
+    content: "";
     position: absolute;
     z-index: 0;
     inset: 0;
-    background: radial-gradient(circle at var(--art-light-x, 50%) var(--art-light-y, 50%), color-mix(in srgb, var(--pink) 14%, transparent), transparent 28%);
+    background:
+        radial-gradient(
+            circle at var(--art-light-x, 50%) var(--art-light-y, 50%),
+            color-mix(in srgb, var(--art-depth-color) 15%, transparent),
+            transparent 27%
+        ),
+        linear-gradient(
+            125deg,
+            transparent 48%,
+            color-mix(in srgb, var(--art-depth-color) 6%, transparent) 48.3% 48.6%,
+            transparent 48.9%
+        );
     pointer-events: none;
 }
 
+.about-section > *,
 .contact-section > * {
     position: relative;
     z-index: 1;
@@ -1060,13 +1268,19 @@ body[data-active-section="contact"] { --zone-accent: var(--cyan); }
 .collapsible {
     min-height: 58px;
     padding: 16px 54px 16px 42px;
-    box-shadow: 7px 7px 0 rgba(0, 0, 0, 0.28), inset 0 0 18px rgba(255, 190, 85, 0.035);
+    box-shadow:
+        7px 7px 0 rgba(0, 0, 0, 0.28),
+        inset 0 0 18px rgba(255, 190, 85, 0.035);
     clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%);
-    transition: color 0.18s ease, background 0.18s ease, transform 0.14s ease, box-shadow 0.18s ease;
+    transition:
+        color 0.18s ease,
+        background 0.18s ease,
+        transform 0.14s ease,
+        box-shadow 0.18s ease;
 }
 
 .collapsible::before {
-    content: '';
+    content: "";
     position: absolute;
     left: 17px;
     width: 10px;
@@ -1092,7 +1306,10 @@ body[data-active-section="contact"] { --zone-accent: var(--cyan); }
 .collapsible.active {
     color: var(--text);
     background: linear-gradient(90deg, rgba(255, 190, 85, 0.13), rgba(3, 8, 24, 0.84));
-    box-shadow: 7px 7px 0 rgba(0, 0, 0, 0.36), inset 4px 0 0 var(--gold), 0 0 20px rgba(255, 190, 85, 0.12);
+    box-shadow:
+        7px 7px 0 rgba(0, 0, 0, 0.36),
+        inset 4px 0 0 var(--gold),
+        0 0 20px rgba(255, 190, 85, 0.12);
     outline: none;
 }
 
@@ -1106,24 +1323,44 @@ body[data-active-section="contact"] { --zone-accent: var(--cyan); }
 }
 
 @media (max-width: 1100px) {
-    .map-route { display: none; }
+    .map-route {
+        display: none;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .section-artwork { transform: none; }
-}
-
-body.low-fx .section-artwork {
-    transform: none;
-    will-change: auto;
+    .section-artwork {
+        transform: none;
+    }
+    .map {
+        transition: none;
+    }
+    .map.is-travelling::after {
+        animation: none;
+    }
 }
 
 /* ====================== WORLD STATE / SECTION TERRAIN ====================== */
-.level:nth-of-type(1) { --level-accent: var(--cyan); --level-y: 30px; }
-.level:nth-of-type(2) { --level-accent: var(--gold); --level-y: -22px; }
-.level:nth-of-type(3) { --level-accent: var(--green); --level-y: 18px; }
-.level:nth-of-type(4) { --level-accent: var(--pink); --level-y: -34px; }
-.level:nth-of-type(5) { --level-accent: var(--cyan); --level-y: 24px; }
+.level:nth-of-type(1) {
+    --level-accent: var(--cyan);
+    --level-y: 20px;
+}
+.level:nth-of-type(2) {
+    --level-accent: var(--gold);
+    --level-y: -14px;
+}
+.level:nth-of-type(3) {
+    --level-accent: var(--green);
+    --level-y: 12px;
+}
+.level:nth-of-type(4) {
+    --level-accent: var(--pink);
+    --level-y: -20px;
+}
+.level:nth-of-type(5) {
+    --level-accent: var(--cyan);
+    --level-y: 18px;
+}
 
 .level-label {
     position: relative;
@@ -1140,9 +1377,14 @@ body.low-fx .section-artwork {
     opacity: 0;
     background: #050713;
     border: 2px solid var(--level-accent);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--level-accent) 10%, transparent), 0 0 13px color-mix(in srgb, var(--level-accent) 54%, transparent);
+    box-shadow:
+        0 0 0 3px color-mix(in srgb, var(--level-accent) 10%, transparent),
+        0 0 13px color-mix(in srgb, var(--level-accent) 54%, transparent);
     transform: rotate(45deg) scale(0.45);
-    transition: opacity 0.2s ease, transform 0.2s steps(3, end), background 0.2s ease;
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s steps(3, end),
+        background 0.2s ease;
     pointer-events: none;
 }
 
@@ -1155,74 +1397,431 @@ body.low-fx .section-artwork {
 .level[aria-current="true"] .level-visited-marker {
     background: var(--text);
     border-color: var(--text);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--level-accent) 18%, transparent), 0 0 18px var(--level-accent);
+    box-shadow:
+        0 0 0 3px color-mix(in srgb, var(--level-accent) 18%, transparent),
+        0 0 18px var(--level-accent);
 }
 
 .content-section {
+    --section-accent: var(--cyan);
+    --zone-atmosphere: linear-gradient(180deg, rgba(5, 7, 19, 0.98), rgba(8, 17, 38, 0.96), rgba(5, 7, 19, 0.98));
+    --zone-landmark: linear-gradient(transparent, transparent);
+    --zone-terrain: linear-gradient(transparent, transparent);
+    --zone-pointer-field: radial-gradient(
+        circle,
+        color-mix(in srgb, var(--section-accent) 11%, transparent),
+        transparent 66%
+    );
+    --field-shift-x: var(--surface-near-x, 0px);
+    --field-shift-y: var(--surface-near-y, 0px);
     isolation: isolate;
     contain: paint;
+    background: var(--zone-atmosphere);
+    box-shadow:
+        inset 0 1px 0 color-mix(in srgb, var(--section-accent) 8%, transparent),
+        inset 0 -1px 0 rgba(103, 239, 255, 0.035);
 }
 
-.content-section > * {
+.content-section > :not(.section-depth-field) {
     position: relative;
     z-index: 1;
 }
 
+.section-depth-field {
+    position: absolute;
+    z-index: 0;
+    top: 0;
+    left: 0;
+    width: min(620px, 78vw);
+    aspect-ratio: 1;
+    opacity: 0;
+    background: var(--zone-pointer-field);
+    -webkit-mask-image: radial-gradient(circle, black 0 54%, transparent 76%);
+    mask-image: radial-gradient(circle, black 0 54%, transparent 76%);
+    pointer-events: none;
+    contain: strict;
+    transform: translate3d(
+        calc(var(--pointer-local-x, 0px) - 50% + var(--field-shift-x)),
+        calc(var(--pointer-local-y, 0px) - 50% + var(--field-shift-y)),
+        0
+    );
+    transition: opacity 0.2s ease-out;
+    will-change: transform, opacity;
+}
+
+body.has-pointer-depth .content-section.is-pointer-zone .section-depth-field {
+    opacity: 0.44;
+}
+
 .content-section::after {
-    content: '';
+    content: "";
     position: absolute;
     z-index: 0;
     inset: 0;
-    opacity: 0.28;
-    background: var(--zone-terrain);
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%);
-    mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%);
+    opacity: 0.56;
+    background: var(--zone-landmark), var(--zone-terrain);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 7%, black 93%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, black 7%, black 93%, transparent 100%);
     pointer-events: none;
-    transition: opacity 0.28s ease;
+    transition: opacity 0.32s ease;
 }
 
 .content-section.is-active-zone::after {
-    opacity: 0.46;
+    opacity: 0.78;
+}
+
+.map:not(.is-visual-active)::after,
+.content-section:not(.is-visual-active) .project-filter-bar::after {
+    animation-play-state: paused;
+}
+
+.map:not(.is-visual-active) .map-depth-surface,
+.content-section:not(.is-visual-active) .section-depth-field {
+    will-change: auto;
 }
 
 #about {
+    --section-accent: var(--cyan);
+    --zone-atmosphere:
+        radial-gradient(ellipse at 84% 23%, rgba(255, 190, 85, 0.16), transparent 31%),
+        radial-gradient(ellipse at 12% 78%, rgba(103, 239, 255, 0.08), transparent 38%),
+        linear-gradient(145deg, rgba(4, 7, 19, 0.98), rgba(7, 16, 35, 0.96) 54%, rgba(18, 12, 27, 0.95));
+    --zone-landmark:
+        radial-gradient(
+            circle at 84% 24%,
+            rgba(255, 190, 85, 0.2) 0 3px,
+            transparent 4px 76px,
+            rgba(255, 190, 85, 0.25) 77px 78px,
+            transparent 79px 126px,
+            rgba(103, 239, 255, 0.16) 127px 129px,
+            transparent 130px 184px,
+            rgba(255, 190, 85, 0.1) 185px 186px,
+            transparent 187px
+        ),
+        repeating-conic-gradient(
+            from 4deg at 84% 24%,
+            rgba(255, 190, 85, 0.07) 0deg 0.55deg,
+            transparent 0.55deg 22.5deg
+        ),
+        linear-gradient(90deg, transparent 0 83.92%, rgba(103, 239, 255, 0.12) 84% 84.08%, transparent 84.16%),
+        linear-gradient(0deg, transparent 0 75.88%, rgba(255, 190, 85, 0.11) 76% 76.12%, transparent 76.24%);
     --zone-terrain:
-        repeating-radial-gradient(ellipse at 86% 25%, transparent 0 24px, rgba(103, 239, 255, 0.11) 25px 26px, transparent 27px 48px),
-        linear-gradient(118deg, transparent 0 64%, rgba(103, 239, 255, 0.05) 64.2% 64.5%, transparent 64.7%);
+        repeating-radial-gradient(
+            ellipse at 86% 25%,
+            transparent 0 27px,
+            rgba(103, 239, 255, 0.12) 28px 29px,
+            transparent 30px 54px
+        ),
+        repeating-linear-gradient(118deg, transparent 0 71px, rgba(103, 239, 255, 0.045) 72px 73px);
+    --zone-pointer-field:
+        radial-gradient(circle, transparent 0 78px, rgba(255, 190, 85, 0.2) 79px 80px, transparent 81px 136px),
+        repeating-radial-gradient(circle, transparent 0 31px, rgba(103, 239, 255, 0.085) 32px 33px),
+        radial-gradient(circle, rgba(103, 239, 255, 0.11), transparent 68%);
 }
 
 #current {
+    --section-accent: var(--gold);
+    --zone-atmosphere:
+        radial-gradient(ellipse at 16% 28%, rgba(255, 190, 85, 0.15), transparent 29%),
+        radial-gradient(ellipse at 88% 66%, rgba(255, 92, 170, 0.075), transparent 34%),
+        linear-gradient(155deg, rgba(5, 8, 20, 0.98), rgba(17, 17, 33, 0.96) 50%, rgba(7, 13, 30, 0.98));
+    --zone-landmark:
+        radial-gradient(
+            circle at 16% 28%,
+            rgba(255, 190, 85, 0.38) 0 3px,
+            transparent 4px 28px,
+            rgba(255, 190, 85, 0.2) 29px 30px,
+            transparent 31px 66px,
+            rgba(103, 239, 255, 0.11) 67px 68px,
+            transparent 69px
+        ),
+        linear-gradient(rgba(255, 190, 85, 0.24), rgba(255, 190, 85, 0.24)) 8% 18% / 168px 1px no-repeat,
+        linear-gradient(rgba(255, 190, 85, 0.24), rgba(255, 190, 85, 0.24)) 8% 18% / 1px 118px no-repeat,
+        linear-gradient(rgba(103, 239, 255, 0.18), rgba(103, 239, 255, 0.18)) 92% 76% / 168px 1px no-repeat,
+        linear-gradient(rgba(103, 239, 255, 0.18), rgba(103, 239, 255, 0.18)) 92% 76% / 1px 118px no-repeat,
+        linear-gradient(132deg, transparent 0 49.76%, rgba(255, 190, 85, 0.14) 49.84% 49.98%, transparent 50.06%);
     --zone-terrain:
-        linear-gradient(132deg, transparent 0 49.6%, rgba(255, 190, 85, 0.10) 49.8% 50.1%, transparent 50.3%),
-        repeating-linear-gradient(90deg, rgba(255, 190, 85, 0.07) 0 1px, transparent 1px 96px),
-        repeating-linear-gradient(rgba(255, 190, 85, 0.045) 0 1px, transparent 1px 96px);
+        radial-gradient(circle at 16% 28%, rgba(255, 190, 85, 0.25) 0 2px, transparent 3px) 0 0 / 92px 92px,
+        repeating-linear-gradient(90deg, rgba(255, 190, 85, 0.075) 0 1px, transparent 1px 92px),
+        repeating-linear-gradient(rgba(255, 190, 85, 0.05) 0 1px, transparent 1px 92px),
+        repeating-linear-gradient(132deg, transparent 0 17px, rgba(103, 239, 255, 0.04) 18px 19px);
+    --zone-pointer-field:
+        linear-gradient(90deg, transparent 0 49.8%, rgba(255, 190, 85, 0.2) 49.9% 50.1%, transparent 50.2%),
+        linear-gradient(0deg, transparent 0 49.8%, rgba(103, 239, 255, 0.16) 49.9% 50.1%, transparent 50.2%),
+        radial-gradient(circle, transparent 0 54px, rgba(255, 190, 85, 0.2) 55px 56px, transparent 57px 112px),
+        radial-gradient(circle, rgba(255, 190, 85, 0.1), transparent 67%);
 }
 
 #experience {
+    --section-accent: var(--green);
+    --journey-axis: max(34px, calc((100% - 1120px) / 2 + 33px));
+    --zone-atmosphere:
+        radial-gradient(ellipse at var(--journey-axis) 38%, rgba(109, 255, 158, 0.13), transparent 24%),
+        radial-gradient(ellipse at 86% 72%, rgba(103, 239, 255, 0.075), transparent 34%),
+        linear-gradient(150deg, rgba(3, 9, 20, 0.98), rgba(5, 22, 30, 0.96) 52%, rgba(4, 10, 24, 0.98));
+    --zone-landmark:
+        radial-gradient(
+            circle at var(--journey-axis) 16%,
+            rgba(255, 190, 85, 0.26) 0 3px,
+            transparent 4px 17px,
+            rgba(255, 190, 85, 0.11) 18px 19px,
+            transparent 20px
+        ),
+        radial-gradient(
+            circle at var(--journey-axis) 38%,
+            rgba(103, 239, 255, 0.24) 0 3px,
+            transparent 4px 17px,
+            rgba(103, 239, 255, 0.1) 18px 19px,
+            transparent 20px
+        ),
+        radial-gradient(
+            circle at var(--journey-axis) 63%,
+            rgba(109, 255, 158, 0.25) 0 3px,
+            transparent 4px 17px,
+            rgba(109, 255, 158, 0.1) 18px 19px,
+            transparent 20px
+        ),
+        radial-gradient(
+            circle at var(--journey-axis) 86%,
+            rgba(255, 92, 170, 0.24) 0 3px,
+            transparent 4px 17px,
+            rgba(255, 92, 170, 0.1) 18px 19px,
+            transparent 20px
+        ),
+        linear-gradient(
+            90deg,
+            transparent 0 calc(var(--journey-axis) - 58px),
+            rgba(109, 255, 158, 0.025) calc(var(--journey-axis) - 58px) calc(var(--journey-axis) + 58px),
+            transparent calc(var(--journey-axis) + 58px)
+        ),
+        linear-gradient(
+            90deg,
+            transparent 0 calc(var(--journey-axis) - 1px),
+            rgba(109, 255, 158, 0.14) var(--journey-axis) calc(var(--journey-axis) + 1px),
+            transparent calc(var(--journey-axis) + 2px)
+        );
     --zone-terrain:
-        linear-gradient(90deg, transparent 0 18%, rgba(0, 255, 102, 0.08) 18% 18.2%, transparent 18.2% 72%, rgba(0, 255, 102, 0.06) 72% 72.2%, transparent 72.2%),
-        repeating-linear-gradient(0deg, transparent 0 35px, rgba(0, 255, 102, 0.055) 35px 36px, transparent 36px 72px),
-        radial-gradient(circle at 18% 36%, rgba(0, 255, 102, 0.18) 0 3px, transparent 4px),
-        radial-gradient(circle at 72% 68%, rgba(103, 239, 255, 0.16) 0 3px, transparent 4px);
+        repeating-linear-gradient(0deg, transparent 0 83px, rgba(103, 239, 255, 0.055) 84px 85px),
+        repeating-radial-gradient(
+            ellipse at var(--journey-axis) 50%,
+            transparent 0 42px,
+            rgba(109, 255, 158, 0.06) 43px 44px,
+            transparent 45px 88px
+        );
+    --zone-pointer-field:
+        linear-gradient(
+            90deg,
+            transparent 0 43%,
+            rgba(109, 255, 158, 0.035) 44% 49.7%,
+            rgba(109, 255, 158, 0.24) 49.8% 50.2%,
+            rgba(103, 239, 255, 0.035) 50.3% 56%,
+            transparent 57%
+        ),
+        repeating-linear-gradient(0deg, transparent 0 44px, rgba(103, 239, 255, 0.075) 45px 46px),
+        radial-gradient(ellipse, rgba(109, 255, 158, 0.09), transparent 68%);
 }
 
 #projects {
+    --section-accent: var(--pink);
+    --zone-atmosphere:
+        radial-gradient(ellipse at 74% 42%, rgba(255, 92, 170, 0.13), transparent 32%),
+        radial-gradient(ellipse at 14% 74%, rgba(103, 239, 255, 0.075), transparent 35%),
+        linear-gradient(145deg, rgba(5, 7, 19, 0.98), rgba(14, 9, 31, 0.97) 52%, rgba(5, 13, 30, 0.98));
+    --zone-landmark:
+        radial-gradient(
+            circle at 74% 42%,
+            rgba(255, 92, 170, 0.28) 0 3px,
+            transparent 4px 46px,
+            rgba(255, 92, 170, 0.14) 47px 48px,
+            transparent 49px 116px,
+            rgba(103, 239, 255, 0.1) 117px 118px,
+            transparent 119px
+        ),
+        conic-gradient(
+            from 45deg at 74% 42%,
+            transparent 0 24.7%,
+            rgba(255, 92, 170, 0.1) 24.82% 25.18%,
+            transparent 25.3% 49.7%,
+            rgba(103, 239, 255, 0.08) 49.82% 50.18%,
+            transparent 50.3% 74.7%,
+            rgba(255, 92, 170, 0.1) 74.82% 75.18%,
+            transparent 75.3%
+        ),
+        linear-gradient(rgba(255, 92, 170, 0.22), rgba(255, 92, 170, 0.22)) 7% 16% / 126px 1px no-repeat,
+        linear-gradient(rgba(255, 92, 170, 0.22), rgba(255, 92, 170, 0.22)) 7% 16% / 1px 86px no-repeat,
+        linear-gradient(rgba(103, 239, 255, 0.18), rgba(103, 239, 255, 0.18)) 93% 84% / 126px 1px no-repeat,
+        linear-gradient(rgba(103, 239, 255, 0.18), rgba(103, 239, 255, 0.18)) 93% 84% / 1px 86px no-repeat;
     --zone-terrain:
-        repeating-linear-gradient(90deg, rgba(255, 92, 170, 0.075) 0 1px, transparent 1px 54px),
-        repeating-linear-gradient(rgba(255, 92, 170, 0.05) 0 1px, transparent 1px 54px),
-        linear-gradient(152deg, transparent 0 44%, rgba(255, 92, 170, 0.08) 44.2% 44.4%, transparent 44.6%);
+        repeating-linear-gradient(90deg, rgba(255, 92, 170, 0.075) 0 1px, transparent 1px 58px),
+        repeating-linear-gradient(rgba(255, 92, 170, 0.052) 0 1px, transparent 1px 58px),
+        linear-gradient(78deg, transparent 0 49.8%, rgba(255, 92, 170, 0.075) 49.9% 50.1%, transparent 50.2%),
+        linear-gradient(102deg, transparent 0 49.8%, rgba(103, 239, 255, 0.055) 49.9% 50.1%, transparent 50.2%);
+    --zone-pointer-field:
+        conic-gradient(
+            from calc(45deg + var(--surface-angle, 0deg)) at 50% 50%,
+            transparent 0 24.65%,
+            rgba(255, 92, 170, 0.22) 24.8% 25.2%,
+            transparent 25.35% 49.65%,
+            rgba(103, 239, 255, 0.17) 49.8% 50.2%,
+            transparent 50.35% 74.65%,
+            rgba(255, 92, 170, 0.22) 74.8% 75.2%,
+            transparent 75.35%
+        ),
+        radial-gradient(circle, transparent 0 62px, rgba(255, 92, 170, 0.2) 63px 64px, transparent 65px 126px),
+        radial-gradient(circle, rgba(255, 92, 170, 0.11), transparent 68%);
 }
 
 #contact {
+    --section-accent: var(--cyan);
+    --zone-atmosphere:
+        radial-gradient(ellipse at 14% 52%, rgba(255, 92, 170, 0.15), transparent 28%),
+        radial-gradient(ellipse at 82% 42%, rgba(103, 239, 255, 0.12), transparent 34%),
+        linear-gradient(145deg, rgba(8, 6, 20, 0.98), rgba(12, 10, 30, 0.96) 48%, rgba(3, 16, 31, 0.98));
+    --zone-landmark:
+        radial-gradient(
+            circle at 14% 52%,
+            rgba(255, 92, 170, 0.35) 0 3px,
+            transparent 4px 34px,
+            rgba(255, 92, 170, 0.23) 35px 36px,
+            transparent 37px 78px,
+            rgba(103, 239, 255, 0.19) 79px 81px,
+            transparent 82px 128px,
+            rgba(103, 239, 255, 0.11) 129px 130px,
+            transparent 131px 188px,
+            rgba(255, 92, 170, 0.08) 189px 190px,
+            transparent 191px
+        ),
+        conic-gradient(
+            from 264deg at 14% 52%,
+            transparent 0deg 6deg,
+            rgba(103, 239, 255, 0.1) 7deg 14deg,
+            transparent 15deg 360deg
+        ),
+        linear-gradient(
+            90deg,
+            transparent 0 13.8%,
+            rgba(255, 92, 170, 0.13) 14% 14.1%,
+            rgba(103, 239, 255, 0.11) 14.2% 76%,
+            transparent 76.2%
+        ),
+        radial-gradient(
+            circle at 76% 52%,
+            rgba(103, 239, 255, 0.28) 0 3px,
+            transparent 4px 13px,
+            rgba(103, 239, 255, 0.1) 14px 15px,
+            transparent 16px
+        );
     --zone-terrain:
-        repeating-radial-gradient(circle at 14% 52%, transparent 0 38px, rgba(255, 92, 170, 0.085) 39px 40px, transparent 41px 78px),
-        linear-gradient(90deg, transparent 0 76%, rgba(103, 239, 255, 0.07) 76.2% 76.4%, transparent 76.6%);
+        repeating-radial-gradient(
+            circle at 14% 52%,
+            transparent 0 38px,
+            rgba(255, 92, 170, 0.09) 39px 40px,
+            transparent 41px 78px
+        ),
+        repeating-linear-gradient(0deg, transparent 0 46px, rgba(103, 239, 255, 0.045) 47px 48px),
+        linear-gradient(90deg, transparent 0 76%, rgba(103, 239, 255, 0.08) 76.2% 76.4%, transparent 76.6%);
+    --zone-pointer-field:
+        conic-gradient(
+            from calc(264deg + var(--surface-angle, 0deg)) at 50% 50%,
+            transparent 0deg 7deg,
+            rgba(103, 239, 255, 0.16) 8deg 16deg,
+            transparent 17deg 360deg
+        ),
+        repeating-radial-gradient(circle, transparent 0 38px, rgba(255, 92, 170, 0.12) 39px 40px),
+        radial-gradient(circle, rgba(103, 239, 255, 0.11), transparent 68%);
 }
 
 .section-artwork {
     contain: paint;
 }
 
-body.low-fx .content-section::after {
-    opacity: 0.18;
+@media (max-width: 760px) {
+    .content-section::after {
+        opacity: 0.42;
+        -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 4%, black 96%, transparent 100%);
+        mask-image: linear-gradient(to bottom, transparent 0%, black 4%, black 96%, transparent 100%);
+    }
+
+    .content-section.is-active-zone::after {
+        opacity: 0.58;
+    }
+
+    .section-depth-field {
+        display: none;
+    }
+
+    .map-pointer-field {
+        display: none;
+    }
+
+    #about {
+        --zone-landmark: radial-gradient(
+            circle at 88% 18%,
+            rgba(255, 190, 85, 0.18) 0 3px,
+            transparent 4px 62px,
+            rgba(255, 190, 85, 0.18) 63px 64px,
+            transparent 65px 112px,
+            rgba(103, 239, 255, 0.12) 113px 114px,
+            transparent 115px
+        );
+    }
+
+    #current {
+        --zone-landmark:
+            radial-gradient(
+                circle at 12% 18%,
+                rgba(255, 190, 85, 0.34) 0 3px,
+                transparent 4px 34px,
+                rgba(255, 190, 85, 0.14) 35px 36px,
+                transparent 37px
+            ),
+            linear-gradient(132deg, transparent 0 49.76%, rgba(255, 190, 85, 0.13) 49.84% 49.98%, transparent 50.06%);
+    }
+
+    #experience {
+        --journey-axis: 27px;
+    }
+
+    #projects {
+        --zone-landmark: radial-gradient(
+            circle at 86% 20%,
+            rgba(255, 92, 170, 0.25) 0 3px,
+            transparent 4px 46px,
+            rgba(255, 92, 170, 0.13) 47px 48px,
+            transparent 49px 96px,
+            rgba(103, 239, 255, 0.09) 97px 98px,
+            transparent 99px
+        );
+    }
+
+    #contact {
+        --zone-landmark:
+            radial-gradient(
+                circle at 10% 48%,
+                rgba(255, 92, 170, 0.3) 0 3px,
+                transparent 4px 34px,
+                rgba(255, 92, 170, 0.2) 35px 36px,
+                transparent 37px 76px,
+                rgba(103, 239, 255, 0.14) 77px 78px,
+                transparent 79px 122px,
+                rgba(103, 239, 255, 0.08) 123px 124px,
+                transparent 125px
+            ),
+            linear-gradient(90deg, transparent 0 10%, rgba(103, 239, 255, 0.11) 10.2% 82%, transparent 82.2%);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .content-section::after {
+        transform: none;
+        transition: none;
+    }
+
+    .section-depth-field {
+        display: none;
+    }
+
+    .map-pointer-field {
+        display: none;
+    }
 }

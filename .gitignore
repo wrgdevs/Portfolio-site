@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+
+# Local environment files
+.env
+.env.*
+!.env.example
+
+# Test and tool output
+coverage/
+.nyc_output/
+.cache/
+.eslintcache
+.stylelintcache
+*.log
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Editors and operating systems
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

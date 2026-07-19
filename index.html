@@ -1,86 +1,114 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Wei Rong Gao's software development portfolio featuring game development, graphics, simulation, data, and finance projects.">
-    <title>Wei Rong | Portfolio</title>
-    
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://wrgdevs.github.io/Portfolio-site/">
-    <meta property="og:title" content="Wei Rong Gao | Portfolio">
-    <meta property="og:description" content="Wei Rong Gao's software development portfolio featuring game development, graphics, simulation, data, and finance projects.">
-    <meta property="og:image" content="https://wrgdevs.github.io/Portfolio-site/assets/images/backgroundw.webp">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+            name="description"
+            content="Wei Rong Gao's software development portfolio featuring game development, graphics, simulation, data, and finance projects."
+        />
+        <title>Wei Rong | Portfolio</title>
 
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:title" content="Wei Rong | Portfolio">
-    <meta property="twitter:description" content="Wei Rong Gao's software development portfolio featuring game development, graphics, simulation, data, and finance projects.">
-    <meta property="twitter:image" content="https://wrgdevs.github.io/Portfolio-site/assets/images/backgroundw.webp">
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://wrgdevs.github.io/Portfolio-site/" />
+        <meta property="og:title" content="Wei Rong Gao | Portfolio" />
+        <meta
+            property="og:description"
+            content="Wei Rong Gao's software development portfolio featuring game development, graphics, simulation, data, and finance projects."
+        />
+        <meta property="og:image" content="https://wrgdevs.github.io/Portfolio-site/assets/images/backgroundw.webp" />
 
-    <link rel="preload" as="image" href="assets/images/backgroundw.webp?v=20260718c">
-    <link rel="stylesheet" href="styles.css?v=20260718c">
-    <link rel="stylesheet" href="projects.css?v=20260718c">
-    <link rel="stylesheet" href="experience.css?v=20260718c">
-    <link rel="stylesheet" href="effects.css?v=20260718c">
-    <script src="portfolio-data.js?v=20260718c" defer></script>
-    <script src="script.js?v=20260718c" defer></script>
-</head>
-<body>
-    <header class="site-header">
-        <div class="header-content">
-            <div class="header-copy">
-                <h1 id="typed-header" class="typewriter typing">WELCOME TO MY PORTFOLIO</h1>
-                <p id="typed-subheader">WEI RONG GAO</p>
+        <!-- Twitter -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Wei Rong | Portfolio" />
+        <meta
+            name="twitter:description"
+            content="Wei Rong Gao's software development portfolio featuring game development, graphics, simulation, data, and finance projects."
+        />
+        <meta name="twitter:image" content="https://wrgdevs.github.io/Portfolio-site/assets/images/backgroundw.webp" />
+
+        <link rel="preload" as="image" href="assets/images/backgroundw.webp?v=20260719e" />
+        <link rel="stylesheet" href="styles.css?v=20260719e" />
+        <link rel="stylesheet" href="projects.css?v=20260719e" />
+        <link rel="stylesheet" href="experience.css?v=20260719e" />
+        <link rel="stylesheet" href="effects.css?v=20260719e" />
+        <script defer src="script.bundle.js?v=20260719e"></script>
+    </head>
+    <body>
+        <header class="site-header">
+            <div class="header-content">
+                <div class="header-copy">
+                    <h1 id="typed-header" class="typewriter typing">WELCOME TO MY PORTFOLIO</h1>
+                    <p id="typed-subheader">WEI RONG GAO</p>
+                </div>
+                <div class="header-actions">
+                    <button class="sound-toggle" id="sound-toggle" type="button" aria-pressed="false">AUDIO OFF</button>
+                    <button class="header-github-button" type="button" aria-haspopup="dialog">GitHub</button>
+                </div>
             </div>
-            <div class="header-actions">
-                <button class="sound-toggle" id="sound-toggle" type="button" aria-pressed="false">AUDIO OFF</button>
-                <button class="low-fx-toggle" id="low-fx-toggle" type="button" aria-pressed="false">LOW FX OFF</button>
-                <button class="header-github-button" type="button" onclick="openGithubModal()" aria-haspopup="dialog">GitHub</button>
+        </header>
+
+        <main>
+            <nav class="map" aria-label="Portfolio sections">
+                <div class="map-depth-surface" aria-hidden="true"></div>
+                <div class="map-pointer-field" aria-hidden="true"></div>
+                <div class="map-route" aria-hidden="true">
+                    <span></span><span></span><span></span><span></span> <i></i><i></i><i></i><i></i><i></i>
+                    <b></b>
+                </div>
+                <button class="level" type="button" data-section="about">
+                    <span class="level-label">ABOUT ME</span><i class="level-visited-marker" aria-hidden="true"></i>
+                </button>
+                <button class="level" type="button" data-section="current">
+                    <span class="level-label">CURRENTLY WORKING ON</span
+                    ><i class="level-visited-marker" aria-hidden="true"></i>
+                </button>
+                <button class="level" type="button" data-section="experience">
+                    <span class="level-label">EXPERIENCE</span><i class="level-visited-marker" aria-hidden="true"></i>
+                </button>
+                <button class="level" type="button" data-section="projects">
+                    <span class="level-label">PROJECTS</span><i class="level-visited-marker" aria-hidden="true"></i>
+                </button>
+                <button class="level" type="button" data-section="contact">
+                    <span class="level-label">CONTACT</span><i class="level-visited-marker" aria-hidden="true"></i>
+                </button>
+            </nav>
+        </main>
+
+        <div
+            class="github-modal"
+            id="github-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="github-modal-title"
+            aria-hidden="true"
+        >
+            <div class="github-modal-card">
+                <button class="github-modal-close" type="button" aria-label="Close GitHub popup">x</button>
+                <p class="github-modal-label">GitHub Profile</p>
+                <h2 id="github-modal-title">Wei Rong Gao</h2>
+                <p class="github-modal-handle">@wrgdevs</p>
+                <p class="github-modal-text">
+                    View my repositories, project source code, and current development work.
+                </p>
+                <a class="github-modal-link" href="https://github.com/wrgdevs" target="_blank" rel="noopener noreferrer"
+                    >Open GitHub Profile</a
+                >
             </div>
         </div>
-    </header>
-
-    <main>
-        <nav class="map" aria-label="Portfolio sections">
-            <div class="map-route" aria-hidden="true">
-                <span></span><span></span><span></span><span></span>
-                <i></i><i></i><i></i><i></i><i></i>
-                <b></b>
-            </div>
-            <button class="level" type="button" data-section="about" onclick="jumpToSection('about')"><span class="level-label">ABOUT ME</span><i class="level-visited-marker" aria-hidden="true"></i></button>
-            <button class="level" type="button" data-section="current" onclick="jumpToSection('current')"><span class="level-label">CURRENTLY WORKING ON</span><i class="level-visited-marker" aria-hidden="true"></i></button>
-            <button class="level" type="button" data-section="experience" onclick="jumpToSection('experience')"><span class="level-label">EXPERIENCE</span><i class="level-visited-marker" aria-hidden="true"></i></button>
-            <button class="level" type="button" data-section="projects" onclick="jumpToSection('projects')"><span class="level-label">PROJECTS</span><i class="level-visited-marker" aria-hidden="true"></i></button>
-            <button class="level" type="button" data-section="contact" onclick="jumpToSection('contact')"><span class="level-label">CONTACT</span><i class="level-visited-marker" aria-hidden="true"></i></button>
+        <nav class="section-radar" aria-label="Section radar" hidden>
+            <button type="button" data-section="about" aria-label="Jump to About"></button>
+            <button type="button" data-section="current" aria-label="Jump to Current Work"></button>
+            <button type="button" data-section="experience" aria-label="Jump to Experience"></button>
+            <button type="button" data-section="projects" aria-label="Jump to Projects"></button>
+            <button type="button" data-section="contact" aria-label="Jump to Contact"></button>
         </nav>
-    </main>
 
-    <div class="github-modal" id="github-modal" role="dialog" aria-modal="true" aria-labelledby="github-modal-title" aria-hidden="true">
-        <div class="github-modal-card">
-            <button class="github-modal-close" type="button" onclick="closeGithubModal()" aria-label="Close GitHub popup">x</button>
-            <p class="github-modal-label">GitHub Profile</p>
-            <h2 id="github-modal-title">Wei Rong Gao</h2>
-            <p class="github-modal-handle">@wrgdevs</p>
-            <p class="github-modal-text">View my repositories, project source code, and current development work.</p>
-            <a class="github-modal-link" href="https://github.com/wrgdevs" target="_blank" rel="noopener noreferrer">Open GitHub Profile</a>
+        <div class="progress-circle" aria-hidden="true">
+            <svg class="progress-ring" width="60" height="60">
+                <circle class="progress-ring__circle" stroke-width="4" fill="transparent" r="28" cx="30" cy="30" />
+            </svg>
         </div>
-    </div>
-
-
-    <nav class="section-radar" aria-label="Section radar">
-        <button type="button" data-section="about" aria-label="Jump to About"></button>
-        <button type="button" data-section="current" aria-label="Jump to Current Work"></button>
-        <button type="button" data-section="experience" aria-label="Jump to Experience"></button>
-        <button type="button" data-section="projects" aria-label="Jump to Projects"></button>
-        <button type="button" data-section="contact" aria-label="Jump to Contact"></button>
-    </nav>
-
-    <div class="progress-circle" aria-hidden="true">
-        <svg class="progress-ring" width="60" height="60">
-            <circle class="progress-ring__circle" stroke-width="4" fill="transparent" r="28" cx="30" cy="30" />
-        </svg>
-    </div>
-</body>
+    </body>
 </html>

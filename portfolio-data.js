@@ -1,19 +1,19 @@
-const ASSET_VERSION = "20260718c";
+const ASSET_VERSION = "20260719e";
 
 const PROJECT_FILTERS = [
     { id: "all", label: "All" },
     { id: "game-graphics", label: "Game & Graphics" },
     { id: "finance-data", label: "Finance & Data" },
     { id: "simulation", label: "Simulation" },
-    { id: "tools-systems", label: "Tools & Systems" }
+    { id: "tools-systems", label: "Tools & Systems" },
 ];
 
 const SECTION_KEYS = {
-    "1": "about",
-    "2": "current",
-    "3": "experience",
-    "4": "projects",
-    "5": "contact"
+    1: "about",
+    2: "current",
+    3: "experience",
+    4: "projects",
+    5: "contact",
 };
 
 const EXPERIENCE = [
@@ -22,83 +22,101 @@ const EXPERIENCE = [
         period: "Fall 2026",
         role: "Incoming Programmer-Analyst / Stack Cloud Developer Co-op",
         organization: "Statistics Canada",
-        summary: "Joining Statistics Canada’s Digital Solutions Field to support the development and modernization of cloud-based applications and enterprise data services.",
+        summary:
+            "Joining Statistics Canada’s Digital Solutions Field to support the development and modernization of cloud-based applications and enterprise data services.",
         highlights: [
             "Expected to contribute to application development and cloud-based solutions supporting statistical research across Canada",
             "Will collaborate with technical teams and stakeholders in an Agile development environment",
-            "Potential work includes Python applications, Microsoft Azure, REST APIs, data pipelines, containers, and CI/CD workflows"
+            "Potential work includes Python applications, Microsoft Azure, REST APIs, data pipelines, containers, and CI/CD workflows",
         ],
         technologies: ["Python", "Microsoft Azure", "REST APIs", "Data Pipelines", "Containers", "CI/CD"],
         technologyLabel: "Potential focus",
         status: "Incoming Co-op",
-        incoming: true
+        incoming: true,
     },
     {
         id: "digital-extremes",
         period: "Winter 2026",
         role: "Programmer Co-op",
         organization: "Digital Extremes",
-        summary: "Worked within a large proprietary C++ game engine, contributing to gameplay features and development tooling in a production environment.",
+        summary:
+            "Worked within a large proprietary C++ game engine, contributing to gameplay features and development tooling in a production environment.",
         highlights: [
             "Designed, debugged, and integrated gameplay features across multiple interconnected engine systems",
             "Investigated complex runtime issues involving state synchronization, system dependencies, and unexpected gameplay behaviour",
-            "Collaborated with experienced developers to review, test, and safely integrate changes into an established production codebase"
+            "Collaborated with experienced developers to review, test, and safely integrate changes into an established production codebase",
         ],
         technologies: ["C++", "Proprietary Game Engine", "Git", "Debugging Tools"],
-        technologyLabel: "Technologies"
+        technologyLabel: "Technologies",
     },
     {
         id: "independent-development",
         period: "Spring 2025",
         role: "Independent Software & Game Developer",
         organization: "Independent and Collaborative Development",
-        summary: "Dedicated the work term to developing independent software projects and collaborating with a small development team on an original game project.",
+        summary:
+            "Dedicated the work term to developing independent software projects and collaborating with a small development team on an original game project.",
         highlights: [
             "Contributed to gameplay programming, combat systems, development tools, technical design, and iterative prototyping",
             "Collaborated on feature planning, responsibility sharing, idea reviews, and version-controlled changes",
             "Designed tools and workflows that made gameplay systems easier to test, debug, and refine",
-            "Managed the architecture, scope, and technical challenges of a long-term software project"
+            "Managed the architecture, scope, and technical challenges of a long-term software project",
         ],
         technologies: ["C++", "Game Development", "Git", "Gameplay Systems", "Tool Development"],
         technologyLabel: "Technologies",
-        note: "The original game project remains in development and has not yet been publicly released."
+        note: "The original game project remains in development and has not yet been publicly released.",
     },
     {
         id: "waterloo-ai-project",
         period: "Spring 2024",
         role: "AI Project Developer Co-op",
         organization: "University of Waterloo",
-        summary: "Collaborated remotely on a healthcare-focused artificial intelligence project using Microsoft Azure technologies.",
+        summary:
+            "Collaborated remotely on a healthcare-focused artificial intelligence project using Microsoft Azure technologies.",
         highlights: [
             "Contributed to project research, requirements planning, technical implementation, and milestone organization",
             "Helped define project direction, coordinate responsibilities, and present progress and final outcomes",
-            "Developed practical Microsoft Azure experience and earned a Microsoft Azure certification during the work term"
+            "Developed practical Microsoft Azure experience and earned a Microsoft Azure certification during the work term",
         ],
         technologies: ["Microsoft Azure", "Artificial Intelligence", "Cloud Computing", "Project Planning"],
-        technologyLabel: "Technologies"
-    }
+        technologyLabel: "Technologies",
+    },
 ];
 
 const INVOLVEMENT = {
     title: "Game Jams and Hackathons",
-    summary: "Participated in collaborative game-development, hackathon-style, and technical activities through school and community groups.",
+    summary:
+        "Participated in collaborative game-development, hackathon-style, and technical activities through school and community groups.",
     highlights: [
         "Worked with teams to develop project ideas and prototypes",
         "Contributed to programming, planning, problem-solving, and presentations",
-        "Developed early experience collaborating on technical projects and working within project constraints"
-    ]
+        "Developed early experience collaborating on technical projects and working within project constraints",
+    ],
 };
 
 const PROJECTS = [
     {
         id: "valuation-deal-lab",
         title: "Valuation & Deal Lab",
-        summary: "Source-traceable corporate valuation platform that turns SEC filings into DCF, comparable-company, M&A, and formula-driven Excel models.",
+        summary:
+            "Source-traceable corporate valuation platform that turns SEC filings into DCF, comparable-company, M&A, and formula-driven Excel models.",
         categories: ["finance-data", "tools-systems"],
         image: "assets/images/projects/valuation-deal-lab/dcf_sensitivity_analysis.png",
         imageAlt: "Valuation and Deal Lab DCF sensitivity analysis dashboard",
         languages: ["Python"],
-        techStack: ["Python 3.12", "Pandas", "NumPy", "Streamlit", "Plotly", "Pydantic", "XlsxWriter", "openpyxl", "SEC EDGAR", "Ollama", "Pytest"],
+        techStack: [
+            "Python 3.12",
+            "Pandas",
+            "NumPy",
+            "Streamlit",
+            "Plotly",
+            "Pydantic",
+            "XlsxWriter",
+            "openpyxl",
+            "SEC EDGAR",
+            "Ollama",
+            "Pytest",
+        ],
         features: [
             "Built a source-traceable pipeline that downloads, caches, and normalizes SEC EDGAR XBRL facts through reviewed company mappings",
             "Created downside, base, and upside forecasts with Gordon-growth DCF valuation and WACC/TGR sensitivity analysis",
@@ -106,25 +124,40 @@ const PROJECTS = [
             "Modelled cash, debt, and stock-funded acquisition scenarios with EPS accretion, dilution, leverage, and synergy breakeven analysis",
             "Exported editable nine-sheet Excel workbooks with formulas, audit trails, source links, and Python-to-Excel reconciliation checks",
             "Added a grounded local-AI analyst with structured outputs, citation verification, numerical checks, and deterministic fallbacks",
-            "Built a Streamlit workflow for company import, historical analysis, valuation, deal analysis, model checks, and workbook export"
+            "Built a Streamlit workflow for company import, historical analysis, valuation, deal analysis, model checks, and workbook export",
         ],
         github: { label: "Repository coming soon" },
         images: [
             "assets/images/projects/valuation-deal-lab/dcf_sensitivity_analysis.png",
             "assets/images/projects/valuation-deal-lab/historical_company_overview.png",
             "assets/images/projects/valuation-deal-lab/comparable_companies_football_field.png",
-            "assets/images/projects/valuation-deal-lab/deal_model_ai_explanation.png"
-        ]
+            "assets/images/projects/valuation-deal-lab/deal_model_ai_explanation.png",
+        ],
     },
     {
         id: "credit-decision-lab",
         title: "Credit Decision Lab",
-        summary: "Local credit-risk analytics lab for calibrated default modelling, approval-policy scenarios, portfolio stress simulation, and model monitoring.",
+        summary:
+            "Local credit-risk analytics lab for calibrated default modelling, approval-policy scenarios, portfolio stress simulation, and model monitoring.",
         categories: ["finance-data", "simulation", "tools-systems"],
         image: "assets/images/projects/credit-decision-lab/dashboard.png",
         imageAlt: "Credit Decision Lab model dashboard",
         languages: ["Python", "SQL"],
-        techStack: ["Python 3.12", "Pandas", "NumPy", "SciPy", "scikit-learn", "Streamlit", "Plotly", "FastAPI", "SQLAlchemy", "PostgreSQL", "MLflow", "Docker", "Pytest"],
+        techStack: [
+            "Python 3.12",
+            "Pandas",
+            "NumPy",
+            "SciPy",
+            "scikit-learn",
+            "Streamlit",
+            "Plotly",
+            "FastAPI",
+            "SQLAlchemy",
+            "PostgreSQL",
+            "MLflow",
+            "Docker",
+            "Pytest",
+        ],
         features: [
             "Built a reproducible credit-default modelling pipeline with stratified train, validation, and held-out test partitions",
             "Compared logistic regression and histogram gradient boosting with uncalibrated, sigmoid, and isotonic probability calibration",
@@ -132,15 +165,15 @@ const PROJECTS = [
             "Implemented seeded Monte Carlo portfolio stress tests with loss distributions, 95%/99% VaR, and expected shortfall",
             "Added model diagnostics for errors, feature importance, coefficients, calibration, demographic groups, and artificial drift batches",
             "Developed a seven-page Streamlit dashboard plus FastAPI prediction, policy, simulation, health, and model-metadata endpoints",
-            "Added SQLAlchemy/Alembic persistence, PostgreSQL, MLflow tracking, Docker Compose services, and automated test coverage"
+            "Added SQLAlchemy/Alembic persistence, PostgreSQL, MLflow tracking, Docker Compose services, and automated test coverage",
         ],
         github: { label: "Repository coming soon" },
         images: [
             "assets/images/projects/credit-decision-lab/dashboard.png",
             "assets/images/projects/credit-decision-lab/calibration.png",
             "assets/images/projects/credit-decision-lab/approval-policy.png",
-            "assets/images/projects/credit-decision-lab/portfolio-simulation.png"
-        ]
+            "assets/images/projects/credit-decision-lab/portfolio-simulation.png",
+        ],
     },
     {
         id: "graphics-rasterizer",
@@ -158,20 +191,21 @@ const PROJECTS = [
             "Added Phong lighting for realistic shading and highlights",
             "Integrated ImGui for real-time parameter tweaking without recompilation",
             "Used TGAImage for texture loading",
-            "Optimized rendering with backface culling"
+            "Optimized rendering with backface culling",
         ],
         github: { url: "https://github.com/wrgdevs/software-rasterizer", label: "View on GitHub" },
         images: [
             "assets/images/projects/3d-graphics-rasterizer/textured.webp",
             "assets/images/projects/3d-graphics-rasterizer/normal_map.webp",
             "assets/images/projects/3d-graphics-rasterizer/Wireframe.webp",
-            "assets/images/projects/3d-graphics-rasterizer/specular.webp"
-        ]
+            "assets/images/projects/3d-graphics-rasterizer/specular.webp",
+        ],
     },
     {
         id: "custom-ecs-game-engine",
         title: "Custom ECS Game Engine",
-        summary: "Lightweight C++ game engine with ECS architecture, editor tooling, Lua scripting, scene serialization, and runtime export.",
+        summary:
+            "Lightweight C++ game engine with ECS architecture, editor tooling, Lua scripting, scene serialization, and runtime export.",
         categories: ["game-graphics", "tools-systems"],
         image: "assets/images/projects/custom-ecs-game-engine/editor.webp",
         imageAlt: "Custom ECS game engine editor interface",
@@ -183,15 +217,15 @@ const PROJECTS = [
             "Implemented JSON scene and prefab serialization with reusable entity prefabs",
             "Added Lua scripting, animation, audio playback, physics, collision, undo, redo, and event systems",
             "Developed a resource manager with texture and audio caching",
-            "Built standalone runtime export pipeline to separate editor tooling from playable builds"
+            "Built standalone runtime export pipeline to separate editor tooling from playable builds",
         ],
         github: { url: "https://github.com/wrgdevs/CustomECSEngine", label: "View on GitHub" },
         images: [
             "assets/images/projects/custom-ecs-game-engine/editor.webp",
             "assets/images/projects/custom-ecs-game-engine/prefab.webp",
             "assets/images/projects/custom-ecs-game-engine/transform.webp",
-            "assets/images/projects/custom-ecs-game-engine/animation.webp"
-        ]
+            "assets/images/projects/custom-ecs-game-engine/animation.webp",
+        ],
     },
     {
         id: "procedural-terrain-generator",
@@ -207,14 +241,14 @@ const PROJECTS = [
             "Implemented level-of-detail system for performance at large scales",
             "Added hydraulic erosion simulation for realistic terrain shaping",
             "Developed infinite terrain streaming with dynamic chunk loading",
-            "Created biome blending using temperature and moisture maps"
+            "Created biome blending using temperature and moisture maps",
         ],
         github: { url: "https://github.com/wrgdevs/procedural-terrain-generator", label: "View on GitHub" },
         images: [
             "assets/images/projects/procedural-terrain-generator/mount.webp",
             "assets/images/projects/procedural-terrain-generator/island.webp",
-            "assets/images/projects/procedural-terrain-generator/desert.webp"
-        ]
+            "assets/images/projects/procedural-terrain-generator/desert.webp",
+        ],
     },
     {
         id: "world-economy-simulator",
@@ -230,20 +264,21 @@ const PROJECTS = [
             "Implemented bilateral trade networks with dynamic dependencies",
             "Built AI policy system that adjusts taxes, subsidies, and investments in real time",
             "Added stochastic event engine with seeded randomness for crises and booms",
-            "Created real-time data visualization and automated economic insights"
+            "Created real-time data visualization and automated economic insights",
         ],
         github: { url: "https://github.com/wrgdevs/world-economy-simulator", label: "View on GitHub" },
         images: [
             "assets/images/projects/world-economy-simulator/eco1.webp",
             "assets/images/projects/world-economy-simulator/eco2.webp",
             "assets/images/projects/world-economy-simulator/eco3.webp",
-            "assets/images/projects/world-economy-simulator/eco4.webp"
-        ]
+            "assets/images/projects/world-economy-simulator/eco4.webp",
+        ],
     },
     {
         id: "algorithmic-trading-backtester",
         title: "Algorithmic Trading Backtester",
-        summary: "Interactive trading strategy backtester with portfolio analytics, custom rule building, and risk reporting.",
+        summary:
+            "Interactive trading strategy backtester with portfolio analytics, custom rule building, and risk reporting.",
         categories: ["finance-data"],
         image: "assets/images/projects/algorithmic-trading-backtester/charts.webp",
         imageAlt: "Algorithmic trading backtester charts",
@@ -254,7 +289,7 @@ const PROJECTS = [
             "Implemented technical strategies including RSI, MACD, Bollinger Bands, momentum, mean reversion, and pairs trading",
             "Built custom no-code strategy builder with rule validation, signal diagnostics, and preset templates",
             "Added portfolio analytics including Sharpe ratio, Sortino ratio, beta, VaR, CVaR, max drawdown, and win-rate metrics",
-            "Created interactive Streamlit dashboard for strategy comparison, parameter optimization, trade visualization, and automated reporting"
+            "Created interactive Streamlit dashboard for strategy comparison, parameter optimization, trade visualization, and automated reporting",
         ],
         github: { url: "https://github.com/wrgdevs/algorithmic-trading-backtester", label: "View on GitHub" },
         images: [
@@ -262,18 +297,28 @@ const PROJECTS = [
             "assets/images/projects/algorithmic-trading-backtester/charts-more.webp",
             "assets/images/projects/algorithmic-trading-backtester/custom.webp",
             "assets/images/projects/algorithmic-trading-backtester/signal.webp",
-            "assets/images/projects/algorithmic-trading-backtester/weights.webp"
-        ]
+            "assets/images/projects/algorithmic-trading-backtester/weights.webp",
+        ],
     },
     {
         id: "banking-transaction-ledger",
         title: "Banking Transaction Ledger",
-        summary: "Full-stack banking ledger with double-entry accounting, JWT role policies, reconciliation, and concurrency-safe transactions.",
+        summary:
+            "Full-stack banking ledger with double-entry accounting, JWT role policies, reconciliation, and concurrency-safe transactions.",
         categories: ["finance-data", "tools-systems"],
         image: "assets/images/projects/bank-ledger/overview.webp",
         imageAlt: "Banking transaction ledger account overview dashboard",
         languages: ["C#", "TypeScript", "SQL"],
-        techStack: ["ASP.NET Core 9", "React", "TypeScript", "PostgreSQL", "Entity Framework Core", "Docker Compose", "xUnit", "GitHub Actions"],
+        techStack: [
+            "ASP.NET Core 9",
+            "React",
+            "TypeScript",
+            "PostgreSQL",
+            "Entity Framework Core",
+            "Docker Compose",
+            "xUnit",
+            "GitHub Actions",
+        ],
         features: [
             "Built a full-stack banking ledger with ASP.NET Core API, React/TypeScript client, PostgreSQL storage, and Docker Compose local setup",
             "Implemented double-entry ledger operations for deposits, withdrawals, and transfers using immutable debit and credit entries",
@@ -281,21 +326,22 @@ const PROJECTS = [
             "Protected customer, admin, and auditor workflows with signed JWT authentication, ownership checks, and role-based policies",
             "Created reconciliation tools to detect unbalanced transactions, missing entries, cached balance mismatches, and invalid negative balances",
             "Used PostgreSQL xmin concurrency tokens and integration tests to prevent concurrent double-spend scenarios",
-            "Added audit logs, transaction reversals, account limits, monthly JSON/CSV statements, health checks, Swagger, CI, and production-style Docker/Nginx artifacts"
+            "Added audit logs, transaction reversals, account limits, monthly JSON/CSV statements, health checks, Swagger, CI, and production-style Docker/Nginx artifacts",
         ],
         github: { label: "Repository coming soon" },
         images: [
             "assets/images/projects/bank-ledger/overview.webp",
             "assets/images/projects/bank-ledger/transactions.webp",
             "assets/images/projects/bank-ledger/statements.webp",
-            "assets/images/projects/bank-ledger/login.webp"
-        ]
+            "assets/images/projects/bank-ledger/login.webp",
+        ],
     },
 
     {
         id: "market-replay-lab",
         title: "Market Replay Lab",
-        summary: "Stock replay workstation for practicing paper trades, alerts, strategy ideas, and post-session review against cached OHLCV data.",
+        summary:
+            "Stock replay workstation for practicing paper trades, alerts, strategy ideas, and post-session review against cached OHLCV data.",
         categories: ["finance-data", "tools-systems"],
         image: "assets/images/projects/market-replay-terminal/replay.webp",
         imageAlt: "Market Replay Lab replay terminal interface",
@@ -307,20 +353,21 @@ const PROJECTS = [
             "Created a FastAPI backend with SQLite persistence, seeded demo data, yfinance imports, CSV imports, and cached data modes",
             "Added portfolio scoring, return, P&L, trade reasoning notes, challenge goals, replay bookmarks, and local review snapshots",
             "Developed Strategy Lab tools for event scans, bot tests, stress scenarios, scenario building, notes, and downloadable reports",
-            "Added workspace backup export/import for settings, alerts, presets, journal notes, and replay history"
+            "Added workspace backup export/import for settings, alerts, presets, journal notes, and replay history",
         ],
         github: { label: "Repository coming soon" },
         images: [
             "assets/images/projects/market-replay-terminal/replay.webp",
             "assets/images/projects/market-replay-terminal/portfolio.webp",
             "assets/images/projects/market-replay-terminal/stratlab.webp",
-            "assets/images/projects/market-replay-terminal/data.webp"
-        ]
+            "assets/images/projects/market-replay-terminal/data.webp",
+        ],
     },
     {
         id: "neural-network-from-scratch",
         title: "Neural Network from Scratch",
-        summary: "NumPy neural network that grows into an MNIST classifier with training visualizations, experiments, and an installable CLI.",
+        summary:
+            "NumPy neural network that grows into an MNIST classifier with training visualizations, experiments, and an installable CLI.",
         categories: ["finance-data", "tools-systems"],
         image: "assets/images/projects/neural-network-from-scratch/learn1.webp",
         imageAlt: "Neural network training visualization",
@@ -332,14 +379,14 @@ const PROJECTS = [
             "Added MNIST loading, preprocessing, and training pipeline with automatic data download",
             "Integrated Matplotlib visualizations for loss and accuracy plots after training",
             "Developed a CLI with argparse so the tool can be installed and run from the terminal",
-            "Added experiment mode for comparing activations, learning rates, and hyperparameters"
+            "Added experiment mode for comparing activations, learning rates, and hyperparameters",
         ],
         github: { url: "https://github.com/wrgdevs/nn-from-scratch-cli", label: "View on GitHub" },
         images: [
             "assets/images/projects/neural-network-from-scratch/learn1.webp",
             "assets/images/projects/neural-network-from-scratch/learn2.webp",
-            "assets/images/projects/neural-network-from-scratch/learn3.webp"
-        ]
+            "assets/images/projects/neural-network-from-scratch/learn3.webp",
+        ],
     },
     {
         id: "procedural-dungeon-map-generator",
@@ -355,14 +402,14 @@ const PROJECTS = [
             "Built live SDL2 renderer with pan, zoom, and overlay analytics",
             "Added real-time map statistics for floor coverage, connectivity, and largest region",
             "Enabled keyboard-controlled parameter tweaking and instant algorithm switching",
-            "Created JSON export system using nlohmann::json for map persistence"
+            "Created JSON export system using nlohmann::json for map persistence",
         ],
         github: { url: "https://github.com/wrgdevs/dungeonMapGen", label: "View on GitHub" },
         images: [
             "assets/images/projects/procedural-dungeon-map-generator/dun1.webp",
             "assets/images/projects/procedural-dungeon-map-generator/dun2.webp",
-            "assets/images/projects/procedural-dungeon-map-generator/dun3.webp"
-        ]
+            "assets/images/projects/procedural-dungeon-map-generator/dun3.webp",
+        ],
     },
     {
         id: "ecosystem-simulation",
@@ -379,14 +426,14 @@ const PROJECTS = [
             "Built species entities with energy, metabolism, vision, speed, and reproduction traits",
             "Implemented emergent flocking and clustering behaviors",
             "Added heatmaps and density overlays for population analysis",
-            "Created trail rendering and dynamic camera system using SDL2"
+            "Created trail rendering and dynamic camera system using SDL2",
         ],
         github: { url: "https://github.com/wrgdevs/EcoSim", label: "View on GitHub" },
         images: [
             "assets/images/projects/ecosystem-simulation/eco1.webp",
             "assets/images/projects/ecosystem-simulation/eco2.webp",
-            "assets/images/projects/ecosystem-simulation/eco3.webp"
-        ]
+            "assets/images/projects/ecosystem-simulation/eco3.webp",
+        ],
     },
     {
         id: "monte-carlo-portfolio-simulator",
@@ -402,15 +449,15 @@ const PROJECTS = [
             "Implemented automated historical data retrieval using yfinance",
             "Calculated risk metrics including VaR, CVaR, Sharpe Ratio, and max drawdown",
             "Created synchronized charts with confidence bands and histograms",
-            "Developed web UI with live parameter sliders"
+            "Developed web UI with live parameter sliders",
         ],
         github: { url: "https://github.com/wrgdevs/monte-carlo-portfolio-simulator", label: "View on GitHub" },
         images: [
             "assets/images/projects/monte-carlo-portfolio-simulator/Monte1.webp",
             "assets/images/projects/monte-carlo-portfolio-simulator/Monte2.webp",
             "assets/images/projects/monte-carlo-portfolio-simulator/Monte3.webp",
-            "assets/images/projects/monte-carlo-portfolio-simulator/Monte4.webp"
-        ]
+            "assets/images/projects/monte-carlo-portfolio-simulator/Monte4.webp",
+        ],
     },
     {
         id: "steam-game-analytics",
@@ -426,14 +473,14 @@ const PROJECTS = [
             "Built 14+ CLI commands for market analysis",
             "Implemented content-based recommendation engine using TF-IDF and cosine similarity",
             "Added fuzzy title search across 42k games",
-            "Produced Matplotlib visualizations and Streamlit dashboard"
+            "Produced Matplotlib visualizations and Streamlit dashboard",
         ],
         github: { label: "Repository coming soon" },
         images: [
             "assets/images/projects/steam-game-analytics/Ana1.webp",
             "assets/images/projects/steam-game-analytics/Ana2.webp",
-            "assets/images/projects/steam-game-analytics/Ana3.webp"
-        ]
+            "assets/images/projects/steam-game-analytics/Ana3.webp",
+        ],
     },
     {
         id: "two-d-game-editor",
@@ -451,13 +498,10 @@ const PROJECTS = [
             "Created grid snapping and spatial tools for clean level design",
             "Added in-editor physics preview using AABB collision and raycasting",
             "Integrated ImGui for real-time UI and parameter adjustments",
-            "Added Lua scripting support for flexible level behavior"
+            "Added Lua scripting support for flexible level behavior",
         ],
         github: { url: "https://github.com/chilly-nap/Hooked-on-Speed", label: "View on GitHub (older version)" },
-        images: [
-            "assets/images/projects/2d-game-editor/Menu.webp",
-            "assets/images/projects/2d-game-editor/Game.webp"
-        ]
+        images: ["assets/images/projects/2d-game-editor/Menu.webp", "assets/images/projects/2d-game-editor/Game.webp"],
     },
     {
         id: "tactical-rpg",
@@ -473,10 +517,10 @@ const PROJECTS = [
             "Built class-specific abilities such as teleport, shield blocking, and area spells",
             "Developed a modular character system with customizable stats and progression",
             "Created turn-based gameplay logic with clean action and state management",
-            "Designed a scalable board system supporting variable map sizes"
+            "Designed a scalable board system supporting variable map sizes",
         ],
         github: { label: "Repository coming soon" },
-        images: ["assets/images/projects/tactical-rpg/Chess.webp"]
+        images: ["assets/images/projects/tactical-rpg/Chess.webp"],
     },
     {
         id: "shogi-learning-app",
@@ -492,13 +536,13 @@ const PROJECTS = [
             "Created interactive GUI to visualize piece movement and captures using Swing",
             "Designed progressive puzzle challenges to reinforce learning concepts",
             "Implemented progress tracking and milestones",
-            "Added modular lesson structure for easy content expansion"
+            "Added modular lesson structure for easy content expansion",
         ],
         github: { label: "Repository coming soon" },
         images: [
             "assets/images/projects/shogi-learning-app/Teach.webp",
-            "assets/images/projects/shogi-learning-app/Tutorial.webp"
-        ]
+            "assets/images/projects/shogi-learning-app/Tutorial.webp",
+        ],
     },
     {
         id: "chip8-emulator",
@@ -514,12 +558,23 @@ const PROJECTS = [
             "Implemented instruction set interpreter for opcode execution",
             "Built real-time 64x32 monochrome display rendering with SDL2",
             "Added hexadecimal keypad input mapping to keyboard controls",
-            "Developed stack system supporting subroutine calls and returns"
+            "Developed stack system supporting subroutine calls and returns",
         ],
         github: { label: "Repository coming soon" },
-        images: ["assets/images/projects/chip8-emulator/game1.webp"]
-    }
+        images: ["assets/images/projects/chip8-emulator/game1.webp"],
+    },
 ];
 
 const HEADER_TITLE = "WELCOME TO MY PORTFOLIO";
 const HEADER_SUBTITLE = "WEI RONG GAO";
+
+export {
+    ASSET_VERSION,
+    EXPERIENCE,
+    HEADER_SUBTITLE,
+    HEADER_TITLE,
+    INVOLVEMENT,
+    PROJECT_FILTERS,
+    PROJECTS,
+    SECTION_KEYS,
+};

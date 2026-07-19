@@ -1,67 +1,97 @@
-const CACHE_NAME = "portfolio-cache-v13";
-const ASSETS_TO_CACHE = [
-    "./",
+const ASSET_VERSION = "20260719e";
+const CACHE_PREFIX = "wrg-portfolio-cache-";
+const CACHE_NAME = `${CACHE_PREFIX}${ASSET_VERSION}`;
+const LEGACY_CACHE_NAMES = new Set(["portfolio-cache-v13"]);
+const versionedAsset = (path) => `${path}?v=${ASSET_VERSION}`;
+
+const CORE_ASSETS_TO_CACHE = [
     "./index.html",
-    "./styles.css",
-    "./projects.css",
-    "./experience.css",
-    "./effects.css",
-    "./script.js",
-    "./portfolio-data.js",
-    "./assets/cursor/NORMAL.cur",
-    "./assets/cursor/SELECT.cur",
-    "./assets/images/backgroundw.webp",
-    "./assets/images/robot.webp",
-    "./assets/images/sky.webp",
-    "./assets/fonts/pressstart2p.ttf",
-    "./assets/fonts/sharetechmono.ttf"
+    versionedAsset("./styles.css"),
+    versionedAsset("./projects.css"),
+    versionedAsset("./experience.css"),
+    versionedAsset("./effects.css"),
+    versionedAsset("./script.bundle.js"),
 ];
 
-self.addEventListener("install", event => {
-    event.waitUntil(
-        caches.open(CACHE_NAME).then(cache => {
-            return cache.addAll(ASSETS_TO_CACHE);
-        })
-    );
-    self.skipWaiting();
-});
+const OPTIONAL_ASSETS_TO_CACHE = [
+    versionedAsset("./assets/cursor/NORMAL.cur"),
+    versionedAsset("./assets/cursor/SELECT.cur"),
+    versionedAsset("./assets/images/backgroundw.webp"),
+    versionedAsset("./assets/images/robot.webp"),
+    versionedAsset("./assets/images/sky.webp"),
+    "./assets/fonts/pressstart2p.ttf",
+    "./assets/fonts/sharetechmono.ttf",
+];
 
-self.addEventListener("activate", event => {
-    event.waitUntil(
-        caches.keys().then(keys => {
-            return Promise.all(
-                keys.map(key => {
-                    if (key !== CACHE_NAME) {
-                        return caches.delete(key);
-                    }
-                })
-            );
-        })
-    );
-    self.clients.claim();
-});
+async function installAppShell() {
+    const cache = await caches.open(CACHE_NAME);
+    await cache.addAll(CORE_ASSETS_TO_CACHE);
+    await Promise.allSettled(OPTIONAL_ASSETS_TO_CACHE.map((asset) => cache.add(asset)));
+    await self.skipWaiting();
+}
 
-self.addEventListener("fetch", event => {
-    // Only handle GET requests originating from our origin
-    if (event.request.method !== "GET" || !event.request.url.startsWith(self.location.origin)) {
-        return;
+async function removeOldCaches() {
+    const cacheNames = await caches.keys();
+    const oldCacheNames = cacheNames.filter(
+        (name) => name !== CACHE_NAME && (name.startsWith(CACHE_PREFIX) || LEGACY_CACHE_NAMES.has(name)),
+    );
+
+    await Promise.all(oldCacheNames.map((name) => caches.delete(name)));
+    await self.clients.claim();
+
+    if (oldCacheNames.length) {
+        const windowClients = await self.clients.matchAll({ type: "window" });
+        await Promise.allSettled(windowClients.map((client) => client.navigate(client.url)));
     }
+}
+
+function isCacheableRequest(request) {
+    return request.method === "GET" && new URL(request.url).origin === self.location.origin;
+}
+
+async function cacheFirst(request) {
+    const cache = await caches.open(CACHE_NAME);
+    const cachedResponse = await cache.match(request);
+    if (cachedResponse) return cachedResponse;
+
+    try {
+        const networkResponse = await fetch(request);
+        if (networkResponse.ok) {
+            await cache.put(request, networkResponse.clone());
+        }
+        return networkResponse;
+    } catch {
+        return new Response("", { status: 504, statusText: "Offline" });
+    }
+}
+
+async function networkFirstNavigation(request) {
+    const cache = await caches.open(CACHE_NAME);
+
+    try {
+        const networkResponse = await fetch(request, { cache: "no-store" });
+        if (networkResponse.ok) {
+            await cache.put("./index.html", networkResponse.clone());
+        }
+        return networkResponse;
+    } catch {
+        const offlinePage = await cache.match("./index.html");
+        return offlinePage || new Response("", { status: 504, statusText: "Offline" });
+    }
+}
+
+self.addEventListener("install", (event) => {
+    event.waitUntil(installAppShell());
+});
+
+self.addEventListener("activate", (event) => {
+    event.waitUntil(removeOldCaches());
+});
+
+self.addEventListener("fetch", (event) => {
+    if (!isCacheableRequest(event.request)) return;
 
     event.respondWith(
-        caches.open(CACHE_NAME).then(cache => {
-            return cache.match(event.request).then(cachedResponse => {
-                const fetchPromise = fetch(event.request).then(networkResponse => {
-                    if (networkResponse.status === 200) {
-                        cache.put(event.request, networkResponse.clone());
-                    }
-                    return networkResponse;
-                }).catch(() => {
-                    // Fail silently on network error (offline mode)
-                });
-                
-                // Return cached response immediately, falling back to network fetch
-                return cachedResponse || fetchPromise;
-            });
-        })
+        event.request.mode === "navigate" ? networkFirstNavigation(event.request) : cacheFirst(event.request),
     );
 });

@@ -7,7 +7,7 @@
 }
 
 .experience-container::before {
-    content: '';
+    content: "";
     position: absolute;
     z-index: -1;
     inset: -34px -22px;
@@ -16,7 +16,11 @@
         radial-gradient(circle at 92% 46%, rgba(255, 79, 216, 0.09), transparent 28%),
         linear-gradient(90deg, rgba(0, 213, 232, 0.045) 1px, transparent 1px),
         linear-gradient(rgba(0, 255, 102, 0.035) 1px, transparent 1px);
-    background-size: auto, auto, 48px 48px, 48px 48px;
+    background-size:
+        auto,
+        auto,
+        48px 48px,
+        48px 48px;
     border-radius: calc(var(--radius) * 2);
     pointer-events: none;
 }
@@ -26,15 +30,17 @@
     overflow: hidden;
     margin-bottom: 34px;
     padding: clamp(24px, 4vw, 42px);
-    background: linear-gradient(135deg, rgba(0, 8, 30, 0.84), rgba(0, 24, 70, 0.60));
+    background: linear-gradient(135deg, rgba(0, 8, 30, 0.84), rgba(0, 24, 70, 0.6));
     border: 1px solid rgba(0, 213, 232, 0.34);
     border-left: 4px solid var(--green);
     border-radius: var(--radius);
-    box-shadow: var(--shadow-cyan), 0 18px 42px rgba(0, 0, 0, 0.30);
+    box-shadow:
+        var(--shadow-cyan),
+        0 18px 42px rgba(0, 0, 0, 0.3);
 }
 
 .experience-intro::after {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     right: 0;
@@ -82,14 +88,14 @@
 }
 
 .experience-timeline::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 24px;
     bottom: 24px;
     left: 33px;
     width: 2px;
     background: linear-gradient(var(--gold), var(--cyan) 28%, var(--green) 70%, rgba(255, 79, 216, 0.55));
-    box-shadow: 0 0 14px rgba(0, 213, 232, 0.40);
+    box-shadow: 0 0 14px rgba(0, 213, 232, 0.4);
 }
 
 .experience-card {
@@ -112,7 +118,9 @@
     color: var(--cyan);
     background: rgba(1, 4, 20, 0.96);
     border: 2px solid var(--cyan);
-    box-shadow: 0 0 16px rgba(0, 213, 232, 0.30), inset 0 0 12px rgba(0, 213, 232, 0.08);
+    box-shadow:
+        0 0 16px rgba(0, 213, 232, 0.3),
+        inset 0 0 12px rgba(0, 213, 232, 0.08);
     clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
 }
 
@@ -124,30 +132,38 @@
     position: relative;
     overflow: hidden;
     padding: clamp(20px, 3vw, 30px);
-    background:
-        linear-gradient(145deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.025)),
-        rgba(0, 8, 30, 0.68);
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.025)), rgba(0, 8, 30, 0.68);
     border: 1px solid rgba(0, 213, 232, 0.28);
     border-radius: var(--radius);
-    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.28), inset 3px 0 0 rgba(0, 255, 102, 0.55);
-    transition: transform 0.24s ease, border-color 0.24s ease, box-shadow 0.24s ease;
+    box-shadow:
+        0 14px 34px rgba(0, 0, 0, 0.28),
+        inset 3px 0 0 rgba(0, 255, 102, 0.55);
+    transition:
+        transform 0.24s ease,
+        border-color 0.24s ease,
+        box-shadow 0.24s ease;
 }
 
 .experience-card-body::after {
-    content: '';
+    content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(110deg, transparent 0 38%, rgba(0, 213, 232, 0.10) 48%, transparent 58%);
+    background: linear-gradient(110deg, transparent 0 38%, rgba(0, 213, 232, 0.1) 48%, transparent 58%);
     opacity: 0;
     transform: translateX(-70%);
-    transition: opacity 0.22s ease, transform 0.48s ease;
+    transition:
+        opacity 0.22s ease,
+        transform 0.48s ease;
     pointer-events: none;
 }
 
 .experience-card:hover .experience-card-body,
 .experience-card:focus-within .experience-card-body {
     border-color: rgba(0, 213, 232, 0.64);
-    box-shadow: 0 0 24px rgba(0, 213, 232, 0.14), 0 18px 38px rgba(0, 0, 0, 0.34), inset 3px 0 0 var(--green);
+    box-shadow:
+        0 0 24px rgba(0, 213, 232, 0.14),
+        0 18px 38px rgba(0, 0, 0, 0.34),
+        inset 3px 0 0 var(--green);
     transform: translateX(4px);
 }
 
@@ -221,7 +237,7 @@
 
 .experience-highlights li::before,
 .involvement-content li::before {
-    content: '>';
+    content: ">";
     position: absolute;
     left: 0;
     color: var(--green);
@@ -254,13 +270,17 @@
 .experience-card-incoming .experience-node {
     color: var(--gold);
     border-color: var(--gold);
-    box-shadow: 0 0 18px rgba(255, 209, 102, 0.32), inset 0 0 12px rgba(255, 209, 102, 0.08);
+    box-shadow:
+        0 0 18px rgba(255, 209, 102, 0.32),
+        inset 0 0 12px rgba(255, 209, 102, 0.08);
 }
 
 .experience-card-incoming .experience-card-body {
     border-color: rgba(255, 209, 102, 0.42);
     border-style: dashed;
-    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.28), inset 3px 0 0 var(--gold);
+    box-shadow:
+        0 14px 34px rgba(0, 0, 0, 0.28),
+        inset 3px 0 0 var(--gold);
 }
 
 .experience-card-incoming .experience-stack .tech-chip {
@@ -276,7 +296,9 @@
     background: rgba(0, 8, 30, 0.68);
     border: 1px solid rgba(255, 79, 216, 0.28);
     border-radius: var(--radius);
-    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.28), 0 0 20px rgba(255, 79, 216, 0.08);
+    box-shadow:
+        0 16px 36px rgba(0, 0, 0, 0.28),
+        0 0 20px rgba(255, 79, 216, 0.08);
 }
 
 .involvement-heading,
@@ -285,9 +307,7 @@
 }
 
 .involvement-heading {
-    background:
-        linear-gradient(145deg, rgba(255, 79, 216, 0.10), rgba(0, 213, 232, 0.05)),
-        rgba(0, 8, 30, 0.44);
+    background: linear-gradient(145deg, rgba(255, 79, 216, 0.1), rgba(0, 213, 232, 0.05)), rgba(0, 8, 30, 0.44);
     border-right: 1px solid rgba(255, 79, 216, 0.24);
 }
 
@@ -373,7 +393,7 @@
     appearance: none;
     padding: 0;
     font: inherit;
-    cursor: url('assets/cursor/SELECT.cur?v=20260718b'), pointer;
+    cursor: url("assets/cursor/SELECT.cur?v=20260719e"), pointer;
 }
 
 .experience-node:hover,
@@ -399,7 +419,11 @@
 /* ====================== CHRONOLOGICAL PROGRESS RAIL ====================== */
 .experience-timeline::before {
     z-index: 0;
-    background: repeating-linear-gradient(to bottom, rgba(103, 239, 255, 0.24) 0 7px, rgba(103, 239, 255, 0.055) 7px 13px);
+    background: repeating-linear-gradient(
+        to bottom,
+        rgba(103, 239, 255, 0.24) 0 7px,
+        rgba(103, 239, 255, 0.055) 7px 13px
+    );
     box-shadow: none;
 }
 
@@ -412,12 +436,16 @@
     height: 0;
     max-height: calc(100% - 36px);
     background: linear-gradient(var(--gold), var(--cyan) 34%, var(--green) 72%, var(--pink));
-    box-shadow: 0 0 12px rgba(103, 239, 255, 0.58), 0 0 3px var(--text);
+    background-size: 100% 180%;
+    box-shadow:
+        0 0 12px rgba(103, 239, 255, 0.58),
+        0 0 3px var(--text);
+    animation: timelineSignalFlow 2.8s linear infinite;
     pointer-events: none;
 }
 
 .experience-timeline-progress::after {
-    content: '';
+    content: "";
     position: absolute;
     left: 50%;
     bottom: -7px;
@@ -425,18 +453,34 @@
     height: 12px;
     background: #050713;
     border: 2px solid var(--green);
-    box-shadow: 0 0 0 3px rgba(0, 255, 102, 0.10), 0 0 16px rgba(0, 255, 102, 0.68);
+    box-shadow:
+        0 0 0 3px rgba(0, 255, 102, 0.1),
+        0 0 16px rgba(0, 255, 102, 0.68);
     transform: translateX(-50%) rotate(45deg);
 }
 
 .experience-card {
+    --timeline-accent: var(--cyan);
     z-index: 2;
+}
+
+.experience-card:nth-child(even) {
+    --timeline-accent: var(--pink);
+}
+
+.experience-card-incoming {
+    --timeline-accent: var(--gold);
 }
 
 .experience-card .experience-node,
 .experience-card::before,
 .experience-card .experience-card-body {
-    transition: border-color 0.24s ease, box-shadow 0.24s ease, opacity 0.24s ease, background 0.24s ease, transform 0.24s ease;
+    transition:
+        border-color 0.24s ease,
+        box-shadow 0.24s ease,
+        opacity 0.24s ease,
+        background 0.24s ease,
+        transform 0.24s ease;
 }
 
 .experience-card:not(.is-passed) .experience-card-body {
@@ -447,31 +491,82 @@
     color: #050713;
     background: var(--green);
     border-color: var(--text);
-    box-shadow: 0 0 0 3px rgba(0, 255, 102, 0.10), 0 0 20px rgba(0, 255, 102, 0.48);
+    box-shadow:
+        0 0 0 3px rgba(0, 255, 102, 0.1),
+        0 0 20px rgba(0, 255, 102, 0.48);
 }
 
 .experience-card.is-passed::before {
-    background: linear-gradient(90deg, var(--green), rgba(0, 255, 102, 0.30));
+    background: linear-gradient(90deg, var(--green), rgba(0, 255, 102, 0.3));
     box-shadow: 0 0 12px rgba(0, 255, 102, 0.44);
 }
 
 .experience-card.is-passed .experience-card-body {
     opacity: 1;
     border-color: rgba(0, 255, 102, 0.38);
-    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.32), inset 3px 0 0 var(--green);
+    box-shadow:
+        0 14px 34px rgba(0, 0, 0, 0.32),
+        inset 3px 0 0 var(--green);
 }
 
 .experience-card-incoming.is-passed .experience-node {
     background: var(--gold);
-    box-shadow: 0 0 0 3px rgba(255, 190, 85, 0.10), 0 0 20px rgba(255, 190, 85, 0.48);
+    box-shadow:
+        0 0 0 3px rgba(255, 190, 85, 0.1),
+        0 0 20px rgba(255, 190, 85, 0.48);
+}
+
+.experience-card.is-current .experience-node {
+    color: #050713;
+    background: var(--timeline-accent);
+    border-color: var(--text);
+    box-shadow:
+        0 0 0 4px color-mix(in srgb, var(--timeline-accent) 12%, transparent),
+        0 0 24px color-mix(in srgb, var(--timeline-accent) 64%, transparent);
+    animation: timelineNodePulse 1.35s steps(3, end) infinite;
+}
+
+.experience-card.is-current::before {
+    background: linear-gradient(
+        90deg,
+        var(--timeline-accent),
+        color-mix(in srgb, var(--timeline-accent) 22%, transparent)
+    );
+    box-shadow: 0 0 16px color-mix(in srgb, var(--timeline-accent) 54%, transparent);
+}
+
+.experience-card.is-current .experience-card-body {
+    opacity: 1;
+    border-color: color-mix(in srgb, var(--timeline-accent) 70%, var(--text));
+    box-shadow:
+        12px 14px 0 rgba(2, 5, 15, 0.5),
+        0 0 28px color-mix(in srgb, var(--timeline-accent) 16%, transparent),
+        inset 4px 0 0 var(--timeline-accent);
+    transform: translateX(4px);
+}
+
+@keyframes timelineSignalFlow {
+    to {
+        background-position: 0 180%;
+    }
+}
+
+@keyframes timelineNodePulse {
+    50% {
+        filter: brightness(1.18);
+    }
 }
 
 @media (max-width: 760px) {
-    .experience-timeline-progress { left: 17px; }
+    .experience-timeline-progress {
+        left: 17px;
+    }
 }
 
 @media (max-width: 520px) {
-    .experience-timeline-progress { left: 13px; }
+    .experience-timeline-progress {
+        left: 13px;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -479,6 +574,15 @@
     .experience-card::before,
     .experience-card .experience-card-body {
         transition: none;
+    }
+
+    .experience-timeline-progress,
+    .experience-card.is-current .experience-node {
+        animation: none;
+    }
+
+    .experience-card.is-current .experience-card-body {
+        transform: none;
     }
 }
 
@@ -496,13 +600,17 @@
 
 .experience-card-body {
     border-top: 3px solid var(--cyan);
-    box-shadow: 10px 12px 0 rgba(2, 5, 15, 0.42), inset 3px 0 0 rgba(109, 255, 158, 0.48);
+    box-shadow:
+        10px 12px 0 rgba(2, 5, 15, 0.42),
+        inset 3px 0 0 rgba(109, 255, 158, 0.48);
     clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%);
 }
 
 .experience-card:nth-child(even) .experience-card-body {
     border-top-color: var(--pink);
-    box-shadow: 10px 12px 0 rgba(2, 5, 15, 0.42), inset 3px 0 0 rgba(255, 92, 170, 0.48);
+    box-shadow:
+        10px 12px 0 rgba(2, 5, 15, 0.42),
+        inset 3px 0 0 rgba(255, 92, 170, 0.48);
 }
 
 .experience-card-incoming .experience-card-body {
@@ -534,7 +642,7 @@
 }
 
 .experience-card::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 42px;
     left: 76px;
