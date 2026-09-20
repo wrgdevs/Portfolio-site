@@ -1,18 +1,12 @@
-import { EXPERIENCE, HEADER_SUBTITLE, HEADER_TITLE, PROJECTS, SECTION_KEYS } from "./portfolio-data.js?v=20260719i";
-import { playSfx, syncAudioVisibility, toggleAudio } from "./js/audio.js?v=20260719i";
+import { EXPERIENCE, HEADER_SUBTITLE, HEADER_TITLE, PROJECTS, SECTION_KEYS } from "./portfolio-data.js?v=20260920a";
 import {
     closeImageCarousel,
     hydrateProjectImages,
     moveImageCarousel,
     openImageCarousel,
-} from "./js/carousel.js?v=20260719i";
-import { FINE_POINTER_QUERY, handleModalTab, versionAssetImages, versionedAsset } from "./js/core.js?v=20260719i";
-import { renderSection } from "./js/sections.js?v=20260719i";
-
-const PARTICLE_COLORS = Object.freeze(["var(--green)", "var(--cyan)", "var(--pink)", "var(--gold)"]);
-const POINTER_DEPTH_EASE = 0.23;
-const POINTER_LOCAL_EASE = 0.28;
-const POINTER_SETTLE_THRESHOLD = 0.003;
+} from "./js/carousel.js?v=20260920a";
+import { FINE_POINTER_QUERY, handleModalTab, versionAssetImages } from "./js/core.js?v=20260920a";
+import { renderSection } from "./js/sections.js?v=20260920a";
 
 let lastActiveElement = null;
 
@@ -128,14 +122,13 @@ function scrollToPortfolioSection(section, forceAuto = false) {
     scrollToPortfolioTarget(section, { block: "start", forceAuto });
 }
 
-function jumpToSection(sectionId, { historyMode = "push", playSound = true, forceAuto = false } = {}) {
+function jumpToSection(sectionId, { historyMode = "push", forceAuto = false } = {}) {
     if (!SECTION_ORDER.includes(sectionId)) return;
     markZoneVisited(sectionId);
-    if (playSound) playSfx("nav");
     const section = ensureSectionLoaded(sectionId);
     if (sectionId === "projects") closeAllProjectDetails();
     setActiveSection(sectionId);
-    if (playSound) playMapTravel(sectionId);
+    playMapTravel(sectionId);
     writePortfolioHash("section", sectionId, historyMode);
     scrollToPortfolioSection(section, forceAuto);
 }
@@ -147,16 +140,11 @@ function createSection(sectionId) {
     section.id = sectionId;
     section.className = "content-section section-boot";
     section.innerHTML = renderSection(sectionId);
-    const depthField = document.createElement("div");
-    depthField.className = "section-depth-field";
-    depthField.setAttribute("aria-hidden", "true");
-    section.prepend(depthField);
     versionAssetImages(section);
     insertSectionInOrder(section);
     observeVisualSurface(section);
     observeRevealElements(section);
-    setupProjectInteractions(section);
-    setupArtworkInteractions(section);
+    if (sectionId === "experience") initExperienceTimeline(section);
     if (radarObserver) {
         radarObserver.observe(section);
     }
@@ -219,7 +207,6 @@ function toggleProjectDetails(
 
     const currentlyOpen = isProjectExpanded(projectItem);
     const isOpen = typeof forceOpen === "boolean" ? forceOpen : !currentlyOpen;
-    stopProjectPreview(projectItem);
     if (isOpen && updateHistory) closeAllProjectDetails(id);
     projectItem.classList.toggle("is-expanded", isOpen);
     summaryToggle.setAttribute("aria-expanded", String(isOpen));
@@ -300,7 +287,7 @@ function highlightLinkedDestination(element) {
     });
 }
 
-function jumpToExperience(experienceId, { historyMode = "push", playSound = true, forceAuto = false } = {}) {
+function jumpToExperience(experienceId, { historyMode = "push", forceAuto = false } = {}) {
     if (!EXPERIENCE.some((item) => item.id === experienceId)) return;
     const section = ensureSectionLoaded("experience");
     const card = section?.querySelector(`[data-experience-id="${experienceId}"]`);
@@ -308,13 +295,12 @@ function jumpToExperience(experienceId, { historyMode = "push", playSound = true
 
     markZoneVisited("experience");
     setActiveSection("experience");
-    if (playSound) playSfx("nav");
     writePortfolioHash("experience", experienceId, historyMode);
     highlightLinkedDestination(card);
     scrollToPortfolioTarget(card, { block: "center", forceAuto });
 }
 
-function jumpToProject(projectId, { historyMode = "push", playSound = true, forceAuto = false } = {}) {
+function jumpToProject(projectId, { historyMode = "push", forceAuto = false } = {}) {
     if (!PROJECTS.some((item) => item.id === projectId)) return;
     const section = ensureSectionLoaded("projects");
     const projectItem = Array.from(section?.querySelectorAll(".project-item") || []).find(
@@ -330,7 +316,6 @@ function jumpToProject(projectId, { historyMode = "push", playSound = true, forc
         updateHistory: false,
         scrollIntoView: false,
     });
-    if (playSound) playSfx("open");
     writePortfolioHash("project", projectId, historyMode);
     highlightLinkedDestination(projectItem);
     alignExpandedProject(projectItem, forceAuto);
@@ -348,11 +333,11 @@ function applyPortfolioHash({ forceAuto = false } = {}) {
     if (route.type === "home") {
         jumpToHome({ forceAuto });
     } else if (route.type === "section") {
-        jumpToSection(route.sectionId, { historyMode: "none", playSound: false, forceAuto });
+        jumpToSection(route.sectionId, { historyMode: "none", forceAuto });
     } else if (route.type === "experience") {
-        jumpToExperience(route.id, { historyMode: "none", playSound: false, forceAuto });
+        jumpToExperience(route.id, { historyMode: "none", forceAuto });
     } else if (route.type === "project") {
-        jumpToProject(route.id, { historyMode: "none", playSound: false, forceAuto });
+        jumpToProject(route.id, { historyMode: "none", forceAuto });
     }
 }
 
@@ -369,7 +354,7 @@ function schedulePortfolioHashNavigation(forceAuto = false) {
 
 // ====================== PROJECT IMAGE SELECTION ======================
 
-function setProjectInspectionImage(projectItem, nextIndex, { playSound = true } = {}) {
+function setProjectInspectionImage(projectItem, nextIndex) {
     const gallery = projectItem?.querySelector(".project-inspection-gallery");
     const stage = gallery?.querySelector(".project-inspection-stage");
     const stageImage = stage?.querySelector("img");
@@ -380,7 +365,6 @@ function setProjectInspectionImage(projectItem, nextIndex, { playSound = true } 
 
     const currentIndex = Number(gallery.dataset.activeIndex || 0);
     if (currentIndex !== nextIndex) {
-        if (playSound) playSfx("carousel");
         gallery.dataset.activeIndex = String(nextIndex);
         stageImage.src = thumbnailImage.currentSrc || thumbnailImage.src;
         stageImage.alt = thumbnail.dataset.imageAlt || projectItem.dataset.projectTitle || "Project screenshot";
@@ -405,302 +389,37 @@ const circle = document.querySelector(".progress-ring__circle");
 const mapElement = document.querySelector(".map");
 const PROGRESS_CIRCUMFERENCE = 175;
 const VISITED_STORAGE_KEY = "portfolioVisitedSections";
-const PARTICLE_POOL_SIZE = 8;
 const visitedSections = new Set();
-const particlePool = [];
-const tiltFrames = new WeakMap();
 const filterTransitions = new WeakMap();
-const artworkFrames = new WeakMap();
 const deepLinkHighlightTimers = new WeakMap();
-const pointerDepth = {
-    active: false,
-    currentX: 0,
-    currentY: 0,
-    targetX: 0,
-    targetY: 0,
-    currentLocalX: 0,
-    currentLocalY: 0,
-    targetLocalX: 0,
-    targetLocalY: 0,
-    lastClientX: null,
-    lastClientY: null,
-    surface: null,
-    surfaceRect: null,
-    surfaceRectDirty: true,
-};
 
-let lastParticleTime = 0;
 let revealObserver;
 let typewriterTimers = [];
 let currentFilterCount = PROJECTS.length;
-let pointerEffectsFrame = 0;
+let mapPointerFrame = 0;
+let latestMapPointerEvent = null;
 let progressFrame = 0;
 let projectCountFrame = 0;
 let projectSearchFrame = 0;
 let mapRect = null;
 let mapRectDirty = true;
-let particleCursor = 0;
 let currentProjectQuery = "";
 let activeSectionId = "about";
-let activeProjectPreview = null;
-let projectPreviewFrame = 0;
-let latestProjectPreviewEvent = null;
-let projectPreviewObserver = null;
 let radarObserver = null;
 let visualSurfaceObserver = null;
+let timelineObserver = null;
+let experienceTimeline = null;
+let experienceProgressRail = null;
+let experienceCards = [];
+let cachedTimelineCards = [];
+let cachedTimelineTrackLength = 0;
+let timelineNearViewport = false;
 let mapTravelTimer = 0;
 let currentCategoryFilter = "all";
 
 if (circle) {
     circle.style.strokeDasharray = PROGRESS_CIRCUMFERENCE;
     circle.style.strokeDashoffset = PROGRESS_CIRCUMFERENCE;
-}
-
-function createMouseParticle(event, velocityX, velocityY, minimumInterval = 120) {
-    if (reduceMotion.matches || !FINE_POINTER_QUERY.matches || Math.hypot(velocityX, velocityY) < 1.25) return;
-
-    const now = performance.now();
-    if (now - lastParticleTime < minimumInterval) return;
-    lastParticleTime = now;
-
-    let p;
-    if (particlePool.length < PARTICLE_POOL_SIZE) {
-        p = document.createElement("div");
-        p.className = "particle";
-        p.hidden = true;
-        particlePool.push(p);
-        document.body.appendChild(p);
-    } else {
-        p = particlePool[particleCursor % PARTICLE_POOL_SIZE];
-    }
-    particleCursor += 1;
-
-    const size = Math.floor(Math.random() * 4 + 3);
-    p.getAnimations().forEach((animation) => animation.cancel());
-    p.hidden = false;
-    p.style.left = `${event.clientX}px`;
-    p.style.top = `${event.clientY}px`;
-    p.style.width = `${size}px`;
-    p.style.height = `${size}px`;
-    const color = PARTICLE_COLORS[Math.floor(Math.random() * PARTICLE_COLORS.length)];
-    const sideDrift = (particleCursor % 2 === 0 ? -1 : 1) * (4 + Math.random() * 6);
-    const driftX = Math.max(-28, Math.min(28, velocityX * 1.45 + sideDrift));
-    const driftY = Math.max(-18, Math.min(18, velocityY * 1.1)) - 25 - Math.random() * 7;
-    p.style.color = color;
-    p.style.background = color;
-
-    const animation = p.animate(
-        [
-            { opacity: 1, transform: "translate3d(-50%, -50%, 0) scale(1)" },
-            {
-                opacity: 0,
-                transform: `translate3d(calc(-50% + ${driftX.toFixed(2)}px), calc(-50% + ${driftY.toFixed(2)}px), 0) scale(0.3) rotate(${sideDrift > 0 ? 18 : -18}deg)`,
-            },
-        ],
-        {
-            duration: 620,
-            easing: "steps(6, end)",
-            fill: "forwards",
-        },
-    );
-    animation.onfinish = () => {
-        p.hidden = true;
-    };
-}
-
-function stopProjectPreview(projectItem = activeProjectPreview) {
-    if (!activeProjectPreview || (projectItem && projectItem !== activeProjectPreview)) return;
-
-    if (projectPreviewFrame) cancelAnimationFrame(projectPreviewFrame);
-    projectPreviewFrame = 0;
-    latestProjectPreviewEvent = null;
-
-    const card = activeProjectPreview;
-    const image = card.querySelector(":scope > img");
-    if (image?.dataset.previewOriginalSrc) {
-        image.src = image.dataset.previewOriginalSrc;
-        image.alt = image.dataset.previewOriginalAlt || card.dataset.projectTitle || "Project screenshot";
-        delete image.dataset.previewOriginalSrc;
-        delete image.dataset.previewOriginalAlt;
-    }
-    image?.classList.remove("is-preview-switching");
-    card.classList.remove("is-previewing");
-    delete card.dataset.previewIndex;
-    activeProjectPreview = null;
-}
-
-function handleProjectPreviewPointerMove(event) {
-    if (!activeProjectPreview) return;
-
-    const coverImage = activeProjectPreview.querySelector(":scope > img");
-    if (event.target !== coverImage) {
-        stopProjectPreview(activeProjectPreview);
-    }
-}
-
-function beginProjectPreview(projectItem) {
-    if (
-        reduceMotion.matches ||
-        !projectItem.classList.contains("project-inspection-item") ||
-        isProjectExpanded(projectItem)
-    )
-        return false;
-
-    const image = projectItem.querySelector(":scope > img");
-    const images = (projectItem.dataset.previewImages || "").split("|").filter(Boolean);
-    if (!image || images.length < 2) return false;
-
-    if (activeProjectPreview !== projectItem) {
-        stopProjectPreview();
-        activeProjectPreview = projectItem;
-        image.dataset.previewOriginalSrc = image.src;
-        image.dataset.previewOriginalAlt = image.alt;
-        projectItem.dataset.previewIndex = "0";
-        projectItem.classList.add("is-previewing");
-    }
-    return true;
-}
-
-function scrubProjectPreview(projectItem, event) {
-    if (!beginProjectPreview(projectItem)) return;
-    latestProjectPreviewEvent = { projectItem, clientX: event.clientX };
-    if (projectPreviewFrame) return;
-
-    projectPreviewFrame = requestAnimationFrame(() => {
-        projectPreviewFrame = 0;
-        const preview = latestProjectPreviewEvent;
-        latestProjectPreviewEvent = null;
-        if (!preview || activeProjectPreview !== preview.projectItem) return;
-
-        const image = preview.projectItem.querySelector(":scope > img");
-        const images = (preview.projectItem.dataset.previewImages || "").split("|").filter(Boolean);
-        if (!image || images.length < 2) return;
-
-        const rect = image.getBoundingClientRect();
-        const position = Math.max(0, Math.min(0.999, (preview.clientX - rect.left) / Math.max(1, rect.width)));
-        const nextIndex = Math.floor(position * images.length);
-        if (nextIndex === Number(preview.projectItem.dataset.previewIndex || 0)) return;
-
-        image.classList.add("is-preview-switching");
-        image.src = versionedAsset(images[nextIndex]);
-        image.alt = `${preview.projectItem.dataset.projectTitle} screenshot ${nextIndex + 1}`;
-        preview.projectItem.dataset.previewIndex = String(nextIndex);
-        requestAnimationFrame(() => image.classList.remove("is-preview-switching"));
-    });
-}
-
-function setupProjectInteractions(root = document) {
-    if (!FINE_POINTER_QUERY.matches) return;
-
-    if (!projectPreviewObserver && "IntersectionObserver" in window) {
-        projectPreviewObserver = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry) => {
-                    if (!entry.isIntersecting && entry.target === activeProjectPreview) {
-                        stopProjectPreview(entry.target);
-                    }
-                });
-            },
-            { rootMargin: "120px 0px", threshold: 0.01 },
-        );
-    }
-
-    root.querySelectorAll(".project-item").forEach((projectItem) => {
-        projectItem.addEventListener("mousemove", handleProjectTilt);
-        projectItem.addEventListener("mouseleave", resetProjectTilt);
-        projectItem.addEventListener("mouseleave", () => stopProjectPreview(projectItem));
-        const coverImage = projectItem.querySelector(":scope > img");
-        if (projectItem.classList.contains("project-inspection-item") && coverImage) {
-            coverImage.addEventListener("pointerenter", () => beginProjectPreview(projectItem));
-            coverImage.addEventListener("pointermove", (event) => scrubProjectPreview(projectItem, event), {
-                passive: true,
-            });
-            coverImage.addEventListener("pointerleave", () => stopProjectPreview(projectItem));
-        }
-        projectItem.addEventListener("mouseenter", () => playSfx("hover"));
-        projectPreviewObserver?.observe(projectItem);
-    });
-}
-
-function setupArtworkInteractions(root = document) {
-    if (!FINE_POINTER_QUERY.matches) return;
-
-    root.querySelectorAll(".section-artwork").forEach((image) => {
-        if (image.dataset.artworkReady === "true") return;
-        image.dataset.artworkReady = "true";
-        const panel = image.parentElement;
-        if (!panel) return;
-
-        panel.addEventListener(
-            "pointermove",
-            (event) => {
-                if (reduceMotion.matches || artworkFrames.has(panel)) return;
-                artworkFrames.set(
-                    panel,
-                    requestAnimationFrame(() => {
-                        artworkFrames.delete(panel);
-                        const rect = image.getBoundingClientRect();
-                        const x = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
-                        const y = Math.max(0, Math.min(1, (event.clientY - rect.top) / rect.height));
-                        image.style.setProperty("--art-x", `${(x - 0.5) * 10}px`);
-                        image.style.setProperty("--art-y", `${(y - 0.5) * 8}px`);
-                        image.style.setProperty("--art-tilt-x", `${(0.5 - y) * 1.8}deg`);
-                        image.style.setProperty("--art-tilt-y", `${(x - 0.5) * 2.4}deg`);
-                        panel.style.setProperty("--art-light-x", `${x * 100}%`);
-                        panel.style.setProperty("--art-light-y", `${y * 100}%`);
-                    }),
-                );
-            },
-            { passive: true },
-        );
-
-        panel.addEventListener(
-            "pointerleave",
-            () => {
-                const frame = artworkFrames.get(panel);
-                if (frame) cancelAnimationFrame(frame);
-                artworkFrames.delete(panel);
-                image.style.setProperty("--art-x", "0px");
-                image.style.setProperty("--art-y", "0px");
-                image.style.setProperty("--art-tilt-x", "0deg");
-                image.style.setProperty("--art-tilt-y", "0deg");
-                panel.style.setProperty("--art-light-x", "50%");
-                panel.style.setProperty("--art-light-y", "50%");
-            },
-            { passive: true },
-        );
-    });
-}
-
-function handleProjectTilt(event) {
-    if (reduceMotion.matches) return;
-    const card = event.currentTarget;
-    if (tiltFrames.has(card)) return;
-
-    tiltFrames.set(
-        card,
-        requestAnimationFrame(() => {
-            tiltFrames.delete(card);
-            const rect = card.getBoundingClientRect();
-            const x = (event.clientX - rect.left) / rect.width;
-            const y = (event.clientY - rect.top) / rect.height;
-            card.style.setProperty("--tilt-x", `${(0.5 - y) * 4}deg`);
-            card.style.setProperty("--tilt-y", `${(x - 0.5) * 5}deg`);
-            card.style.setProperty("--glow-x", `${x * 100}%`);
-            card.style.setProperty("--glow-y", `${y * 100}%`);
-        }),
-    );
-}
-
-function resetProjectTilt(event) {
-    const card = event.currentTarget;
-    const frame = tiltFrames.get(card);
-    if (frame) cancelAnimationFrame(frame);
-    tiltFrames.delete(card);
-    card.style.setProperty("--tilt-x", "0deg");
-    card.style.setProperty("--tilt-y", "0deg");
-    card.style.setProperty("--glow-x", "50%");
-    card.style.setProperty("--glow-y", "50%");
 }
 
 function updateProjectCount(nextCount) {
@@ -804,7 +523,13 @@ function setActiveSection(sectionId) {
         section.classList.toggle("is-active-zone", section.id === sectionId);
     });
     document.querySelectorAll(".section-radar button").forEach((button) => {
-        button.classList.toggle("active", button.dataset.section === sectionId);
+        const isActive = button.dataset.section === sectionId;
+        button.classList.toggle("active", isActive);
+        if (isActive) {
+            button.setAttribute("aria-current", "page");
+        } else {
+            button.removeAttribute("aria-current");
+        }
     });
     document.querySelectorAll(".map .level").forEach((level) => {
         if (level.dataset.section === sectionId) {
@@ -868,9 +593,7 @@ function observeVisualSurface(surface) {
             (entries) => {
                 entries.forEach((entry) => {
                     entry.target.classList.toggle("is-visual-active", entry.isIntersecting);
-                    if (!entry.isIntersecting && entry.target === pointerDepth.surface) {
-                        resetPointerDepth(true);
-                    }
+                    if (!entry.isIntersecting && entry.target === mapElement) resetMapPointerMotion();
                 });
             },
             { rootMargin: "160px 0px", threshold: 0.01 },
@@ -892,155 +615,59 @@ function focusProject(direction) {
     projectToggles[nextIndex].focus();
 }
 
-function setPointerSurface(surface) {
-    if (surface === pointerDepth.surface) return false;
-    pointerDepth.surface?.classList.remove("is-pointer-zone");
-    pointerDepth.surface = surface;
-    pointerDepth.surfaceRect = null;
-    pointerDepth.surfaceRectDirty = true;
-    surface?.classList.add("is-pointer-zone");
-    return true;
+function renderMapPointerMotion() {
+    mapPointerFrame = 0;
+    const event = latestMapPointerEvent;
+    latestMapPointerEvent = null;
+    if (!event || document.hidden || reduceMotion.matches || !FINE_POINTER_QUERY.matches || !mapElement) return;
+
+    if (mapRectDirty || !mapRect) {
+        mapRect = mapElement.getBoundingClientRect();
+        mapRectDirty = false;
+    }
+    if (mapRect.bottom <= 0 || mapRect.top >= window.innerHeight) return;
+
+    const localX = Math.max(0, Math.min(mapRect.width, event.clientX - mapRect.left));
+    const localY = Math.max(0, Math.min(mapRect.height, event.clientY - mapRect.top));
+    const x = Math.max(-1, Math.min(1, (localX / Math.max(1, mapRect.width) - 0.5) * 2));
+    const y = Math.max(-1, Math.min(1, (localY / Math.max(1, mapRect.height) - 0.5) * 2));
+    const style = mapElement.style;
+    style.setProperty("--pointer-local-x", `${localX.toFixed(1)}px`);
+    style.setProperty("--pointer-local-y", `${localY.toFixed(1)}px`);
+    style.setProperty("--surface-depth-x", `${(x * 2.8).toFixed(2)}px`);
+    style.setProperty("--surface-depth-y", `${(y * 2.1).toFixed(2)}px`);
+    style.setProperty("--surface-grid-x", `${(-x * 1.0).toFixed(2)}px`);
+    style.setProperty("--surface-grid-y", `${(-y * 0.8).toFixed(2)}px`);
+    style.setProperty("--surface-near-x", `${(x * 2.8).toFixed(2)}px`);
+    style.setProperty("--surface-near-y", `${(y * 2.1).toFixed(2)}px`);
+    mapElement.classList.add("is-pointer-zone");
 }
 
-function setDepthVariables(x, y) {
-    document.body.style.setProperty("--ambient-depth-x", `${(x * 2.5).toFixed(3)}px`);
-    document.body.style.setProperty("--ambient-depth-y", `${(y * 2).toFixed(3)}px`);
-
-    const surface = pointerDepth.surface;
-    if (!surface) return;
-
-    const surfaceStyle = surface.style;
-    if (surface === mapElement) {
-        surfaceStyle.setProperty("--surface-depth-x", `${(x * 7).toFixed(3)}px`);
-        surfaceStyle.setProperty("--surface-depth-y", `${(y * 6).toFixed(3)}px`);
-        surfaceStyle.setProperty("--surface-grid-x", `${(-x * 2.5).toFixed(3)}px`);
-        surfaceStyle.setProperty("--surface-grid-y", `${(-y * 2).toFixed(3)}px`);
-        surfaceStyle.setProperty("--surface-near-x", `${(x * 9).toFixed(3)}px`);
-        surfaceStyle.setProperty("--surface-near-y", `${(y * 7).toFixed(3)}px`);
-        return;
-    }
-
-    let directionX = 1;
-    let directionY = 1;
-    if (surface.id === "current") directionX = -1;
-    if (surface.id === "experience") {
-        directionX = 0.55;
-        directionY = 1.2;
-    }
-    if (surface.id === "projects") {
-        directionX = 1.15;
-        directionY = 0.55;
-    }
-    if (surface.id === "contact") {
-        directionX = -0.75;
-        directionY = -0.85;
-    }
-
-    surfaceStyle.setProperty("--surface-near-x", `${(x * 5 * directionX).toFixed(3)}px`);
-    surfaceStyle.setProperty("--surface-near-y", `${(y * 4 * directionY).toFixed(3)}px`);
-    surfaceStyle.setProperty("--surface-angle", `${(x * 1.6).toFixed(3)}deg`);
+function scheduleMapPointerMotion(event) {
+    if (document.hidden || reduceMotion.matches || !FINE_POINTER_QUERY.matches || !mapElement) return;
+    latestMapPointerEvent = { clientX: event.clientX, clientY: event.clientY };
+    if (!mapPointerFrame) mapPointerFrame = requestAnimationFrame(renderMapPointerMotion);
 }
 
-function updatePointerDepth() {
-    pointerEffectsFrame = 0;
-    if (document.hidden || reduceMotion.matches || !FINE_POINTER_QUERY.matches) return;
-
-    const deltaX = pointerDepth.targetX - pointerDepth.currentX;
-    const deltaY = pointerDepth.targetY - pointerDepth.currentY;
-    pointerDepth.currentX += deltaX * POINTER_DEPTH_EASE;
-    pointerDepth.currentY += deltaY * POINTER_DEPTH_EASE;
-
-    let localDeltaX = 0;
-    let localDeltaY = 0;
-    if (pointerDepth.surface) {
-        localDeltaX = pointerDepth.targetLocalX - pointerDepth.currentLocalX;
-        localDeltaY = pointerDepth.targetLocalY - pointerDepth.currentLocalY;
-        pointerDepth.currentLocalX += localDeltaX * POINTER_LOCAL_EASE;
-        pointerDepth.currentLocalY += localDeltaY * POINTER_LOCAL_EASE;
-
-        pointerDepth.surface.style.setProperty("--pointer-local-x", `${pointerDepth.currentLocalX.toFixed(2)}px`);
-        pointerDepth.surface.style.setProperty("--pointer-local-y", `${pointerDepth.currentLocalY.toFixed(2)}px`);
-    }
-
-    setDepthVariables(pointerDepth.currentX, pointerDepth.currentY);
-
-    const depthSettled = Math.abs(deltaX) < POINTER_SETTLE_THRESHOLD && Math.abs(deltaY) < POINTER_SETTLE_THRESHOLD;
-    const localSettled =
-        !pointerDepth.surface || (Math.abs(localDeltaX) < 0.2 && Math.abs(localDeltaY) < 0.2) || !pointerDepth.active;
-
-    if (!depthSettled || !localSettled) {
-        pointerEffectsFrame = requestAnimationFrame(updatePointerDepth);
-    } else if (!pointerDepth.active) {
-        setPointerSurface(null);
-        setDepthVariables(0, 0);
-    }
-}
-
-function requestPointerDepthFrame() {
-    if (!pointerEffectsFrame) pointerEffectsFrame = requestAnimationFrame(updatePointerDepth);
-}
-
-function updatePointerDepthTarget(event) {
-    if (reduceMotion.matches || !FINE_POINTER_QUERY.matches) return;
-
-    const surface = event.target instanceof Element ? event.target.closest(".map, .content-section") : null;
-    const surfaceChanged = setPointerSurface(surface);
-    pointerDepth.active = true;
-    pointerDepth.targetX = Math.max(-1, Math.min(1, (event.clientX / Math.max(1, window.innerWidth) - 0.5) * 2));
-    pointerDepth.targetY = Math.max(-1, Math.min(1, (event.clientY / Math.max(1, window.innerHeight) - 0.5) * 2));
-    document.body.classList.add("has-pointer-depth");
-
-    if (surface) {
-        if (surface === mapElement) {
-            if (mapRectDirty || !mapRect) {
-                mapRect = mapElement.getBoundingClientRect();
-                mapRectDirty = false;
-            }
-            pointerDepth.surfaceRect = mapRect;
-        } else if (pointerDepth.surfaceRectDirty || !pointerDepth.surfaceRect) {
-            pointerDepth.surfaceRect = surface.getBoundingClientRect();
-        }
-        pointerDepth.surfaceRectDirty = false;
-
-        pointerDepth.targetLocalX = Math.max(
-            0,
-            Math.min(pointerDepth.surfaceRect.width, event.clientX - pointerDepth.surfaceRect.left),
-        );
-        pointerDepth.targetLocalY = Math.max(
-            0,
-            Math.min(pointerDepth.surfaceRect.height, event.clientY - pointerDepth.surfaceRect.top),
-        );
-        if (surfaceChanged) {
-            pointerDepth.currentLocalX = pointerDepth.targetLocalX;
-            pointerDepth.currentLocalY = pointerDepth.targetLocalY;
-        }
-    }
-
-    requestPointerDepthFrame();
-}
-
-function resetPointerDepth(immediate = false) {
-    pointerDepth.active = false;
-    pointerDepth.targetX = 0;
-    pointerDepth.targetY = 0;
-    pointerDepth.lastClientX = null;
-    pointerDepth.lastClientY = null;
-    document.body.classList.remove("has-pointer-depth");
-
-    if (immediate || reduceMotion.matches || !FINE_POINTER_QUERY.matches) {
-        if (pointerEffectsFrame) cancelAnimationFrame(pointerEffectsFrame);
-        pointerEffectsFrame = 0;
-        pointerDepth.currentX = 0;
-        pointerDepth.currentY = 0;
-        setPointerSurface(null);
-        setDepthVariables(0, 0);
-        return;
-    }
-    requestPointerDepthFrame();
+function resetMapPointerMotion() {
+    if (mapPointerFrame) cancelAnimationFrame(mapPointerFrame);
+    mapPointerFrame = 0;
+    latestMapPointerEvent = null;
+    mapElement?.classList.remove("is-pointer-zone");
+    [
+        "--pointer-local-x",
+        "--pointer-local-y",
+        "--surface-depth-x",
+        "--surface-depth-y",
+        "--surface-grid-x",
+        "--surface-grid-y",
+        "--surface-near-x",
+        "--surface-near-y",
+    ].forEach((property) => mapElement?.style.removeProperty(property));
 }
 
 function handlePointerPreferenceChange() {
-    resetPointerDepth(true);
+    resetMapPointerMotion();
 }
 
 function updateProgress() {
@@ -1050,81 +677,109 @@ function updateProgress() {
     circle.style.strokeDashoffset = PROGRESS_CIRCUMFERENCE * (1 - scrollPercent);
 }
 
-function updateTimelineProgress() {
-    const timeline = document.querySelector(".experience-timeline");
-    const progressRail = timeline?.querySelector(".experience-timeline-progress");
-    if (!timeline || !progressRail) return;
+function updateTimelineGeometry() {
+    if (!experienceTimeline) return;
+    cachedTimelineTrackLength = Math.max(0, experienceTimeline.offsetHeight - 36);
+    cachedTimelineCards = experienceCards.map((card) => ({
+        card,
+        offsetTop: card.offsetTop,
+        anchorOffset: Math.min(card.offsetHeight * 0.32, 150),
+        node: card.querySelector(".experience-node"),
+    }));
+}
 
-    const rect = timeline.getBoundingClientRect();
-    const trackLength = Math.max(0, timeline.offsetHeight - 36);
-    const timelineInView = rect.bottom > 0 && rect.top < window.innerHeight;
-    const cards = Array.from(timeline.querySelectorAll(".experience-card"));
+function setExperienceTimelineBoundaryState(isPast) {
+    if (!experienceTimeline || !experienceProgressRail) return;
+    const trackLength = cachedTimelineTrackLength || Math.max(0, experienceTimeline.offsetHeight - 36);
+    const viewportState = isPast ? "past" : "ahead";
+    if (experienceTimeline.dataset.viewportState === viewportState) return;
 
-    if (!timelineInView) {
-        const viewportState = rect.bottom <= 0 ? "past" : "ahead";
-        if (timeline.dataset.viewportState !== viewportState) {
-            timeline.dataset.viewportState = viewportState;
-            const isPast = viewportState === "past";
-            progressRail.style.height = isPast ? `${trackLength}px` : "0px";
-            cards.forEach((card) => {
-                card.classList.toggle("is-passed", isPast);
-                card.classList.remove("is-current");
-                card.querySelector(".experience-node")?.removeAttribute("aria-current");
-            });
-        }
+    experienceTimeline.dataset.viewportState = viewportState;
+    experienceProgressRail.style.height = isPast ? `${trackLength}px` : "0px";
+    experienceCards.forEach((card) => {
+        card.classList.toggle("is-passed", isPast);
+        card.classList.remove("is-current");
+        card.querySelector(".experience-node")?.removeAttribute("aria-current");
+    });
+}
+
+function initExperienceTimeline(root = document) {
+    experienceTimeline = root.querySelector(".experience-timeline");
+    experienceProgressRail = experienceTimeline?.querySelector(".experience-timeline-progress") || null;
+    experienceCards = experienceTimeline ? Array.from(experienceTimeline.querySelectorAll(".experience-card")) : [];
+    timelineObserver?.disconnect();
+
+    if (!experienceTimeline || !experienceProgressRail) return;
+    updateTimelineGeometry();
+
+    if (!("IntersectionObserver" in window)) {
+        timelineNearViewport = true;
+        updateTimelineProgress();
         return;
     }
 
-    timeline.dataset.viewportState = "active";
+    timelineObserver = new IntersectionObserver(
+        ([entry]) => {
+            timelineNearViewport = entry.isIntersecting;
+            if (timelineNearViewport) {
+                handleViewportChange();
+            } else {
+                setExperienceTimelineBoundaryState(entry.boundingClientRect.bottom <= 0);
+            }
+        },
+        { rootMargin: "240px 0px", threshold: 0 },
+    );
+    timelineObserver.observe(experienceTimeline);
+}
+
+function updateTimelineProgress() {
+    if (!timelineNearViewport || !experienceTimeline || !experienceProgressRail) return;
+    if (!cachedTimelineCards.length) updateTimelineGeometry();
+
+    const rect = experienceTimeline.getBoundingClientRect();
+    const trackLength = cachedTimelineTrackLength || Math.max(0, rect.height - 36);
     const viewportAnchor = window.innerHeight * 0.58;
     const progress = Math.max(
         0,
         Math.min(1, (viewportAnchor - rect.top) / Math.max(1, rect.height - window.innerHeight * 0.18)),
     );
-    progressRail.style.height = `${trackLength * progress}px`;
 
     let currentCard = null;
     let currentDistance = Infinity;
 
-    cards.forEach((card) => {
-        const cardRect = card.getBoundingClientRect();
-        card.classList.toggle("is-passed", cardRect.top <= viewportAnchor);
-        const cardAnchor = cardRect.top + Math.min(cardRect.height * 0.32, 150);
+    const passedStates = new Array(cachedTimelineCards.length);
+    for (let i = 0; i < cachedTimelineCards.length; i++) {
+        const item = cachedTimelineCards[i];
+        const cardTop = rect.top + item.offsetTop;
+        passedStates[i] = cardTop <= viewportAnchor;
+        const cardAnchor = cardTop + item.anchorOffset;
         const distance = Math.abs(cardAnchor - viewportAnchor);
         if (distance < currentDistance) {
             currentDistance = distance;
-            currentCard = card;
+            currentCard = item.card;
         }
-    });
-
-    cards.forEach((card) => {
-        const isCurrent = card === currentCard;
-        card.classList.toggle("is-current", isCurrent);
-        const node = card.querySelector(".experience-node");
-        if (isCurrent) {
-            node?.setAttribute("aria-current", "step");
-        } else {
-            node?.removeAttribute("aria-current");
-        }
-    });
-}
-
-function schedulePointerEffects(event) {
-    if (document.hidden || reduceMotion.matches || !FINE_POINTER_QUERY.matches) return;
-    const velocityX = pointerDepth.lastClientX === null ? 0 : event.clientX - pointerDepth.lastClientX;
-    const velocityY = pointerDepth.lastClientY === null ? 0 : event.clientY - pointerDepth.lastClientY;
-    pointerDepth.lastClientX = event.clientX;
-    pointerDepth.lastClientY = event.clientY;
-    const surface = event.target instanceof Element ? event.target.closest(".map, .content-section") : null;
-    if (surface) {
-        createMouseParticle(event, velocityX, velocityY, surface === mapElement ? 105 : 220);
     }
-    updatePointerDepthTarget(event);
+
+    if (experienceTimeline.dataset.viewportState !== "active") {
+        experienceTimeline.dataset.viewportState = "active";
+    }
+    experienceProgressRail.style.height = `${trackLength * progress}px`;
+
+    for (let i = 0; i < cachedTimelineCards.length; i++) {
+        const item = cachedTimelineCards[i];
+        item.card.classList.toggle("is-passed", passedStates[i]);
+        const isCurrent = item.card === currentCard;
+        item.card.classList.toggle("is-current", isCurrent);
+        if (isCurrent) {
+            item.node?.setAttribute("aria-current", "step");
+        } else {
+            item.node?.removeAttribute("aria-current");
+        }
+    }
 }
 
 function handleViewportChange() {
     mapRectDirty = true;
-    pointerDepth.surfaceRectDirty = true;
     if (progressFrame || document.hidden) return;
 
     progressFrame = requestAnimationFrame(() => {
@@ -1134,13 +789,18 @@ function handleViewportChange() {
     });
 }
 
+function handleResize() {
+    mapRectDirty = true;
+    updateTimelineGeometry();
+    handleViewportChange();
+}
+
 function handleVisibilityChange() {
     const isPaused = document.hidden;
     document.body.classList.toggle("effects-paused", isPaused);
 
     if (isPaused) {
-        stopProjectPreview();
-        resetPointerDepth(true);
+        resetMapPointerMotion();
         if (progressFrame) cancelAnimationFrame(progressFrame);
         progressFrame = 0;
     } else {
@@ -1148,8 +808,6 @@ function handleVisibilityChange() {
         updateProgress();
         updateTimelineProgress();
     }
-
-    syncAudioVisibility(isPaused);
 }
 
 function observeRevealElements(root = document) {
@@ -1212,7 +870,7 @@ function startHeaderTypewriter() {
         if (subheaderEl) subheaderEl.classList.add("typing");
 
         const subTimer = setTimeout(() => {
-            typeText(subheaderEl, HEADER_SUBTITLE, 34);
+            typeText(subheaderEl, HEADER_SUBTITLE, 24, () => subheaderEl?.classList.remove("typing"));
         }, 200);
         typewriterTimers.push(subTimer);
     });
@@ -1247,7 +905,6 @@ function initPortfolio() {
     observeVisualSurface(mapElement);
     startHeaderTypewriter();
     observeRevealElements();
-    setupProjectInteractions();
     schedulePortfolioHashNavigation(true);
     registerServiceWorker();
 }
@@ -1273,7 +930,6 @@ function applyProjectFilters() {
                 writePortfolioHash("section", "projects", "replace");
             }
         }
-        if (!show && item === activeProjectPreview) stopProjectPreview(item);
         const isCurrentlyHidden = item.classList.contains("is-hidden") || item.classList.contains("is-filtered-out");
         const previousTransition = filterTransitions.get(item);
         if (show === !isCurrentlyHidden && !previousTransition) return;
@@ -1308,7 +964,6 @@ function applyProjectFilters() {
 
 function filterProjects(filter) {
     currentCategoryFilter = filter;
-    playSfx("filter");
 
     document.querySelectorAll(".project-filter").forEach((button) => {
         const isActive = button.dataset.filter === filter;
@@ -1337,7 +992,6 @@ function clearProjectNameSearch() {
     if (projectSearchFrame) cancelAnimationFrame(projectSearchFrame);
     projectSearchFrame = 0;
     applyProjectFilters();
-    playSfx("close");
     return true;
 }
 
@@ -1346,7 +1000,6 @@ function clearProjectNameSearch() {
 function openGithubModal() {
     const modal = document.getElementById("github-modal");
     if (!modal) return;
-    playSfx("open");
     lastActiveElement = document.activeElement;
     modal.classList.add("is-open");
     modal.setAttribute("aria-hidden", "false");
@@ -1357,7 +1010,6 @@ function openGithubModal() {
 function closeGithubModal() {
     const modal = document.getElementById("github-modal");
     if (!modal) return;
-    playSfx("close");
     modal.classList.remove("is-open");
     modal.setAttribute("aria-hidden", "true");
     if (lastActiveElement) {
@@ -1377,7 +1029,6 @@ function handleDocumentClick(event) {
         const projectItem = clickedImage.closest(".project-item");
         if (!projectItem) return;
         event.preventDefault();
-        stopProjectPreview(projectItem);
         openImageCarousel(projectItem, clickedImage.getAttribute("src"));
         return;
     }
@@ -1389,11 +1040,6 @@ function handleDocumentClick(event) {
 
     if (target.closest(".header-github-button, .profile-github-link")) {
         openGithubModal();
-        return;
-    }
-
-    if (target.closest("#sound-toggle")) {
-        toggleAudio();
         return;
     }
 
@@ -1431,7 +1077,6 @@ function handleDocumentClick(event) {
         const content = collapsible.nextElementSibling;
         collapsible.setAttribute("aria-expanded", String(isOpen));
         if (content) content.hidden = !isOpen;
-        playSfx(isOpen ? "open" : "close");
         return;
     }
 
@@ -1440,31 +1085,7 @@ function handleDocumentClick(event) {
     const clickedSummaryContent = projectSummary && !target.closest("a, button");
     if (projectSummary && (clickedToggle || clickedSummaryContent)) {
         const projectItem = projectSummary.closest(".project-item");
-        playSfx(isProjectExpanded(projectItem) ? "close" : "open");
         toggleProjectDetails(projectItem.dataset.projectId);
-    }
-}
-
-function handleDocumentMouseOver(event) {
-    const target = event.target instanceof Element ? event.target : null;
-    if (!target) return;
-
-    const featureTarget = target.closest(
-        ".project-features li, .tech-chip, .image-carousel-thumbnail, .project-inspection-thumbnail",
-    );
-    const movedWithinFeature = event.relatedTarget instanceof Node && featureTarget?.contains(event.relatedTarget);
-    if (featureTarget && !movedWithinFeature) {
-        playSfx("feature");
-        return;
-    }
-
-    const interactiveTarget = target.closest(
-        ".level, .experience-node, .project-filter, .github-link, .header-github-button, .github-modal-link",
-    );
-    const movedWithinInteractive =
-        event.relatedTarget instanceof Node && interactiveTarget?.contains(event.relatedTarget);
-    if (interactiveTarget && !movedWithinInteractive) {
-        playSfx("hover");
     }
 }
 
@@ -1549,15 +1170,13 @@ document.addEventListener("DOMContentLoaded", initPortfolio, { once: true });
 document.addEventListener("click", handleDocumentClick);
 document.addEventListener("input", handleDocumentInput);
 document.addEventListener("keydown", handleDocumentKeydown);
-document.addEventListener("mousemove", schedulePointerEffects, { passive: true });
-document.documentElement.addEventListener("mouseleave", () => resetPointerDepth());
-document.addEventListener("mouseover", handleDocumentMouseOver, { passive: true });
-document.addEventListener("pointermove", handleProjectPreviewPointerMove, { passive: true });
 document.addEventListener("visibilitychange", handleVisibilityChange);
 reduceMotion.addEventListener("change", handlePointerPreferenceChange);
 FINE_POINTER_QUERY.addEventListener("change", handlePointerPreferenceChange);
+mapElement?.addEventListener("pointermove", scheduleMapPointerMotion, { passive: true });
+mapElement?.addEventListener("pointerleave", resetMapPointerMotion, { passive: true });
 window.addEventListener("scroll", handleViewportChange, { passive: true });
-window.addEventListener("resize", handleViewportChange, { passive: true });
-window.addEventListener("blur", () => resetPointerDepth(true));
+window.addEventListener("resize", handleResize, { passive: true });
+window.addEventListener("blur", resetMapPointerMotion);
 window.addEventListener("popstate", handleHistoryNavigation);
 window.addEventListener("hashchange", handleHistoryNavigation);

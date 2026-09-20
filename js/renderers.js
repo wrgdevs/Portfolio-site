@@ -1,5 +1,5 @@
-import { PROJECT_FILTERS } from "../portfolio-data.js?v=20260719i";
-import { escapeHtml, FLAGSHIP_PROJECT_IDS } from "./core.js?v=20260719i";
+import { PROJECT_FILTERS } from "../portfolio-data.js?v=20260920a";
+import { escapeHtml, FLAGSHIP_PROJECT_IDS } from "./core.js?v=20260920a";
 
 function renderList(items) {
     return items.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
@@ -70,7 +70,7 @@ export function renderProject(project) {
         : renderProjectInspectionGallery(project);
 
     return `
-        <article class="project-item${projectTypeClass} reveal-on-scroll" data-category="${escapeHtml(project.categories.join(" "))}" data-project-id="${escapeHtml(project.id)}" data-project-name="${escapeHtml(project.title.toLocaleLowerCase())}" data-project-title="${escapeHtml(project.title)}" data-preview-images="${escapeHtml(project.images.join("|"))}">
+        <article class="project-item${projectTypeClass} reveal-on-scroll" data-category="${escapeHtml(project.categories.join(" "))}" data-project-id="${escapeHtml(project.id)}" data-project-name="${escapeHtml(project.title.toLocaleLowerCase())}" data-project-title="${escapeHtml(project.title)}">
             <img loading="lazy" decoding="async" width="960" height="540" src="${escapeHtml(project.image)}" alt="${escapeHtml(project.imageAlt)}">
             <div class="project-summary">
                 <div class="project-category-row">${renderChips(project.languages)}</div>

@@ -13,14 +13,7 @@
     inset: -34px -22px;
     background:
         radial-gradient(circle at 14% 10%, rgba(0, 213, 232, 0.12), transparent 24%),
-        radial-gradient(circle at 92% 46%, rgba(255, 79, 216, 0.09), transparent 28%),
-        linear-gradient(90deg, rgba(0, 213, 232, 0.045) 1px, transparent 1px),
-        linear-gradient(rgba(0, 255, 102, 0.035) 1px, transparent 1px);
-    background-size:
-        auto,
-        auto,
-        48px 48px,
-        48px 48px;
+        radial-gradient(circle at 92% 46%, rgba(255, 79, 216, 0.09), transparent 28%);
     border-radius: calc(var(--radius) * 2);
     pointer-events: none;
 }
@@ -37,20 +30,6 @@
     box-shadow:
         var(--shadow-cyan),
         0 18px 42px rgba(0, 0, 0, 0.3);
-}
-
-.experience-intro::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: min(42%, 360px);
-    height: 100%;
-    background:
-        linear-gradient(90deg, transparent, rgba(0, 213, 232, 0.07)),
-        repeating-linear-gradient(0deg, transparent 0 12px, rgba(0, 255, 102, 0.08) 12px 13px);
-    clip-path: polygon(34% 0, 100% 0, 100% 100%, 0 100%);
-    pointer-events: none;
 }
 
 .experience-intro h1,
@@ -384,7 +363,7 @@
     }
 }
 
-/* ====================== TIMELINE NODE NAVIGATION ====================== */
+/* ====================== TIMELINE NODES ====================== */
 .experience-card {
     scroll-margin-top: 120px;
 }
@@ -393,7 +372,7 @@
     appearance: none;
     padding: 0;
     font: inherit;
-    cursor: url("assets/cursor/SELECT.cur?v=20260719i"), pointer;
+    cursor: url("assets/cursor/SELECT.cur?v=20260920a"), pointer;
 }
 
 .experience-node:hover,
@@ -416,7 +395,7 @@
     }
 }
 
-/* ====================== CHRONOLOGICAL PROGRESS RAIL ====================== */
+/* ====================== TIMELINE PROGRESS RAIL ====================== */
 .experience-timeline::before {
     z-index: 0;
     background: repeating-linear-gradient(
@@ -440,7 +419,6 @@
     box-shadow:
         0 0 12px rgba(103, 239, 255, 0.58),
         0 0 3px var(--text);
-    animation: timelineSignalFlow 2.8s linear infinite;
     pointer-events: none;
 }
 
@@ -522,8 +500,7 @@
     border-color: var(--text);
     box-shadow:
         0 0 0 4px color-mix(in srgb, var(--timeline-accent) 12%, transparent),
-        0 0 24px color-mix(in srgb, var(--timeline-accent) 64%, transparent);
-    animation: timelineNodePulse 1.35s steps(3, end) infinite;
+        0 0 14px color-mix(in srgb, var(--timeline-accent) 46%, transparent);
 }
 
 .experience-card.is-current::before {
@@ -532,7 +509,7 @@
         var(--timeline-accent),
         color-mix(in srgb, var(--timeline-accent) 22%, transparent)
     );
-    box-shadow: 0 0 16px color-mix(in srgb, var(--timeline-accent) 54%, transparent);
+    box-shadow: 0 0 10px color-mix(in srgb, var(--timeline-accent) 38%, transparent);
 }
 
 .experience-card.is-current .experience-card-body {
@@ -540,21 +517,9 @@
     border-color: color-mix(in srgb, var(--timeline-accent) 70%, var(--text));
     box-shadow:
         12px 14px 0 rgba(2, 5, 15, 0.5),
-        0 0 28px color-mix(in srgb, var(--timeline-accent) 16%, transparent),
+        0 0 18px color-mix(in srgb, var(--timeline-accent) 12%, transparent),
         inset 4px 0 0 var(--timeline-accent);
     transform: translateX(4px);
-}
-
-@keyframes timelineSignalFlow {
-    to {
-        background-position: 0 180%;
-    }
-}
-
-@keyframes timelineNodePulse {
-    50% {
-        filter: brightness(1.18);
-    }
 }
 
 @media (max-width: 760px) {
@@ -586,7 +551,7 @@
     }
 }
 
-/* ====================== CAREER MAP UPGRADE ====================== */
+/* ====================== CAREER PROGRESSION PANELS ====================== */
 .experience-intro,
 .experience-card-body,
 .involvement-panel {

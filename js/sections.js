@@ -1,6 +1,6 @@
-import { EXPERIENCE, INVOLVEMENT, PROJECTS } from "../portfolio-data.js?v=20260719i";
-import { escapeHtml } from "./core.js?v=20260719i";
-import { renderExperienceCard, renderList, renderProject, renderProjectFilters } from "./renderers.js?v=20260719i";
+import { EXPERIENCE, INVOLVEMENT, PROJECTS } from "../portfolio-data.js?v=20260920a";
+import { escapeHtml } from "./core.js?v=20260920a";
+import { renderExperienceCard, renderList, renderProject, renderProjectFilters } from "./renderers.js?v=20260920a";
 
 function renderAboutSection() {
     return `
@@ -10,12 +10,12 @@ function renderAboutSection() {
             <img class="section-artwork" src="assets/images/sky.webp" width="1920" height="1080" loading="lazy" decoding="async" alt="Wei Rong Gao">
             <h1>What I Like Building</h1>
             <p>I like projects where the logic underneath matters just as much as what appears on screen. I'm drawn to systems with moving parts: simulations with emergent behavior, tools that turn data into decisions, and interactive applications where design choices affect how users understand the system.</p>
-            <button class="collapsible" type="button" aria-expanded="false">Education</button>
-            <div class="content" hidden>
+            <button class="collapsible" type="button" aria-expanded="false" aria-controls="about-education">Education</button>
+            <div class="content" id="about-education" hidden>
                 <p><strong>Bachelor of Honours Mathematics, Co-operative Program</strong><br>University of Waterloo</p>
             </div>
-            <button class="collapsible" type="button" aria-expanded="false">Hobbies</button>
-            <div class="content" hidden>
+            <button class="collapsible" type="button" aria-expanded="false" aria-controls="about-hobbies">Hobbies</button>
+            <div class="content" id="about-hobbies" hidden>
                 <p>Outside of programming, I enjoy reading, gaming, and watching shows. I'm often interested in how worlds, systems, and stories are structured, which also influences the way I think about projects, interfaces, and user experience.</p>
             </div>
         </div>`;
@@ -25,7 +25,7 @@ function renderCurrentSection() {
     return `
         <div class="current-container reveal-on-scroll">
             <h1>CURRENTLY WORKING ON</h1>
-            <p class="current-intro">A small look at the larger projects I am building next.</p>
+            <p class="current-intro">Active builds and their current technical focus.</p>
             <div class="current-grid">
                 <article class="current-card current-card-world">
                     <div class="current-card-header">
@@ -67,7 +67,7 @@ function renderCurrentSection() {
                         <div class="current-feature-group">
                             <h3>Frontend</h3>
                             <ul>
-                                <li>Company search, financial statement pages, ratio dashboard, and watchlist</li>
+                                <li>Company search, financial statement pages, ratio analysis, and watchlist</li>
                                 <li>Notes system, comparison view, and valuation model page</li>
                             </ul>
                         </div>
@@ -97,7 +97,7 @@ function renderExperienceSection() {
             <header class="experience-intro reveal-on-scroll">
                 <p class="experience-kicker">CAREER LOG // CO-OP + DEVELOPMENT</p>
                 <h1>EXPERIENCE</h1>
-                <p>Production programming, cloud and AI project work, and independent software development—with another cloud-focused co-op beginning in Fall 2026.</p>
+                <p>Production programming, cloud and AI project work, and independent software development—alongside current cloud and data development at Statistics Canada.</p>
             </header>
             <div class="experience-timeline">
                 <div class="experience-timeline-progress" aria-hidden="true"></div>
@@ -121,7 +121,7 @@ function renderProjectsSection() {
     return `
         <div class="projects-container">
             <h1>PROJECTS</h1>
-            <p class="projects-intro">Filter the same project set toward graphics, finance, simulation, or systems work.</p>
+            <p class="projects-intro">Search by name or filter by graphics, finance, simulation, and systems work.</p>
             <div class="project-filter-bar" aria-label="Project filters">
                 <label class="project-search-shell">
                     <span class="sr-only">Search projects by name</span>

@@ -1,5 +1,4 @@
-import { playSfx } from "./audio.js?v=20260719i";
-import { escapeHtml, normalizeAssetUrl, versionedAsset } from "./core.js?v=20260719i";
+import { escapeHtml, normalizeAssetUrl, versionedAsset } from "./core.js?v=20260920a";
 
 let images = [];
 let activeIndex = 0;
@@ -60,7 +59,6 @@ function ensureImageCarousel() {
         const nextIndex = Number(thumbnail.dataset.index);
         if (Number.isNaN(nextIndex) || nextIndex === activeIndex) return;
 
-        playSfx("carousel");
         direction = nextIndex > activeIndex ? 1 : -1;
         activeIndex = nextIndex;
         renderImageCarousel();
@@ -143,7 +141,6 @@ export function openImageCarousel(projectItem, clickedSrc) {
     images = getProjectImages(projectItem);
     if (!images.length) return;
 
-    playSfx("open");
     lastActiveElement = document.activeElement;
     projectTitle = projectItem.dataset.projectTitle || projectItem.querySelector("h2")?.textContent || "";
     const normalizedClickedSrc = normalizeAssetUrl(clickedSrc);
@@ -164,7 +161,6 @@ export function openImageCarousel(projectItem, clickedSrc) {
 export function moveImageCarousel(step) {
     if (!images.length) return;
 
-    playSfx("carousel");
     direction = step;
     activeIndex = (activeIndex + step + images.length) % images.length;
     renderImageCarousel();
@@ -174,7 +170,6 @@ export function closeImageCarousel() {
     const modal = document.getElementById("image-carousel-modal");
     if (!modal) return;
 
-    playSfx("close");
     document.body.classList.remove("carousel-open");
     modal.classList.remove("is-open");
     modal.setAttribute("aria-hidden", "true");

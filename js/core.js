@@ -1,4 +1,4 @@
-import { ASSET_VERSION } from "../portfolio-data.js?v=20260719i";
+import { ASSET_VERSION } from "../portfolio-data.js?v=20260920a";
 
 const FOCUSABLE_SELECTOR = [
     "a[href]",

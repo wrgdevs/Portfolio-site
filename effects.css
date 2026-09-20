@@ -22,7 +22,7 @@
     stroke: var(--green);
     transform: rotate(-90deg);
     transform-origin: 50% 50%;
-    filter: drop-shadow(0 0 6px var(--green));
+    filter: drop-shadow(0 0 3px color-mix(in srgb, var(--green) 60%, transparent));
 }
 
 .section-radar {
@@ -67,8 +67,8 @@
     padding: 0;
     background: color-mix(in srgb, var(--radar-node-accent) 30%, #020617);
     border: 1px solid var(--radar-node-accent);
-    box-shadow: 0 0 8px color-mix(in srgb, var(--radar-node-accent) 34%, transparent);
-    cursor: url("assets/cursor/SELECT.cur?v=20260719i"), pointer;
+    box-shadow: 0 0 6px color-mix(in srgb, var(--radar-node-accent) 28%, transparent);
+    cursor: url("assets/cursor/SELECT.cur?v=20260920a"), pointer;
     transform: rotate(45deg) scale(0.76);
     transition:
         transform 0.18s steps(2, end),
@@ -92,7 +92,7 @@
 .section-radar button:focus-visible {
     background: var(--radar-node-accent);
     border-color: var(--text);
-    box-shadow: 0 0 14px color-mix(in srgb, var(--radar-node-accent) 62%, transparent);
+    box-shadow: 0 0 9px color-mix(in srgb, var(--radar-node-accent) 45%, transparent);
     transform: rotate(45deg) scale(1);
     outline: none;
 }
@@ -117,25 +117,6 @@
         opacity: 1;
         transform: rotate(45deg) scale(0.76);
     }
-}
-
-.sound-toggle {
-    margin-left: 12px;
-    color: var(--cyan);
-    border-color: var(--cyan);
-}
-
-.particle {
-    position: fixed;
-    z-index: 9997;
-    border-radius: 0;
-    box-shadow:
-        0 0 0 1px rgba(255, 255, 255, 0.18),
-        0 0 12px currentColor;
-    pointer-events: none;
-    image-rendering: pixelated;
-    contain: strict;
-    will-change: transform, opacity;
 }
 
 .reveal-on-scroll {
@@ -180,19 +161,19 @@
         display: none;
     }
 
-    .sound-toggle {
-        margin: 0;
-    }
-
     .content-section {
         scroll-margin-top: 130px;
+    }
+
+    .current-feature-grid {
+        grid-template-columns: 1fr;
     }
 }
 
 @media (max-width: 560px) {
     p,
     li {
-        font-size: 0.68rem;
+        font-size: 0.76rem;
     }
 
     .map {
@@ -222,10 +203,9 @@
     *,
     *::before,
     *::after {
-        animation-duration: 0.001ms !important;
-        animation-iteration-count: 1 !important;
+        animation: none !important;
         scroll-behavior: auto !important;
-        transition-duration: 0.001ms !important;
+        transition: none !important;
     }
 
     .project-item,
@@ -236,77 +216,9 @@
 }
 
 /* ====================== KEYFRAMES ====================== */
-@keyframes moveParticles {
-    from {
-        transform: translate3d(var(--ambient-depth-x), calc(16px + var(--ambient-depth-y)), 0);
-    }
-    to {
-        transform: translate3d(var(--ambient-depth-x), calc(-16px + var(--ambient-depth-y)), 0);
-    }
-}
-
-@keyframes backgroundPulse {
-    50% {
-        opacity: 0.56;
-    }
-}
-@keyframes scanlineDrift {
-    from {
-        transform: translate3d(0, -4px, 0);
-    }
-    to {
-        transform: translate3d(0, 0, 0);
-    }
-}
-@keyframes neonRail {
-    from {
-        background-position: 0% 50%;
-    }
-    to {
-        background-position: 260% 50%;
-    }
-}
-@keyframes titleGlow {
-    0%,
-    100% {
-        text-shadow:
-            0 0 12px var(--green),
-            0 0 24px rgba(0, 255, 102, 0.12);
-    }
-    50% {
-        text-shadow:
-            0 0 12px var(--cyan),
-            0 0 28px rgba(0, 213, 232, 0.18);
-    }
-}
 @keyframes caretBlink {
     50% {
         opacity: 0;
-    }
-}
-@keyframes mapLightSweep {
-    0%,
-    100% {
-        opacity: 0.34;
-        transform: translateX(-4%);
-    }
-    50% {
-        opacity: 0.62;
-        transform: translateX(4%);
-    }
-}
-@keyframes levelIdleGlow {
-    0%,
-    100% {
-        box-shadow:
-            0 12px 26px rgba(0, 0, 0, 0.48),
-            inset 0 0 24px rgba(0, 255, 102, 0.05);
-    }
-    50% {
-        box-shadow:
-            0 12px 26px rgba(0, 0, 0, 0.48),
-            0 0 18px rgba(0, 213, 232, 0.18),
-            inset 0 0 24px rgba(0, 213, 232, 0.06);
     }
 }
 @keyframes sectionBoot {
@@ -325,26 +237,6 @@
     100% {
         opacity: 1;
         transform: translateY(0) skewX(0deg);
-    }
-}
-@keyframes bootScan {
-    0% {
-        opacity: 0;
-        transform: translateY(-40px);
-    }
-    20% {
-        opacity: 1;
-    }
-    100% {
-        opacity: 0;
-        transform: translateY(380px);
-    }
-}
-@keyframes audioHint {
-    50% {
-        box-shadow:
-            0 0 18px rgba(255, 209, 102, 0.36),
-            inset 0 0 12px rgba(255, 209, 102, 0.08);
     }
 }
 @keyframes panelOpen {
@@ -405,7 +297,7 @@
         transform: translateX(0) scale(1);
     }
 }
-/* ====================== RESPONSIVE IDENTITY OVERRIDES ====================== */
+/* ====================== RESPONSIVE OVERRIDES ====================== */
 .level[data-section="experience"] {
     padding-inline: 12px;
 }
@@ -499,9 +391,7 @@
 @media (max-width: 760px) {
     body::before {
         opacity: 0.07;
-        animation: backgroundPulse 9s steps(2, end) infinite;
         transform: none;
-        will-change: opacity;
     }
 
     .site-header {
@@ -514,6 +404,13 @@
 
     .site-header p {
         margin-inline: auto;
+        text-align: center;
+    }
+
+    #typed-subheader {
+        max-width: 360px;
+        font-size: 0.6rem;
+        line-height: 1.6;
     }
 
     .header-actions {
@@ -522,6 +419,7 @@
     }
 
     .header-actions button {
+        min-height: 44px;
         padding: 8px 9px;
         font-size: 0.54rem;
     }
@@ -570,7 +468,7 @@
     }
 }
 
-/* ====================== DEEP-LINK DESTINATION SIGNAL ====================== */
+/* ====================== DESTINATION SIGNALS ====================== */
 .project-item.is-linked-destination,
 .experience-card.is-linked-destination {
     animation: linkedDestinationSignal 0.86s steps(6, end) 1;
@@ -600,7 +498,7 @@
     }
 }
 
-/* ====================== ZONE-AWARE HUD ====================== */
+/* ====================== RADAR & PROGRESS HUD ====================== */
 .progress-circle {
     border-color: color-mix(in srgb, var(--zone-accent) 46%, transparent);
     box-shadow:
@@ -613,11 +511,10 @@
 
 .progress-ring__circle {
     stroke: var(--zone-accent);
-    filter: drop-shadow(0 0 6px var(--zone-accent));
+    filter: drop-shadow(0 0 3px color-mix(in srgb, var(--zone-accent) 60%, transparent));
     transition:
         stroke 0.28s ease,
-        filter 0.28s ease,
-        stroke-dashoffset 0.12s linear;
+        filter 0.28s ease;
 }
 
 .section-radar {
@@ -637,7 +534,7 @@
     width: 18px;
     height: 18px;
     border: 1px solid var(--zone-accent);
-    box-shadow: 0 0 12px color-mix(in srgb, var(--zone-accent) 54%, transparent);
+    box-shadow: 0 0 8px color-mix(in srgb, var(--zone-accent) 40%, transparent);
     opacity: 0;
     pointer-events: none;
     transition:
@@ -661,7 +558,7 @@
 .section-radar button:focus-visible {
     background: var(--radar-node-accent);
     border-color: var(--text);
-    box-shadow: 0 0 14px color-mix(in srgb, var(--radar-node-accent) 62%, transparent);
+    box-shadow: 0 0 9px color-mix(in srgb, var(--radar-node-accent) 45%, transparent);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -671,7 +568,7 @@
     }
 }
 
-/* ====================== RESPONSIVE WORLD ROUTE ====================== */
+/* ====================== RESPONSIVE LAYOUTS ====================== */
 @media (max-width: 1100px) {
     .map {
         min-height: auto;

@@ -6,21 +6,32 @@ node_modules/
 .env.*
 !.env.example
 
-# Test and tool output
+# Build and distribution
+dist/
+build/
+
+# Tool output
 coverage/
-.nyc_output/
 .cache/
 .eslintcache
 .stylelintcache
 *.log
+test/
+tests/
 
-# Temporary files
+# Temporary and swap files
 tmp/
 temp/
 *.tmp
+*.swp
+*.swo
+*~
 
-# Editors and operating systems
-.vscode/
-.idea/
+# Operating systems
 .DS_Store
 Thumbs.db
+desktop.ini
+
+# Editors and IDEs
+.vscode/
+.idea/
