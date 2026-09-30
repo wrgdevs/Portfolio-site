@@ -1,4 +1,4 @@
-const ASSET_VERSION = "20260920a";
+const ASSET_VERSION = "20260929b";
 
 const PROJECT_FILTERS = [
     { id: "all", label: "All" },
@@ -215,26 +215,32 @@ const PROJECTS = [
         id: "custom-ecs-game-engine",
         title: "Custom ECS Game Engine",
         summary:
-            "Lightweight C++ game engine with ECS architecture, editor tooling, Lua scripting, scene serialization, and runtime export.",
+            "C++20 engine and editor for 2D games and HD-2D scenes, combining pixel sprites with perspective 3D geometry, lighting, and shadows.",
         categories: ["game-graphics", "tools-systems"],
-        image: "assets/images/projects/custom-ecs-game-engine/editor.webp",
-        imageAlt: "Custom ECS game engine editor interface",
+        image: "assets/images/projects/custom-ecs-game-engine/lantern-crossing.png",
+        imageAlt:
+            "Lantern Crossing diorama with pixel trees and a traveler, a 3D stone inn, bridge, sun shadows, and lantern lighting",
         languages: ["C++", "Lua"],
-        techStack: ["C++20", "CMake", "SDL2", "OpenGL", "ImGui", "Lua", "EnTT", "GLM", "JSON", "stb_image"],
+        techStack: ["C++20", "OpenGL 3.3", "SDL2", "ImGui", "EnTT", "GLM", "Lua", "CMake", "JSON", "stb_image"],
         features: [
-            "Built modular C++20 engine architecture with ECS-based scene, entity, and component management",
-            "Created ImGui editor with scene hierarchy, inspector, viewport, asset browser, prefab browser, and runtime preview",
-            "Implemented JSON scene and prefab serialization with reusable entity prefabs",
-            "Added Lua scripting, animation, audio playback, physics, collision, undo, redo, and event systems",
-            "Developed a resource manager with texture and audio caching",
-            "Built standalone runtime export pipeline to separate editor tooling from playable builds",
+            "Perspective 3D rendering with pixel sprites, shadows, lighting, and depth of field",
+            "Dockable editor with inspectors, asset previews, camera controls, and object picking",
+            "2D platformer with collision, moving platforms, collectibles, hazards, and checkpoints",
+            "Diorama movement across bridges, steps, and rotated obstacles",
+            "JSON scenes and prefabs, undo/redo, and isolated Play mode",
+            "Lua scripting, sprite animation, WAV audio, and cached assets",
+            "Standalone game export with portable scenes and assets",
         ],
-        github: { url: "https://github.com/wrgdevs/CustomECSEngine", label: "View on GitHub" },
+        github: { label: "Source repository currently unavailable" },
         images: [
-            "assets/images/projects/custom-ecs-game-engine/editor.webp",
-            "assets/images/projects/custom-ecs-game-engine/prefab.webp",
-            "assets/images/projects/custom-ecs-game-engine/transform.webp",
-            "assets/images/projects/custom-ecs-game-engine/animation.webp",
+            "assets/images/projects/custom-ecs-game-engine/lantern-crossing.png",
+            "assets/images/projects/custom-ecs-game-engine/editor-diorama.png",
+            "assets/images/projects/custom-ecs-game-engine/platformer-play.png",
+        ],
+        imageAlts: [
+            "Lantern Crossing diorama with pixel sprites, perspective geometry, shadows, and point lighting",
+            "ECS editor showing the 3D diorama, mesh Inspector, scene hierarchy, asset browser, and render statistics",
+            "2D platformer running in the ECS editor with its Play mode HUD and textured platforms",
         ],
     },
     {

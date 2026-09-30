@@ -1,4 +1,4 @@
-import { escapeHtml, normalizeAssetUrl, versionedAsset } from "./core.js?v=20260920a";
+import { escapeHtml, normalizeAssetUrl, versionedAsset } from "./core.js?v=20260929b";
 
 let images = [];
 let activeIndex = 0;

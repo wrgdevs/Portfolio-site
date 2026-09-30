@@ -1,12 +1,12 @@
-import { EXPERIENCE, HEADER_SUBTITLE, HEADER_TITLE, PROJECTS, SECTION_KEYS } from "./portfolio-data.js?v=20260920a";
+import { EXPERIENCE, HEADER_SUBTITLE, HEADER_TITLE, PROJECTS, SECTION_KEYS } from "./portfolio-data.js?v=20260929b";
 import {
     closeImageCarousel,
     hydrateProjectImages,
     moveImageCarousel,
     openImageCarousel,
-} from "./js/carousel.js?v=20260920a";
-import { FINE_POINTER_QUERY, handleModalTab, versionAssetImages } from "./js/core.js?v=20260920a";
-import { renderSection } from "./js/sections.js?v=20260920a";
+} from "./js/carousel.js?v=20260929b";
+import { FINE_POINTER_QUERY, handleModalTab, versionAssetImages } from "./js/core.js?v=20260929b";
+import { renderSection } from "./js/sections.js?v=20260929b";
 
 let lastActiveElement = null;
 

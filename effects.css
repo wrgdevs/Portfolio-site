@@ -68,7 +68,7 @@
     background: color-mix(in srgb, var(--radar-node-accent) 30%, #020617);
     border: 1px solid var(--radar-node-accent);
     box-shadow: 0 0 6px color-mix(in srgb, var(--radar-node-accent) 28%, transparent);
-    cursor: url("assets/cursor/SELECT.cur?v=20260920a"), pointer;
+    cursor: url("assets/cursor/SELECT.cur?v=20260929b"), pointer;
     transform: rotate(45deg) scale(0.76);
     transition:
         transform 0.18s steps(2, end),

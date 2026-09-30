@@ -372,7 +372,7 @@
     appearance: none;
     padding: 0;
     font: inherit;
-    cursor: url("assets/cursor/SELECT.cur?v=20260920a"), pointer;
+    cursor: url("assets/cursor/SELECT.cur?v=20260929b"), pointer;
 }
 
 .experience-node:hover,

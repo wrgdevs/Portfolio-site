@@ -1,4 +1,4 @@
-const ASSET_VERSION = "20260920a";
+const ASSET_VERSION = "20260929b";
 const CACHE_PREFIX = "wrg-portfolio-cache-";
 const CACHE_NAME = `${CACHE_PREFIX}${ASSET_VERSION}`;
 const LEGACY_CACHE_NAMES = new Set(["portfolio-cache-v13"]);

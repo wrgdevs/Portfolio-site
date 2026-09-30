@@ -55,7 +55,7 @@ body {
     overflow-x: hidden;
     color: var(--text);
     background: transparent;
-    cursor: url("assets/cursor/NORMAL.cur?v=20260920a"), auto;
+    cursor: url("assets/cursor/NORMAL.cur?v=20260929b"), auto;
     font-family: var(--font-display);
 }
 
@@ -225,7 +225,7 @@ header p {
     position: absolute;
     z-index: 0;
     inset: -12px;
-    background: url("assets/images/backgroundw.webp?v=20260920a") center/cover no-repeat;
+    background: url("assets/images/backgroundw.webp?v=20260929b") center/cover no-repeat;
     pointer-events: none;
     contain: strict;
     transform: translate3d(var(--surface-depth-x, 0px), var(--surface-depth-y, 0px), 0) scale(1.02);
@@ -288,7 +288,7 @@ header p {
     box-shadow:
         0 12px 26px rgba(0, 0, 0, 0.48),
         inset 0 0 24px rgba(0, 255, 102, 0.05);
-    cursor: url("assets/cursor/SELECT.cur?v=20260920a"), pointer;
+    cursor: url("assets/cursor/SELECT.cur?v=20260929b"), pointer;
     clip-path: polygon(
         0 10px,
         10px 10px,
@@ -465,7 +465,7 @@ header p {
     text-align: left;
     background: rgba(0, 8, 36, 0.88);
     border: 2px solid var(--green);
-    cursor: url("assets/cursor/SELECT.cur?v=20260920a"), pointer;
+    cursor: url("assets/cursor/SELECT.cur?v=20260929b"), pointer;
 }
 
 .collapsible::after {
@@ -501,7 +501,7 @@ header p {
     font-size: clamp(1rem, 2.4vw, 1.35rem);
     text-decoration: none;
     border-bottom: 2px solid rgba(0, 255, 102, 0.62);
-    cursor: url("assets/cursor/SELECT.cur?v=20260920a"), pointer;
+    cursor: url("assets/cursor/SELECT.cur?v=20260929b"), pointer;
 }
 
 .contact-email:hover,
@@ -701,7 +701,7 @@ body::before {
     background:
         linear-gradient(180deg, rgba(3, 6, 18, 0.08), rgba(3, 6, 18, 0.32) 42%, rgba(3, 6, 18, 0.88)),
         radial-gradient(circle at 52% 30%, transparent 0 17%, rgba(103, 239, 255, 0.08) 18% 18.4%, transparent 19%),
-        url("assets/images/backgroundw.webp?v=20260920a") center/cover no-repeat;
+        url("assets/images/backgroundw.webp?v=20260929b") center/cover no-repeat;
     background-position:
         center,
         center,

@@ -1,5 +1,5 @@
-import { PROJECT_FILTERS } from "../portfolio-data.js?v=20260920a";
-import { escapeHtml, FLAGSHIP_PROJECT_IDS } from "./core.js?v=20260920a";
+import { PROJECT_FILTERS } from "../portfolio-data.js?v=20260929b";
+import { escapeHtml, FLAGSHIP_PROJECT_IDS } from "./core.js?v=20260929b";
 
 function renderList(items) {
     return items.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
@@ -24,7 +24,8 @@ function renderProjectLink(project) {
 function getProjectScreenshots(project) {
     return project.images.map((src, index) => ({
         src,
-        alt: index === 0 ? project.imageAlt : `${project.title} screenshot ${index + 1}`,
+        alt:
+            project.imageAlts?.[index] || (index === 0 ? project.imageAlt : `${project.title} screenshot ${index + 1}`),
     }));
 }
 

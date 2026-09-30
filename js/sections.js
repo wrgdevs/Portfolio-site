@@ -1,6 +1,6 @@
-import { EXPERIENCE, INVOLVEMENT, PROJECTS } from "../portfolio-data.js?v=20260920a";
-import { escapeHtml } from "./core.js?v=20260920a";
-import { renderExperienceCard, renderList, renderProject, renderProjectFilters } from "./renderers.js?v=20260920a";
+import { EXPERIENCE, INVOLVEMENT, PROJECTS } from "../portfolio-data.js?v=20260929b";
+import { escapeHtml } from "./core.js?v=20260929b";
+import { renderExperienceCard, renderList, renderProject, renderProjectFilters } from "./renderers.js?v=20260929b";
 
 function renderAboutSection() {
     return `
